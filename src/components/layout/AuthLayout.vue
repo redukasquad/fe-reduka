@@ -4,13 +4,13 @@ import { Image } from "@unpic/vue";
 </script>
 
 <template>
-  <div class="w-full flex flex-col justify-between h-screen pt-20 relative">
+  <div class="w-full flex flex-col justify-between min-h-screen relative">
     <Image src="/images/core/maskot.png" class="md:w-96 w-64 absolute bottom-16 md:left-1/6 left-[35%] z-20" />
-    <div>
+    <div class="w-full h-full z-30 pt-20">
         <RouterView />
     </div>
     <div class="w-fit  absolute bottom-0 left-0">
-      <Image src="/images/auth/auth_bg.png" class="h-60 w-auto" />
+      <Image src="/images/auth/auth_bg.png" class="h-48 w-auto" />
 
       <div class="absolute top-1/2 -translate-y-1/4 left-4 space-y-3">
         <div class="flex items-center gap-4">

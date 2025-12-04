@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "dev:docker": "docker run -p 3000:5173 -v \"$PWD\":/app reduka_fe"
   },
   "dependencies": {
     "@iconify/vue": "^5.0.0",

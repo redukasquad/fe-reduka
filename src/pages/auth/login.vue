@@ -32,7 +32,7 @@ const onSubmit = form.handleSubmit((values) => {
                     v-model="email"
                     type="email"
                     placeholder="Email"
-                    class="w-full border pl-10 pr-4 py-2 rounded bg-[#D2D4C8] text-foreground outline-none focus:ring-2 focus:ring-primary peer"
+                    class="w-full border pl-10 pr-4 py-2 text-xs rounded bg-[#D2D4C8] text-foreground outline-none focus:ring-2 focus:ring-primary peer"
                 />
                 <Icon icon="lucide:mail" class="absolute top-1/2 left-2 -translate-y-1/2 text-primary h-6 w-6 opacity-70 peer-focus:opacity-100" />
             </div>
@@ -45,7 +45,7 @@ const onSubmit = form.handleSubmit((values) => {
                     v-model="password"
                     type="password"
                     placeholder="Password"
-                    class="w-full border pl-10 pr-4 py-2 rounded outline-none  bg-[#D2D4C8] text-foreground focus:ring-2 focus:ring-primary peer"
+                    class="w-full border pl-10 pr-4 py-2 text-xs rounded outline-none  bg-[#D2D4C8] text-foreground focus:ring-2 focus:ring-primary peer"
                 />
                 <Icon icon="lucide:lock" class="absolute top-1/2 left-2 -translate-y-1/2 text-primary h-6 w-6 opacity-70 peer-focus:opacity-100" />
             </div>
@@ -53,16 +53,15 @@ const onSubmit = form.handleSubmit((values) => {
         </div>
 
         <div class="flex justify-between items-center px-2">
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2 text-xs">
                 <input type="checkbox" class="size-4 bg-[#D2D4C8]" />
                 <p>Ingat sandi</p>
             </div>
-            <RouterLink to="/auth/forgot-password" class="text-gray-700 hover:text-gray-800 transition-all duration-200">Lupa Password?</RouterLink>
+            <RouterLink to="/auth/forgot-password" class="text-gray-700 text-xs hover:text-gray-800 transition-all duration-200">Lupa Password?</RouterLink>
         </div>
         <button
-            :disabled="!passwordError || !emailError"
             type="submit"
-            class="px-6 w-full cursor-pointer py-2 disabled:cursor-not-allowed text-white rounded-md bg-primary hover:bg-primary/80 transition-all duration-200"
+            class="w-full cursor-pointer py-2 disabled:cursor-not-allowed text-white rounded-md bg-primary hover:bg-primary/80 transition-all duration-200"
         >
             Masuk
         </button>

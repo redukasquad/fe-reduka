@@ -15,7 +15,7 @@ const route=useRoute()
         <h1 class="font-semibold text-primary-foreground text-xl">REDUKA</h1>
     </RouterLink>
     <nav>
-        <div v-if="!route.path.includes('auth') && !isLogin" class="flex gap-2 items-center">
+        <div v-if="!isLogin" class="flex gap-2 items-center">
             <RouterLink to="/auth/login" class="px-4 py-2 rounded-sm text-primary-foreground font-semibold bg-[#1B6644] hover:bg-[#1B6644]/80 transition-all duration-200">
                 Login
             </RouterLink>
@@ -23,9 +23,6 @@ const route=useRoute()
                 Register
             </RouterLink>
         </div>
-        <RouterLink v-if="route.path.includes('auth')" to="/">
-            <Icon icon="majesticons:home"  width="40" class="text-white hover:scale-105 transition-all duration-200" />
-        </RouterLink>
     </nav>
   </header>
 </template>
