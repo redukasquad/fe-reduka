@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const blocks = Array.from({ length: 250 });
+const blocks = Array.from({ length: 500 });
 </script>
 
 <template>

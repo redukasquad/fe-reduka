@@ -19,7 +19,7 @@ const onSubmit = form.handleSubmit((values) => {
 </script>
 
 <template>
-  <div class="w-full h-full flex justify-center lg:justify-end items-center md:px-8 sm:px-6 px-4 md:pt-0 pt-28">
+  <div class="w-full h-screen flex justify-center lg:justify-end 2xl:justify-center items-center md:px-8 sm:px-6 px-4 md:pt-0 pt-28">
     <div class="space-y-8 py-4 w-full max-w-md">
       <h1 class="text-center text-2xl md:text-3xl font-semibold">
         Selamat <span class="italic px-4 py-2 bg-primary/90 rounded text-white font-semibold">Kembali!</span>
@@ -36,7 +36,7 @@ const onSubmit = form.handleSubmit((values) => {
                 />
                 <Icon icon="lucide:mail" class="absolute top-1/2 left-2 -translate-y-1/2 text-primary h-6 w-6 opacity-70 peer-focus:opacity-100" />
             </div>
-            <p v-if="emailError" class="text-red-600 text-xs">{{ emailError }}</p>
+            <p v-if="emailError" class="text-red-600 text-[10px]">{{ emailError }}</p>
         </div>
 
         <div class="space-y-1">
@@ -49,13 +49,13 @@ const onSubmit = form.handleSubmit((values) => {
                 />
                 <Icon icon="lucide:lock" class="absolute top-1/2 left-2 -translate-y-1/2 text-primary h-6 w-6 opacity-70 peer-focus:opacity-100" />
             </div>
-            <p v-if="passwordError" class="text-red-600 text-xs">{{ passwordError }}</p>
+            <p v-if="passwordError" class="text-red-600 text-[10px]">{{ passwordError }}</p>
         </div>
 
         <div class="flex justify-between items-center px-2">
             <div class="flex items-center gap-2 text-xs">
-                <input type="checkbox" class="size-4 bg-[#D2D4C8]" />
-                <p>Ingat sandi</p>
+                <input id="remember" type="checkbox" class="size-4 bg-[#D2D4C8]" />
+                <label class="text-xs" for="remember">Ingat sandi</label>
             </div>
             <RouterLink to="/auth/forgot-password" class="text-gray-700 text-xs hover:text-gray-800 transition-all duration-200">Lupa Password?</RouterLink>
         </div>

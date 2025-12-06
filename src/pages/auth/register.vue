@@ -21,10 +21,10 @@ const onSubmit = form.handleSubmit(values => {
 </script>
 
 <template>
-  <div class="w-full h-full flex justify-center lg:justify-end items-center md:px-8 sm:px-6 px-4 pt-28">
+  <div class="w-full flex h-screen justify-center lg:justify-end 2xl:justify-center items-center md:px-8 sm:px-6 px-4 pt-28 md:pt-0">
     <div class="space-y-6 w-full max-w-md">
       <h1 class="text-center text-2xl md:text-3xl font-semibold">
-        Daftar <span class="italic px-4 py-2 bg-primary/90 rounded text-white font-semibold">Akun Baru</span>
+        Selamat <span class="italic px-4 py-2 bg-primary/90 rounded text-white font-semibold">Datang!</span>
       </h1>
 
       <form @submit="onSubmit" class="space-y-2">
@@ -39,7 +39,7 @@ const onSubmit = form.handleSubmit(values => {
             />
             <Icon icon="lucide:user" class="absolute top-1/2 left-2 -translate-y-1/2 text-primary h-6 w-6 opacity-70 peer-focus:opacity-100" />
           </div>
-          <p v-if="usernameError" class="text-red-600 text-xs">{{ usernameError }}</p>
+          <p v-if="usernameError" class="text-red-600 text-[10px]">{{ usernameError }}</p>
         </div>
 
         <div class="space-y-1">
@@ -52,7 +52,7 @@ const onSubmit = form.handleSubmit(values => {
             />
             <Icon icon="lucide:mail" class="absolute top-1/2 left-2 -translate-y-1/2 text-primary h-6 w-6 opacity-70 peer-focus:opacity-100" />
           </div>
-          <p v-if="emailError" class="text-red-600 text-xs">{{ emailError }}</p>
+          <p v-if="emailError" class="text-red-600 text-[10px]">{{ emailError }}</p>
         </div>
 
         <div class="space-y-1">
@@ -65,7 +65,7 @@ const onSubmit = form.handleSubmit(values => {
             />
             <Icon icon="lucide:lock" class="absolute top-1/2 left-2 -translate-y-1/2 text-primary h-6 w-6 opacity-70 peer-focus:opacity-100" />
           </div>
-          <p v-if="passwordError" class="text-red-600 text-xs">{{ passwordError }}</p>
+          <p v-if="passwordError" class="text-red-600 text-[10px]">{{ passwordError }}</p>
         </div>
 
         <div class="space-y-1">
@@ -78,14 +78,14 @@ const onSubmit = form.handleSubmit(values => {
             />
             <Icon icon="lucide:shield-check" class="absolute top-1/2 left-2 -translate-y-1/2 text-primary h-6 w-6 opacity-70 peer-focus:opacity-100" />
           </div>
-          <p v-if="confirmPasswordError" class="text-red-600 text-xs">{{ confirmPasswordError }}</p>
+          <p v-if="confirmPasswordError" class="text-red-600 text-[10px]">{{ confirmPasswordError }}</p>
         </div>
 
         <div class="flex items-center gap-2 text-xs px-1">
-          <input v-model="acceptPolicy" type="checkbox" class="size-4 bg-[#D2D4C8]" />
-          <p>Menyetujui syarat & ketentuan</p>
+          <input id="accept" v-model="acceptPolicy" type="checkbox" class="size-4 bg-[#D2D4C8]" />
+          <label for="accept" class="text-xs">Menyetujui syarat & ketentuan</label>
         </div>
-        <p v-if="acceptPolicyError" class="text-red-600 text-xs px-1">{{ acceptPolicyError }}</p>
+        <p v-if="acceptPolicyError" class="text-red-600 text-[10px] px-1">{{ acceptPolicyError }}</p>
 
         <button
           type="submit"
