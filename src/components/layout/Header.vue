@@ -1,25 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { Image } from '@unpic/vue'
-import { Icon } from '@iconify/vue'
-import { useRoute } from 'vue-router'
+import { ref } from 'vue';
 
-const isLogin = false
-const showAuthLinks = ref(false)
-
-const onScroll = () => {
-  showAuthLinks.value = window.scrollY > 80 // threshold scroll
-}
-
-onMounted(() => {
-  window.addEventListener('scroll', onScroll)
-})
-
-onBeforeUnmount(() => {
-  window.removeEventListener('scroll', onScroll)
-})
-
-const route = useRoute()
+const isLogin=ref(false)
 </script>
 
 
@@ -34,7 +17,7 @@ const route = useRoute()
 
     <nav>
       <div 
-        v-if="!isLogin && showAuthLinks" 
+        v-if="!isLogin"
         class="flex gap-2 items-center transition-opacity duration-300 opacity-100"
       >
         <RouterLink to="/auth/login" class="px-4 py-2 rounded-sm text-primary-foreground font-semibold bg-[#1B6644] hover:bg-[#1B6644]/80 transition-all duration-200">
