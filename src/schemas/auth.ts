@@ -38,13 +38,13 @@ export type RegisterSchemaType = z.infer<typeof RegisterSchema>;
 
 
 
-export const ResetPassword = z.object({
+export const ForgotPassword = z.object({
   email: z
     .string()
     .email("Email tidak valid"),
 });
 
-export type ResetPasswordSchemaType = z.infer<typeof ResetPassword>;
+export type ForgotPasswordSchemaType = z.infer<typeof ForgotPassword>;
 
 
 

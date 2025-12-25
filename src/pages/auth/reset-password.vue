@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { toTypedSchema } from '@vee-validate/zod';
 import { useField, useForm } from 'vee-validate';
-import { ResetPassword } from '../../schemas/auth';
 import { Icon } from '@iconify/vue';
 import { computed } from 'vue';
+import { ForgotPassword } from '../../schemas/auth';
 
 
 const form=useForm({
-  validationSchema:toTypedSchema(ResetPassword)
+  validationSchema:toTypedSchema(ForgotPassword)
 })
 
 const { value: email, errorMessage: emailError } = useField("email");
