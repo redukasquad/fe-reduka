@@ -4,7 +4,9 @@ import { toTypedSchema } from "@vee-validate/zod";
 import { LoginSchema } from "../../schemas/auth";
 import { Icon } from "@iconify/vue";
 import LoginGoogle from "../../components/ui/LoginGoogle.vue";
-import { computed } from "vue";
+import { computed, watch } from "vue";
+import { useApi } from "../../composable/useApi";
+import { AuthService } from "../../services/auth";
 
 
 const form = useForm({
@@ -14,13 +16,22 @@ const form = useForm({
 const { value: email, errorMessage: emailError } = useField("email");
 const { value: password, errorMessage: passwordError } = useField("password");
 
+const { call, isLoading, data }=useApi(AuthService.login)
+
 const onSubmit = form.handleSubmit((values) => {
-  console.log("Login berhasil:", values);
+  call({
+    ...values
+  })
 });
 
 const isDisabled = computed(() => {
   return !form.meta.value.valid || form.isSubmitting.value;
 });
+
+
+watch(data, (newval)=>{
+  console.log(newval)
+})
 </script>
 
 <template>
