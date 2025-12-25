@@ -35,3 +35,28 @@ export const RegisterSchema = z
   });
 
 export type RegisterSchemaType = z.infer<typeof RegisterSchema>;
+
+
+
+export const ResetPassword = z.object({
+  email: z
+    .string()
+    .email("Email tidak valid"),
+});
+
+export type ResetPasswordSchemaType = z.infer<typeof ResetPassword>;
+
+
+
+export const VerifyTokenSchema = z.object({
+  email: z
+    .string()
+    .email("Email tidak valid"),
+  token: z
+    .string()
+    .min(6, "Token tidak valid"),
+});
+
+export type VerifyTokenSchemaType = z.infer<typeof VerifyTokenSchema>;
+
+

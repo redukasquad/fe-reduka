@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { useForm, useField } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
-import { LoginSchema } from "../../schemas/auth.schema";
+import { LoginSchema } from "../../schemas/auth";
 import { Icon } from "@iconify/vue";
 import LoginGoogle from "../../components/ui/LoginGoogle.vue";
+import { computed } from "vue";
 
 
 const form = useForm({
@@ -15,6 +16,10 @@ const { value: password, errorMessage: passwordError } = useField("password");
 
 const onSubmit = form.handleSubmit((values) => {
   console.log("Login berhasil:", values);
+});
+
+const isDisabled = computed(() => {
+  return !form.meta.value.valid || form.isSubmitting.value;
 });
 </script>
 
@@ -61,6 +66,7 @@ const onSubmit = form.handleSubmit((values) => {
         </div>
         <button
             type="submit"
+            :disabled="isDisabled"
             class="w-full cursor-pointer py-2 disabled:cursor-not-allowed text-white rounded-md bg-primary hover:bg-primary/80 transition-all duration-200"
         >
             Masuk

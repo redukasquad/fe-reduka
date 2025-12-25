@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { useForm, useField } from "vee-validate"
 import { toTypedSchema } from "@vee-validate/zod"
-import { RegisterSchema } from "../../schemas/auth.schema"
+import { RegisterSchema } from "../../schemas/auth"
 import { Icon } from "@iconify/vue"
 import LoginGoogle from "../../components/ui/LoginGoogle.vue"
+import { computed } from "vue"
 
 const form = useForm({
   validationSchema: toTypedSchema(RegisterSchema),
@@ -18,10 +19,14 @@ const { value: acceptPolicy, errorMessage: acceptPolicyError } = useField("accep
 const onSubmit = form.handleSubmit(values => {
   console.log("Register berhasil:", values)
 })
+
+const isDisabled = computed(() => {
+  return !form.meta.value.valid || form.isSubmitting.value;
+});
 </script>
 
 <template>
-  <div class="w-full flex h-screen justify-center lg:justify-end 2xl:justify-center items-center md:px-8 sm:px-6 px-4 md:pt-0">
+  <div class="w-full flex h-screen justify-center lg:justify-end 2xl:justify-center items-center md:px-8 sm:px-6 px-4 md:pt-10">
     <div class="space-y-6 w-full max-w-md">
       <h1 class="text-center text-2xl md:text-3xl font-semibold">
         Selamat <span class="italic px-4 py-2 bg-primary/90 rounded text-white font-semibold">Datang!</span>
@@ -89,6 +94,7 @@ const onSubmit = form.handleSubmit(values => {
 
         <button
           type="submit"
+          :disabled="isDisabled"
           class="w-full cursor-pointer py-2 text-white rounded-md bg-primary hover:bg-primary/80 transition-all duration-200"
         >
           Daftar

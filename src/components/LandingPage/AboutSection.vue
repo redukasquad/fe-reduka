@@ -6,7 +6,7 @@ import { Image } from '@unpic/vue';
 
 <template>
 <div class="w-full max-w-7xl mx-auto mt-10 relative">
-    <div class="w-full max-w-md mx-auto h-[60vh] md:h-[80vh] xl:h-[50vh] bg-blue-700 relative ">
+    <div class="w-full max-w-md mx-auto h-[65vh] md:h-[80vh] xl:h-[50vh] bg-blue-700 relative ">
         <div class="absolute inset-0 z-0 bg-gray-200 rotate-6" />
         <div class="absolute inset-0 bg-gray-200 -rotate-6 z-10" />
         <div class="absolute inset-0 bg-gray-100 z-20 p-6 flex flex-col gap-6" >
@@ -16,7 +16,7 @@ import { Image } from '@unpic/vue';
                     <span class="block text-lg md:text-xl text-black">Apa Itu</span>
                     <span class="block font-bold text-primary text-3xl md:text-4xl">REDUKA</span>
                 </h2>
-                <p class=" leading-9 text-sm mt-2">
+                <p class=" leading-8 text-xs md:text-sm md:mt-1 mt-0">
                     Reduka adalah platform pembelajaran inovatif yang berfokus membantu siswa yang mengalami putus sekolah agar dapat kembali melanjutkan pendidikan hingga ke jenjang perguruan tinggi. Melalui penyediaan materi pembelajaran, bimbingan, dan pendampingan yang terarah dan berkelanjutan, Reduka berupaya membuka kembali akses pendidikan serta menciptakan peluang masa depan yang lebih cerah bagi siswa yang sebelumnya terpinggirkan dari sistem pendidikan formal.
                 </p>
            </div>
