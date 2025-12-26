@@ -1,36 +1,52 @@
 <script setup lang="ts">
-import { useForm, useField } from "vee-validate";
-import { toTypedSchema } from "@vee-validate/zod";
-import { LoginSchema } from "../../schemas/auth";
-import { Icon } from "@iconify/vue";
-import LoginGoogle from "../../components/ui/LoginGoogle.vue";
-import { computed, watch } from "vue";
-import { useApi } from "../../composable/useApi";
-import { AuthService } from "../../services/auth";
+import { useForm, useField } from "vee-validate"
+import { toTypedSchema } from "@vee-validate/zod"
+import { LoginSchema } from "../../schemas/auth"
+import { Icon } from "@iconify/vue"
+import LoginGoogle from "../../components/ui/LoginGoogle.vue"
+import { computed } from "vue"
+import { useApi } from "../../composable/useApi"
+import { AuthService } from "../../services/auth"
+import { toast } from "vue3-toastify"
+import { useAuth } from "../../stores/auth"
+import { useRouter } from "vue-router"
 
+const router = useRouter()
+const auth = useAuth()
 
 const form = useForm({
   validationSchema: toTypedSchema(LoginSchema),
-});
+})
 
-const { value: email, errorMessage: emailError } = useField("email");
-const { value: password, errorMessage: passwordError } = useField("password");
+const { value: email, errorMessage: emailError } = useField("email")
+const { value: password, errorMessage: passwordError } = useField("password")
 
-const { call, isLoading, data }=useApi(AuthService.login)
+const { call, isLoading, data, error, message } =
+  useApi(AuthService.login)
 
-const onSubmit = form.handleSubmit((values) => {
-  call({
-    ...values
-  })
-});
+const onSubmit = form.handleSubmit(async (values) => {
+  await call(values)
+
+  console.log(data.value)
+  if (data.value?.token) {
+    auth.setToken(data.value.token)
+
+    toast(message.value || "Login berhasil", {
+      type: "success",
+    })
+
+    router.push("/")
+  }
+
+  if (error.value) {
+    toast(error.value, {
+      type: "error",
+    })
+  }
+})
 
 const isDisabled = computed(() => {
-  return !form.meta.value.valid || form.isSubmitting.value;
-});
-
-
-watch(data, (newval)=>{
-  console.log(newval)
+  return !form.meta.value.valid || isLoading.value
 })
 </script>
 
@@ -78,9 +94,11 @@ watch(data, (newval)=>{
         <button
             type="submit"
             :disabled="isDisabled"
-            class="w-full cursor-pointer py-2 disabled:cursor-not-allowed text-white rounded-md bg-primary hover:bg-primary/80 transition-all duration-200"
+            :class="['w-full flex items-center px-4 cursor-pointer py-2 font-semibold text-white rounded-md bg-primary hover:bg-primary/80 transition-all duration-200', isLoading?'justify-between':'justify-center']"
         >
+           <Icon v-if="isLoading" icon="lucide-refresh-ccw" class="animate-spin opacity-80" />
             Masuk
+           <Icon v-if="isLoading" icon="lucide-refresh-ccw" class="animate-spin opacity-80" />
         </button>
         <div class="flex items-center gap-1">
             <div class="flex-1 h-0.5 rounded-full bg-gray-300" />
@@ -88,6 +106,7 @@ watch(data, (newval)=>{
             <div class="flex-1 h-0.5 rounded-full bg-gray-300" />
         </div>
         <LoginGoogle message="Login dengan Google" />
+        <p class="text-sm">Don't have an account? <RouterLink to="/auth/register" class="text-blue-700 hover:text-blue-900">register</RouterLink></p>
       </form>
     </div>
   </div>

@@ -1,17 +1,36 @@
-import type { ForgotPasswordSchemaType, LoginSchemaType, RegisterSchemaType, } from "../schemas/auth";
-import api from "../services/api";
-import type { ApiResponse } from "../types/api";
+import type {
+  ForgotPasswordSchemaType,
+  LoginSchemaType,
+  RegisterSchemaType,
+} from "../schemas/auth"
+import api from "../services/api"
+import type { ApiResponse } from "../types/api"
+import type { User } from "../types/user"
 
 export class AuthService {
-  static register(value: RegisterSchemaType) : any{
-    return api.post('/auth/register', value);
+  static async register(
+    value: Partial<RegisterSchemaType>
+  ): Promise<ApiResponse<User>> {
+    const res = await api.post("/auth/register", value)
+    return res.data
   }
 
-  static login(value:LoginSchemaType):any{
-    return api.post('/auth/login', value)
+  static async login(
+    value: LoginSchemaType
+  ): Promise<ApiResponse<{ token: string }>> {
+    const res = await api.post("/auth/login", value)
+    return res.data
   }
 
-  static forgotPassword(value:ForgotPasswordSchemaType):any{
-    return api.post('/auth/reset-password', value)
+  static async forgotPassword(
+    value: ForgotPasswordSchemaType
+  ): Promise<ApiResponse<any>> {
+    const res = await api.post("/auth/reset-password", value)
+    return res.data
+  }
+
+  static async loginGoogle(): Promise<ApiResponse<any>> {
+    const res = await api.get("/google/login")
+    return res.data
   }
 }

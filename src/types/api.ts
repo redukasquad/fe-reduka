@@ -14,3 +14,7 @@ export interface ApiResponse<T = any> {
   error?: any
   meta?: ApiMeta
 }
+
+export type ApiFunction<TPayload, TData> = (
+  payload: TPayload
+) => Promise<ApiResponse<TData>>

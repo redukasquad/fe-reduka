@@ -21,10 +21,10 @@ export const RegisterSchema = z
       .email("Email tidak valid"),
     password: z
       .string()
-      .min(6, "Password minimal 8 karakter"),
+      .min(8, "Password minimal 8 karakter"),
     confirmPassword: z
       .string()
-      .min(6, "Konfirmasi password minimal 8 karakter"),
+      .min(8, "Konfirmasi password minimal 8 karakter"),
     acceptPolicy: z
       .boolean()
       .refine(val => val === true, "Anda harus menyetujui syarat & ketentuan"),
