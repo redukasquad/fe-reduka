@@ -7,35 +7,47 @@ import LoginGoogle from "../../components/ui/LoginGoogle.vue"
 import { computed, reactive } from "vue"
 import { AuthService } from "../../services/auth"
 import { useApi } from "../../composable/useApi"
-import { watch } from "vue"
 import { useRouter } from "vue-router"
 import { toast } from "vue3-toastify"
+
+const router = useRouter()
 
 const form = useForm({
   validationSchema: toTypedSchema(RegisterSchema),
 })
 
-const router=useRouter()
-
-
 const { value: username, errorMessage: usernameError } = useField("username")
 const { value: email, errorMessage: emailError } = useField("email")
 const { value: password, errorMessage: passwordError } = useField("password")
-const { value: confirmPassword, errorMessage: confirmPasswordError } = useField("confirmPassword")
-const { value: acceptPolicy, errorMessage: acceptPolicyError } = useField("acceptPolicy")
+const { value: confirmPassword, errorMessage: confirmPasswordError } =
+  useField("confirmPassword")
+const { value: acceptPolicy, errorMessage: acceptPolicyError } =
+  useField("acceptPolicy")
 
-const { call, isLoading, data, error } = useApi(AuthService.register)
+const { call, isLoading, data, error, message } =
+  useApi(AuthService.register)
 
-const onSubmit = form.handleSubmit(values => {
-  call({
+const onSubmit = form.handleSubmit(async (values) => {
+  await call({
     email: values.email,
     password: values.password,
     username: values.username,
   })
+
+  if (error.value) {
+    toast(error.value, { type: "error" })
+    return
+  }
+
+  toast(message.value || "Registrasi berhasil", {
+    type: "success",
+  })
+
+  router.push("/auth/verify-email")
 })
 
 const isDisabled = computed(() => {
-  return !form.meta.value.valid || form.isSubmitting.value
+  return !form.meta.value.valid || isLoading.value
 })
 
 const showPassword = reactive({
@@ -46,24 +58,12 @@ const showPassword = reactive({
 const togglePassword = (type: "password" | "confirmPassword") => {
   showPassword[type] = !showPassword[type]
 }
-
-watch(error, (newVal:string)=>{
-  if(newVal){
-      toast(newVal, {
-        type:'error'
-      })
-  }
-})
-
-watch(data, (data)=>{
-  router.push('/auth/verify-email')
-})
-
 </script>
+
 
 <template>
   <div class="w-full flex h-screen justify-center lg:justify-end 2xl:justify-center items-center md:px-8 sm:px-6 px-4 md:pt-10">
-    <div class="space-y-6 w-full max-w-md md:p-0 p-4 rounded-md border-2 md:border-primary/80 bg-primary/40 md:bg-transparent md:border-0">
+    <div class="space-y-6 w-full max-w-md md:p-0 p-4 rounded-md border-2 md:border-primary/80 bg-primary/20 md:bg-transparent md:border-0">
       <h1 class="text-center text-xl md:text-2xl xl:text-3xl font-semibold">
         Selamat <span class="italic px-4 py-2 bg-primary/90 rounded text-white font-semibold">Datang!</span>
       </h1>

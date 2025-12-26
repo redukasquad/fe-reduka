@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import { AuthService } from '../../services/auth';
+
 defineProps<{
   message: string
 }>()
 
 const loginGoogle = () => {
-  console.log('login...')
+  AuthService.loginGoogle()
 }
 </script>
 
