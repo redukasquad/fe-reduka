@@ -29,8 +29,8 @@ export class AuthService {
     return res.data
   }
 
-  static async loginGoogle(): Promise<ApiResponse<any>> {
-    const res = await api.get("/google/login")
-    return res.data
+  static loginGoogle() {
+    window.location.href =
+      import.meta.env.VITE_API_BASE_URL + "/auth/google/login"
   }
 }
