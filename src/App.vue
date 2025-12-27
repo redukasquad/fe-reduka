@@ -1,19 +1,24 @@
 <script setup lang="ts">
-import Footer from './components/layout/Footer.vue'
-import Header from './components/layout/Header.vue'
-import BgBlock from './components/ui/bgBlock.vue'
+import { useRoute } from "vue-router"
+import Footer from "./components/layout/Footer.vue"
+import Header from "./components/layout/Header.vue"
+import BgBlock from "./components/ui/bgBlock.vue"
+
+const route = useRoute()
 </script>
 
 <template>
   <div class="w-full min-h-screen relative overflow-hidden">
-    <BgBlock />
-    <Header />
+    <BgBlock v-if="route.meta.layout !== 'plain'" />
+    <Header v-if="route.meta.layout !== 'plain'" />
+
     <RouterView v-slot="{ Component }">
       <transition name="page" mode="out-in" appear>
         <component :is="Component" />
       </transition>
     </RouterView>
-    <Footer />
+
+    <Footer v-if="route.meta.layout !== 'plain'" />
   </div>
 </template>
 

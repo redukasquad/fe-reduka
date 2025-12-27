@@ -2,6 +2,7 @@ import type {
   ForgotPasswordSchemaType,
   LoginSchemaType,
   RegisterSchemaType,
+  VerifyOtpSchemaType,
 } from "../schemas/auth"
 import api from "../services/api"
 import type { ApiResponse } from "../types/api"
@@ -33,4 +34,17 @@ export class AuthService {
     window.location.href =
       import.meta.env.VITE_API_BASE_URL + "/auth/google/login"
   }
+
+  static async verifyOtp(
+    value: VerifyOtpSchemaType
+  ): Promise<ApiResponse<any>> {
+    const res = await api.post("/auth/verify-email", null, {
+      params: {
+        code: value.otp,
+      },
+    })
+
+    return res.data
+  }
+
 }

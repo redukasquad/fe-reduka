@@ -20,10 +20,10 @@ const isLogin=ref(false)
         v-if="!isLogin"
         class="flex gap-2 items-center transition-opacity duration-300 opacity-100"
       >
-        <RouterLink to="/auth/login" class="px-4 py-2 rounded-sm text-primary-foreground font-semibold bg-[#1B6644] hover:bg-[#1B6644]/80 transition-all duration-200">
+        <RouterLink to="/auth/login" class="px-4 py-2 rounded-sm text-sm text-primary-foreground font-semibold bg-[#1B6644] hover:bg-[#1B6644]/80 transition-all duration-200">
           Login
         </RouterLink>
-        <RouterLink to="/auth/register" class="px-4 py-2 rounded-sm font-semibold text-primary-foreground ring ring-primary-foreground hover:bg-white/5 transition-all duration-200">
+        <RouterLink to="/auth/register" class="px-4 py-2 rounded-sm text-sm font-semibold text-primary-foreground ring ring-primary-foreground hover:bg-white/5 transition-all duration-200">
           Register
         </RouterLink>
       </div>

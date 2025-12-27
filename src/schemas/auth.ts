@@ -48,15 +48,20 @@ export type ForgotPasswordSchemaType = z.infer<typeof ForgotPassword>;
 
 
 
-export const VerifyTokenSchema = z.object({
-  email: z
-    .string()
-    .email("Email tidak valid"),
-  token: z
+export const VerifyOtpSchema = z.object({
+  otp: z
     .string()
     .min(6, "Token tidak valid"),
 });
 
-export type VerifyTokenSchemaType = z.infer<typeof VerifyTokenSchema>;
+export type VerifyOtpSchemaType = z.infer<typeof VerifyOtpSchema>;
 
+
+export const ResendPasswordSchema = z.object({
+  email: z
+    .string()
+    .email("Email tidak valid"),
+});
+
+export type ResendPasswordSchemaSchemaType = z.infer<typeof ResendPasswordSchema>;
 
