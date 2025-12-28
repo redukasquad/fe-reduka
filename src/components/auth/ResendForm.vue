@@ -5,7 +5,7 @@ import { toast } from 'vue3-toastify'
 import { ResendPasswordSchema } from '../../schemas/auth'
 
 
-const _props = defineProps<{
+defineProps<{
   modelValue: boolean
 }>()
 
