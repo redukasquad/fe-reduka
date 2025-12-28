@@ -24,7 +24,7 @@ const { value: confirmPassword, errorMessage: confirmPasswordError } =
 const { value: acceptPolicy, errorMessage: acceptPolicyError } =
   useField("acceptPolicy")
 
-const { call, isLoading, data, error, message } =
+const { call, isLoading, error, message } =
   useApi(AuthService.register)
 
 const onSubmit = form.handleSubmit(async (values) => {

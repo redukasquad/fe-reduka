@@ -5,7 +5,7 @@ import { toast } from 'vue3-toastify'
 import { ResendPasswordSchema } from '../../schemas/auth'
 
 
-const props = defineProps<{
+const _props = defineProps<{
   modelValue: boolean
 }>()
 
@@ -23,7 +23,7 @@ const resendForm = useForm({
 const { value: resendEmail, errorMessage: resendError } =
   useField<string>("email", undefined, { initialValue: "" })
 
-const onResend = resendForm.handleSubmit(async (values) => {
+const onResend = resendForm.handleSubmit(async (_values) => {
   // TODO: ganti dengan API resend OTP kamu
   // await callResend(values)
 

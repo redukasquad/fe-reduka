@@ -145,7 +145,7 @@ const DEFAULT_SEO = {
   robots: "index, follow",
 }
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _from, next) => {
   const seo = to.meta.seo || {}
 
   const title = seo.title
