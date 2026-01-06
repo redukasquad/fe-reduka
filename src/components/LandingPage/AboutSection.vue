@@ -6,7 +6,7 @@ import { Image } from '@unpic/vue';
 
 <template>
 <div class="w-full max-w-7xl mx-auto mt-10 relative">
-    <div class="w-full max-w-md mx-auto h-[60vh] sm:h-[50vh] md:h-[45vh] lg:h-[80vh] xl:h-[65vh] bg-blue-700 relative ">
+    <div class="w-full max-w-md mx-auto h-[60vh] sm:h-[50vh] md:h-[45vh] lg:h-[80vh] 2xl:h-[50vh] bg-blue-700 relative ">
         <div class="absolute inset-0 z-0 bg-gray-200 rotate-6" />
         <div class="absolute inset-0 bg-gray-200 -rotate-6 z-10" />
         <div class="absolute inset-0 bg-gray-100 z-20 p-6 flex flex-col gap-6" >

@@ -1,3 +1,5 @@
+export type UserRole = "ADMIN" | "TUTOR" | "STUDENT"
+
 export interface User {
   id?: number;
 
@@ -8,7 +10,7 @@ export interface User {
   jenisKelamin?: boolean;
 
   kelas?: "Kelas 10" | "Kelas 11" | "Kelas 12" | "Gapyer (Alumni)";
-  role?: "Students" | "Tutor" | "Admin";
+  role?: UserRole;
 
   profileImage?: string;
 

@@ -10,6 +10,20 @@ import NotFound from "./pages/NotFound.vue"
 import Succes from "./pages/auth/google/Succes.vue"
 
 
+import CoursesIndex from "./pages/courses/index.vue"
+
+import DashboardUser from "./pages/dashboard/user/index.vue"
+import DashboardAdmin from "./pages/dashboard/admin/index.vue"
+import DashboardTutor from "./pages/dashboard/tutor/index.vue"
+
+import ProgramIndex from "./pages/programs/Index.vue"
+
+
+import TryoutIndex from "./pages/Tryouts/Index.vue"
+
+
+
+
 
 const routes: RouteRecordRaw[] = [
   {
@@ -19,9 +33,9 @@ const routes: RouteRecordRaw[] = [
     meta: {
       layout: "default" as const,
       seo: {
-        title: "AI Learning Platform",
+        title: "Reduka | Revolusi Edukasi",
         description:
-          "Platform pembelajaran berbasis AI untuk tracking progress, rekomendasi pintar, dan course interaktif.",
+          "Platform pembelajaran untuk membantu Mempersiapkan kamu dalam kebutuhan yang akan datang",
         keywords:
           "AI learning platform, LMS AI, belajar online, tracking belajar",
       },
@@ -114,7 +128,84 @@ const routes: RouteRecordRaw[] = [
       }
     ],
   },
-
+  {
+    path: "/courses",
+    name: "Courses",
+    component:CoursesIndex,
+    meta: {
+      layout: "default" as const,
+      seo: {
+        title: "List Courses Pembelajaran yang Tersedia",
+        description: "Jelajahi berbagai kelas pembelajaran yang tersedia untuk meningkatkan kemampuan kamu.",
+      },
+    },
+  },
+  {
+    path: "/programs",
+    name: "programs",
+    component:ProgramIndex,
+    meta: {
+      layout: "default" as const,
+      seo: {
+        title: "Program Pembelajaran Unggulan",
+        description: "Temukan program pembelajaran unggulan yang dirancang untuk membantu kamu mencapai tujuan belajar.",
+      },
+    },
+  },
+  {
+    path: "/tryouts",
+    name: "tryouts",
+    component:TryoutIndex,
+    meta: {
+      layout: "default" as const,
+      seo: {
+        title: "Tryouts untuk Evaluasi Kemampuan",
+        description: "Ikuti tryouts kami untuk mengevaluasi kemampuan dan persiapan kamu dalam menghadapi ujian sebenarnya.",
+      },
+    },
+  },
+  {
+    path: "/dashboard",
+    name: "dashboard",
+    children: [
+      {
+        path: "user",
+        name: "dashboard-user",
+        component: DashboardUser,
+        meta: {
+          layout: "default" as const,
+          seo: {
+            title: "Dashboard User",
+            description: "Dashboard pengguna.",
+          },
+        },
+      },
+      {
+        path: "admin",
+        name: "dashboard-admin",
+        component: DashboardAdmin,
+        meta: {
+          layout: "default" as const,
+          seo: {
+            title: "Dashboard Admin",
+            description: "Dashboard admin.",
+          },
+        },
+      },
+      {
+        path: "tutor",
+        name: "dashboard-tutor",
+        component: DashboardTutor,
+        meta: {
+          layout: "default" as const,
+          seo: {
+            title: "Dashboard Tutor",
+            description: "Dashboard tutor.",
+          },
+        },
+      }
+    ]
+  },
   {
     path: '/:pathMatch(.*)*',
     name: "NotFound",
@@ -145,7 +236,7 @@ const DEFAULT_SEO = {
   robots: "index, follow",
 }
 
-router.beforeEach((to, _from, next) => {
+router.beforeEach((to, _, next) => {
   const seo = to.meta.seo || {}
 
   const title = seo.title

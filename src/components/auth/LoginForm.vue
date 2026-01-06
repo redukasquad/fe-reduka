@@ -34,7 +34,7 @@ const onSubmit = form.handleSubmit(async (values) => {
       type: "success",
     })
 
-    router.push("/")
+    router.push("/classes")
   }
 
   if (error.value) {
@@ -43,7 +43,7 @@ const onSubmit = form.handleSubmit(async (values) => {
     })
 
     if(message.value.includes('veri')){
-        router.push('/auth/verify-email')
+        router.push('/auth/verify-email?email='+values.email)
     }
   }
 })

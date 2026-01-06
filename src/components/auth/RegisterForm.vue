@@ -43,7 +43,7 @@ const onSubmit = form.handleSubmit(async (values) => {
     type: "success",
   })
 
-  router.push("/auth/verify-email")
+  router.push("/auth/verify-email?email=" + values.email)
 })
 
 const isDisabled = computed(() => {

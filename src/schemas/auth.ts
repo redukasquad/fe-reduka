@@ -52,6 +52,7 @@ export const VerifyOtpSchema = z.object({
   otp: z
     .string()
     .min(6, "Token tidak valid"),
+  email:z.string().email("Email tidak valid"),
 });
 
 export type VerifyOtpSchemaType = z.infer<typeof VerifyOtpSchema>;

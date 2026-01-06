@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import type { User } from "../types/user";
 import type { AuthState } from "../types/auth";
+import { AuthService } from "../services/auth";
 
 export const useAuth = defineStore("auth", {
   state: (): AuthState => ({
@@ -9,8 +10,12 @@ export const useAuth = defineStore("auth", {
   }),
 
   actions: {
-    setToken(token: string | null) {
+    async setToken(token: string | null) {
       this.token = token;
+      const res=await AuthService.me()
+
+      console.log(res)
+      this.user=res.data as User;
     },
 
     setUser(user: User | null) {

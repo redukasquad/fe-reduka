@@ -3,7 +3,8 @@ import { toTypedSchema } from '@vee-validate/zod'
 import { useField, useForm } from 'vee-validate'
 import { toast } from 'vue3-toastify'
 import { ResendPasswordSchema } from '../../schemas/auth'
-
+import { AuthService } from '../../services/auth';
+import { useApi } from '../../composable/useApi';
 
 defineProps<{
   modelValue: boolean
@@ -12,6 +13,7 @@ defineProps<{
 const emit = defineEmits<{
   (e: "update:modelValue", value: boolean): void
 }>()
+
 
 const resendForm = useForm({
   validationSchema: toTypedSchema(ResendPasswordSchema),
@@ -23,10 +25,15 @@ const resendForm = useForm({
 const { value: resendEmail, errorMessage: resendError } =
   useField<string>("email", undefined, { initialValue: "" })
 
-const onResend = resendForm.handleSubmit(async (_values) => {
-  // TODO: ganti dengan API resend OTP kamu
-  // await callResend(values)
+const { call: callResend, message, isLoading: isResendLoading, error } = useApi(AuthService.resendOtp)
 
+const onResend = resendForm.handleSubmit(async (values) => {
+
+  await callResend(values.email)
+  if (error.value) {
+    toast(message, { type: "error" })
+    return
+  }
   toast("Kode verifikasi berhasil dikirim ulang", {
     type: "success",
   })
@@ -60,7 +67,7 @@ const onResend = resendForm.handleSubmit(async (_values) => {
           type="submit"
           class="w-full py-2 rounded-md font-semibold text-white bg-primary hover:bg-primary/80 transition-all"
         >
-          Kirim Ulang Kode
+          {{ isResendLoading ? "Resending..." : "Resend Code" }}
         </button>
       </form>
 </template>

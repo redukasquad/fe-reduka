@@ -14,6 +14,7 @@ const form = useForm({
   validationSchema: toTypedSchema(VerifyOtpSchema),
   initialValues: {
     otp: "",
+    email: router.currentRoute.value.query.email as string || "",
   },
 })
 
@@ -21,7 +22,7 @@ const { value: otp, errorMessage } = useField<string>("otp", undefined, { initia
 
 const otpInputs = ref<HTMLInputElement[]>([])
 
-const { call, isLoading, data, error, message } =
+const { call, isLoading, error, message } =
   useApi(AuthService.verifyOtp)
 
 const onInput = (e: Event, index: number) => {
@@ -62,7 +63,7 @@ const onPaste = (e: ClipboardEvent) => {
 const onSubmit = form.handleSubmit(async (values) => {
   await call(values)
 
-  if (data.value) {
+  if (message.value.includes("successfully")) {
     toast(message.value || "Email berhasil diverifikasi", {
       type: "success",
     })
@@ -70,7 +71,7 @@ const onSubmit = form.handleSubmit(async (values) => {
   }
 
   if (error.value) {
-    toast(error.value || "OTP tidak valid", {
+    toast(message.value || "OTP tidak valid", {
       type: "error",
     })
   }
@@ -109,7 +110,7 @@ const isDisabled = computed(() => {
         <button
           type="submit"
           :disabled="isDisabled"
-          class="w-full py-2 rounded-md font-semibold text-white bg-primary hover:bg-primary/80 transition-all"
+          class="w-full py-2 cursor-pointer active:scale-95 rounded-md font-semibold text-white bg-primary hover:bg-primary/80 transition-all"
         >
           {{ isLoading ? "Verifying..." : "Verify Email" }}
         </button>

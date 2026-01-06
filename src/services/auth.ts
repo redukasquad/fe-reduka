@@ -38,12 +38,25 @@ export class AuthService {
   static async verifyOtp(
     value: VerifyOtpSchemaType
   ): Promise<ApiResponse<any>> {
-    const res = await api.post("/auth/verify-email", null, {
-      params: {
-        code: value.otp,
-      },
-    })
+    const res = await api.post("/auth/verify-email",{
+      code: value.otp,
+      email: value.email,
+    })  
 
+    return res.data
+  }
+
+  static async resendOtp(email: string) {
+    const res= await api.post(
+      "/auth/resend-verification",
+      {email},
+    )
+
+    return res.data
+  }
+
+  static async me(): Promise<ApiResponse<User>> {
+    const res = await api.get("/auth/me")
     return res.data
   }
 
