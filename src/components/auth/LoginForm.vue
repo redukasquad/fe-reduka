@@ -34,7 +34,7 @@ const onSubmit = form.handleSubmit(async (values) => {
       type: "success",
     })
 
-    router.push("/classes")
+    router.push("/courses")
   }
 
   if (error.value) {

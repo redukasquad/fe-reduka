@@ -1,4 +1,11 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+const goBack = () => {
+  router.back()
+}
 </script>
 
 <template>
@@ -9,11 +16,20 @@
       Sabar yak masih belum dibikin hehe...
     </p>
 
-    <RouterLink
-      to="/"
-      class="mt-6 px-4 py-2 rounded bg-primary text-white hover:bg-primary/80 transition"
-    >
-      Kembali ke Beranda
-    </RouterLink>
+    <div class="flex gap-3 mt-6">
+      <RouterLink
+        to="/"
+        class="px-4 py-2 rounded bg-primary text-white hover:bg-primary/80 transition"
+      >
+        Kembali ke Beranda
+      </RouterLink>
+
+      <button
+        @click="goBack"
+        class="px-4 py-2 rounded border border-primary text-primary hover:bg-primary/10 transition"
+      >
+        Kembali
+      </button>
+    </div>
   </div>
 </template>

@@ -27,6 +27,28 @@ const handleLogout = () => {
   auth.logout()
   router.push('/auth/login')
 }
+
+
+const isActiveMenu = (menuPath: string): boolean => {
+  const currentPath = route.path
+
+  if (currentPath === menuPath) return true
+
+  if (
+    currentPath.startsWith(menuPath + '/') && 
+    menuPath !== '/dashboard/admin'
+  ) {
+    return true
+  }
+
+  if (currentPath === '/dashboard/admin' && menuPath === '/dashboard/admin') {
+    return true
+  }
+
+  return false
+}
+
+
 </script>
 
 <template>
@@ -75,7 +97,7 @@ const handleLogout = () => {
           :to="menu.path"
           :class="[
             'flex items-center gap-3 px-4 py-3 rounded-md transition-all duration-200 mb-2',
-            route.path === menu.path
+            isActiveMenu(menu.path)
               ? 'bg-primary-foreground text-primary font-semibold'
               : 'hover:bg-primary-foreground/10'
           ]"

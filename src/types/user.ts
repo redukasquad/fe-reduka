@@ -10,7 +10,7 @@ export interface User {
   jenisKelamin?: boolean;
 
   kelas?: "Kelas 10" | "Kelas 11" | "Kelas 12" | "Gapyer (Alumni)";
-  role?: UserRole;
+  role: UserRole;
 
   profileImage?: string;
 

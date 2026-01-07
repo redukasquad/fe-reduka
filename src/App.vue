@@ -4,8 +4,9 @@ import Footer from "./components/layout/Footer.vue"
 import Header from "./components/layout/Header.vue"
 import BgBlock from "./components/ui/bgBlock.vue"
 import Sidebar from "./components/layout/Sidebar.vue"
-
 const route = useRoute()
+
+
 </script>
 
 <template>
