@@ -6,7 +6,7 @@ import type {
 } from "../schemas/auth"
 import api from "../services/api"
 import type { ApiResponse } from "../types/api"
-import type { User } from "../types/user"
+import type { User } from "../types/entites/user"
 
 export class AuthService {
   static async register(

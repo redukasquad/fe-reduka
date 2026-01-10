@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from "vue-router"
 import { useAuth } from "./stores/auth"
-import type { UserRole } from "./types/user"
+import type { UserRole } from "./types/entites/user"
 import { landingPageRoutes } from "./routes/landing-page"
 import { authRoutes } from "./routes/auth"
 import { dashboardRoutes } from "./routes/dashboard"

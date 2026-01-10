@@ -1,4 +1,4 @@
-import type { User } from "./user";
+import type { User } from "../entites/user";
 
 export interface AuthState {
   user: User | null;

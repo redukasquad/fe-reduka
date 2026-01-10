@@ -7,9 +7,23 @@ import './style.css'
 import Toast from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+import PrimeVue from 'primevue/config';
+import Aura from '@primeuix/themes/aura';
 
 const pinia = createPinia()
 const app = createApp(App)
+
+
+app.use(PrimeVue, {
+    theme: {
+        preset: Aura,
+        options: {
+            prefix: 'p',
+            darkModeSelector: 'dark',
+            cssLayer: false
+        }
+    }
+ });
 
 pinia.use(piniaPluginPersistedstate)
 app.use(pinia)

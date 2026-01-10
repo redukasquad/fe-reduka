@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "tailwindcss-primeui";
 
 /* ======= FONT SETUP ======= */
 @font-face {
@@ -44,7 +45,7 @@
 }
 
 /* ======= DARK MODE SUPPORT ======= */
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:where(.my-app-dark, .my-app-dark *));  
 
 /* ======= THEME CONFIG FOR TAILWIND v4 ======= */
 @theme inline {
