@@ -6,22 +6,25 @@ import type { RouteMeta } from "vue-router";
 const AdminUsersIndex = () => import("../pages/dashboard/admin/users/Index.vue");
 const AdminUsersCreate = () => import("../pages/dashboard/admin/users/Create.vue");
 const AdminUsersUpdate = () => import("../pages/dashboard/admin/users/Update.vue");
-
+const AdminUsersView = () => import("../pages/dashboard/admin/users/View.vue");
 
 // Courses
 const AdminCoursesIndex = () => import("../pages/dashboard/admin/courses/Index.vue");
 const AdminCoursesCreate = () => import("../pages/dashboard/admin/courses/Create.vue");
 const AdminCoursesUpdate = () => import("../pages/dashboard/admin/courses/Update.vue");
+const AdminCoursesView = () => import("../pages/dashboard/admin/courses/View.vue");
 
 // Programs
 const AdminProgramsIndex = () => import("../pages/dashboard/admin/programs/Index.vue");
 const AdminProgramsCreate = () => import("../pages/dashboard/admin/programs/Create.vue");
 const AdminProgramsUpdate = () => import("../pages/dashboard/admin/programs/Update.vue");
+const AdminProgramsView = () => import("../pages/dashboard/admin/programs/View.vue");
 
 // Tryouts
 const AdminTryoutsIndex = () => import("../pages/dashboard/admin/tryouts/Index.vue");
 const AdminTryoutsCreate = () => import("../pages/dashboard/admin/tryouts/Create.vue");
 const AdminTryoutsUpdate = () => import("../pages/dashboard/admin/tryouts/Update.vue");
+const AdminTryoutsView = () => import("../pages/dashboard/admin/tryouts/View.vue");
 
 const adminMeta = {
   layout: "default",
@@ -57,6 +60,13 @@ export const dashboardAdminRoutes: RouteRecordRaw[] = [
     meta: { ...adminMeta, title: "Create User" },
   },
   {
+    path: "/dashboard/admin/users/:id",
+    name: "admin-users-view",
+    component: AdminUsersView,
+    props: true,
+    meta: { ...adminMeta, title: "Detail User" },
+  },
+  {
     path: "/dashboard/admin/users/:id/update",
     name: "admin-users-update",
     component: AdminUsersUpdate,
@@ -76,6 +86,13 @@ export const dashboardAdminRoutes: RouteRecordRaw[] = [
     name: "admin-courses-create",
     component: AdminCoursesCreate,
     meta: { ...adminMeta, title: "Create Course" },
+  },
+  {
+    path: "/dashboard/admin/courses/:id",
+    name: "admin-courses-view",
+    component: AdminCoursesView,
+    props: true,
+    meta: { ...adminMeta, title: "Detail Course" },
   },
   {
     path: "/dashboard/admin/courses/:id/update",
@@ -99,6 +116,13 @@ export const dashboardAdminRoutes: RouteRecordRaw[] = [
     meta: { ...adminMeta, title: "Create Program" },
   },
   {
+    path: "/dashboard/admin/programs/:id",
+    name: "admin-programs-view",
+    component: AdminProgramsView,
+    props: true,
+    meta: { ...adminMeta, title: "Detail Program" },
+  },
+  {
     path: "/dashboard/admin/programs/:id/update",
     name: "admin-programs-update",
     component: AdminProgramsUpdate,
@@ -118,6 +142,13 @@ export const dashboardAdminRoutes: RouteRecordRaw[] = [
     name: "admin-tryouts-create",
     component: AdminTryoutsCreate,
     meta: { ...adminMeta, title: "Create Tryout" },
+  },
+  {
+    path: "/dashboard/admin/tryouts/:id",
+    name: "admin-tryouts-view",
+    component: AdminTryoutsView,
+    props: true,
+    meta: { ...adminMeta, title: "Detail Tryout" },
   },
   {
     path: "/dashboard/admin/tryouts/:id/update",

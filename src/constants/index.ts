@@ -18,25 +18,19 @@ export const adminMenu = [
     icon: 'mdi:account-multiple-outline'
   },
   {
-    id: 4,
-    path: '/dashboard/admin/enrollments',
-    name: 'Enrollments',
-    icon: 'mdi:clipboard-list-outline'
-  },
-  {
-    id: 4,
+    id: 3,
     path: '/dashboard/admin/courses',
     name: 'Courses',
     icon: 'mdi:book-open-variant'
   },
   {
-    id: 5,
+    id: 4,
     path: '/dashboard/admin/programs',
     name: 'Programs',
     icon: 'mdi:school-outline'
   },
   {
-    id: 6,
+    id: 5,
     path: '/dashboard/admin/tryouts',
     name: 'Tryouts',
     icon: 'mdi:clipboard-text-outline'

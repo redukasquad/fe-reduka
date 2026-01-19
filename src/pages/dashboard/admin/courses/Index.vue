@@ -4,6 +4,8 @@ import { computed } from 'vue'
 import DashboardLayout from '../../../../components/layout/DashboardLayout.vue'
 import { CourseService } from '../../../../services/course'
 import CoursesTable from '../../../../components/dashboard/admin/courses/CourseTable.vue'
+import type { Course } from '../../../../types/entites/course'
+import { useRouter } from 'vue-router'
 
 const { data, isLoading, isError } = useQuery({
   queryKey: ['courses'],
@@ -11,6 +13,11 @@ const { data, isLoading, isError } = useQuery({
 })
 
 const courses = computed(() => data.value?.data || [])
+const router=useRouter()
+
+const handleView = (course: Course) => {
+    router.push({ name: 'admin-courses-view', params: { id: course.ID } })
+}
 
 </script>
 
@@ -29,7 +36,7 @@ const courses = computed(() => data.value?.data || [])
             </div>
 
             <div v-else>
-                <CoursesTable :courses="courses" />
+                <CoursesTable @view="handleView" :courses="courses" />
             </div>
             </div>
         </div>
