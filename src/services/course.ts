@@ -9,4 +9,11 @@ export class CourseService{
         const res=await api.get('/courses')
         return res.data
     }
+
+    static async findAllRegistrations(id:string) : Promise<
+    ApiResponse<Course[]>>
+    {
+        const res=await api.get(`/courses/${id}/registrations`)
+        return res.data
+    }
 }

@@ -24,6 +24,10 @@ const emit = defineEmits<{
 const columnHelper = createColumnHelper<Course>()
 
 const columns = [
+  columnHelper.accessor('ID', {
+    header: 'No',
+    enableSorting: true,
+  }),
   columnHelper.accessor('nameCourse', {
     header: 'Nama Course',
     enableSorting: true,

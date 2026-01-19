@@ -22,6 +22,10 @@ const emit = defineEmits<{
 const columnHelper = createColumnHelper<User>()
 
 const columns = [
+  columnHelper.accessor('ID', {
+    header: 'No',
+    enableSorting: true,
+  }),
   columnHelper.accessor('username', {
     header: 'Nama',
     enableSorting: true,
