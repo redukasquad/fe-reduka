@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import RerenderChildren from '../../../components/ui/RerenderChildren.vue'
+import DashboardLayout from '../../../components/layout/DashboardLayout.vue';
 
 
 </script>
 
 <template>
-  <RerenderChildren path="/dashboard/admin">
+  <DashboardLayout>
     <h1>hallo</h1>
-  </RerenderChildren>
+  </DashboardLayout>
 </template>

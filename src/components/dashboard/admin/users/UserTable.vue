@@ -9,53 +9,43 @@ import {
   type SortingState,
 } from '@tanstack/vue-table'
 import { ref, watch } from 'vue'
-import type { Program } from '../../../../types/entites/program'
-import { Image } from '@unpic/vue';
+import type { User } from '../../../../types/entites/user'
 
 const props = defineProps<{
-  programs: Program[]
+  users: User[]
 }>()
 
 const emit = defineEmits<{
-  (e: 'edit', program: Program): void
-  (e: 'delete', program: Program): void
-  (e: 'view', program: Program): void
+  (e: 'change-role', user: User, role: string): void
 }>()
 
-const columnHelper = createColumnHelper<Program>()
-
+const columnHelper = createColumnHelper<User>()
 
 const columns = [
-  columnHelper.accessor('ID', {
-    header: 'No',
+  columnHelper.accessor('username', {
+    header: 'Nama',
     enableSorting: true,
   }),
-  columnHelper.accessor('programName', {
-    header: 'Nama Program',
+  columnHelper.accessor('email', {
+    header: 'Email',
     enableSorting: true,
   }),
-  columnHelper.accessor('imageProgram', {
-    header: 'Gambar',
-    enableSorting: false,
-  }),
-  columnHelper.accessor('CreatedAt', {
-    header: 'Dijalankan Pada',
-    cell: (info) =>
-      new Date(info.getValue() as string).toLocaleDateString('id-ID'),
+  columnHelper.accessor('role', {
+    header: 'Role',
     enableSorting: true,
   }),
   columnHelper.display({
-    id: 'actions',
-    header: 'Aksi',
+    id: 'changeTutor',
+    header: 'Change to Tutor',
   }),
 ]
 
-const data = ref<Program[]>(props.programs)
+const data = ref<User[]>(props.users)
 const sorting = ref<SortingState>([])
 const globalFilter = ref('')
 
 watch(
-  () => props.programs,
+  () => props.users,
   (val) => {
     data.value = val
   },
@@ -86,23 +76,20 @@ const table = useVueTable({
   getSortedRowModel: getSortedRowModel(),
   getFilteredRowModel: getFilteredRowModel(),
 })
+
+const isTutor = (user: User) => user.role === 'TUTOR'
 </script>
 
 <template>
   <div class="p-2 space-y-4">
     <div class="flex justify-between items-center">
-        <input
-            v-model="globalFilter"
-            type="text"
-            placeholder="Cari program..."
-            class="w-full max-w-sm border rounded px-3 py-2 text-sm"
-        />
-
-        <RouterLink to="programs/create" class="px-4 py-2 md:font-medium md:text-sm lg:text-lg text-xs font-semibold rounded-md bg-primary cursor-pointer text-primary-foreground hover:bg-primary/90 active:scale-95 transition-all duration-200">
-            Tambah Program
-        </RouterLink>
+      <input
+        v-model="globalFilter"
+        type="text"
+        placeholder="Cari user..."
+        class="w-full max-w-sm border rounded px-3 py-2 text-sm"
+      />
     </div>
-
 
     <div class="overflow-x-auto">
       <table class="min-w-full border-collapse border border-gray-300">
@@ -137,37 +124,30 @@ const table = useVueTable({
               :key="cell.id"
               class="border border-gray-300 px-3 py-2 text-sm"
             >
-              <div v-if="cell.column.id === 'imageProgram'">
-                <Image
-                  v-if="cell.getValue()"
-                  :src="cell.getValue() as string"
-                  class="h-10 w-auto rounded object-cover"
-                />
-                <span v-else>-</span>
-              </div>
-
-              <div v-else-if="cell.column.id === 'actions'" class="flex gap-2">
-                <button
-                  type="button"
-                  @click="emit('view', row.original)"
-                  class="text-blue-600 hover:text-blue-800 text-sm font-medium"
-                >
-                  Lihat
-                </button>
-                <button
-                  type="button"
-                  @click="emit('edit', row.original)"
-                  class="text-green-600 hover:text-green-800 text-sm font-medium"
-                >
-                  Edit
-                </button>
-                <button
-                  type="button"
-                  @click="emit('delete', row.original)"
-                  class="text-red-600 hover:text-red-800 text-sm font-medium"
-                >
-                  Hapus
-                </button>
+              <div
+                v-if="cell.column.id === 'changeTutor'"
+                class="flex items-center gap-2"
+              >
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    class="sr-only peer"
+                    :checked="isTutor(row.original)"
+                    @change="
+                      emit(
+                        'change-role',
+                        row.original,
+                        isTutor(row.original) ? 'STUDENT' : 'TUTOR'
+                      )
+                    "
+                  />
+                  <div
+                    class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-green-500
+                           after:content-[''] after:absolute after:top-0.5 after:left-[2px]
+                           after:bg-white after:border after:rounded-full after:h-5 after:w-5
+                           after:transition-all peer-checked:after:translate-x-full"
+                  ></div>
+                </label>
               </div>
 
               <template v-else>

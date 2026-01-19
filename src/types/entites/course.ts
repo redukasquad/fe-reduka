@@ -1,6 +1,7 @@
 import type { ClassSubject } from "./classSubject";
 import type { Program } from "./program";
 import type { RegistrationQuestion } from "./registrationQuestion";
+import type { User } from "./user";
 
 export interface Course {
   ID: number;
@@ -18,4 +19,5 @@ export interface Course {
   program?: Program;
   subjects?: ClassSubject[];
   questions?: RegistrationQuestion[];
+  creator?:User;
 }

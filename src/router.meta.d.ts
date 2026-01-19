@@ -1,15 +1,24 @@
-import "vue-router"
+import "vue-router";
 
 declare module "vue-router" {
   interface RouteMeta {
+    // ===== SEO =====
     seo?: {
-      title?: string
-      description?: string
-      keywords?: string
-      robots?: string
-    }
-    layout?: "default" | "auth" | 'plain'
-    requiresAuth?: boolean
-    guestOnly?: boolean
+      title?: string;
+      description?: string;
+      keywords?: string;
+      robots?: string;
+    };
+
+    // ===== Layout Control =====
+    layout?: "default" | "auth" | "plain";
+
+    // ===== Auth & Access Control =====
+    requiresAuth?: boolean;
+    guestOnly?: boolean;
+    roles?: ("ADMIN" | "STUDENT" | "TUTOR")[];
+
+    // ===== UI / Page Meta =====
+    title?: string;
   }
 }

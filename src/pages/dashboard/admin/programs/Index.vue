@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/vue-query'
 import { ProgramService } from '../../../../services/program'
 import ProgramTable from '../../../../components/dashboard/admin/programs/ProgramTable.vue'
 import { computed } from 'vue'
-import RerenderChildren from '../../../../components/ui/RerenderChildren.vue'
+import DashboardLayout from '../../../../components/layout/DashboardLayout.vue'
 
 const { data, isLoading, isError } = useQuery({
   queryKey: ['programs'],
@@ -15,10 +15,10 @@ const programs = computed(() => data.value?.data || [])
 </script>
 
 <template>
-    <RerenderChildren path="/dashboard/admin/programs">
+    <DashboardLayout>
         <div class="backdrop-blur px-4">
             <div class="bg-white rounded-lg shadow overflow-hidden">
-            <h1 class="text-2xl font-bold p-4 text-gray-800">Daftar Program</h1>
+            <h1 class="text-2xl font-bold p-4 text-gray-800">Daftar Programs</h1>
 
             <div v-if="isLoading" class="p-8 text-center text-gray-600">
                 Memuat data...
@@ -33,5 +33,5 @@ const programs = computed(() => data.value?.data || [])
             </div>
             </div>
         </div>
-    </RerenderChildren>
+    </DashboardLayout>
 </template>

@@ -1,7 +1,4 @@
 import type { Course } from "./course";
-import type { CourseRegistration } from "./courseRegistration";
-import type { UserTarget } from "./userTarget";
-
 export interface Program {
   ID: number;
   CreatedAt: string;

@@ -9,40 +9,51 @@ import {
   type SortingState,
 } from '@tanstack/vue-table'
 import { ref, watch } from 'vue'
-import type { Program } from '../../../../types/entites/program'
-import { Image } from '@unpic/vue';
+import type { Course } from '../../../../types/entites/course';
 
 const props = defineProps<{
-  programs: Program[]
+  courses: Course[]
 }>()
 
 const emit = defineEmits<{
-  (e: 'edit', program: Program): void
-  (e: 'delete', program: Program): void
-  (e: 'view', program: Program): void
+  (e: 'edit', course: Course): void
+  (e: 'delete', course: Course): void
+  (e: 'view', course: Course): void
 }>()
 
-const columnHelper = createColumnHelper<Program>()
-
+const columnHelper = createColumnHelper<Course>()
 
 const columns = [
-  columnHelper.accessor('ID', {
-    header: 'No',
+  columnHelper.accessor('nameCourse', {
+    header: 'Nama Course',
     enableSorting: true,
   }),
-  columnHelper.accessor('programName', {
-    header: 'Nama Program',
-    enableSorting: true,
-  }),
-  columnHelper.accessor('imageProgram', {
-    header: 'Gambar',
+  columnHelper.display({
+    id: 'dateRange',
+    header: 'Tanggal',
+    cell: ({ row }) => {
+      const start = new Date(row.original.startDate).toLocaleDateString('id-ID')
+      const end = new Date(row.original.endDate).toLocaleDateString('id-ID')
+      return `${start} - ${end}`
+    },
     enableSorting: false,
   }),
-  columnHelper.accessor('CreatedAt', {
-    header: 'Dijalankan Pada',
-    cell: (info) =>
-      new Date(info.getValue() as string).toLocaleDateString('id-ID'),
+  columnHelper.accessor('isFree', {
+    header: 'Label',
+    cell: (info) => (info.getValue() ? 'Gratis' : 'Berbayar'),
     enableSorting: true,
+  }),
+  columnHelper.display({
+    id: 'programName',
+    header: 'Program',
+    cell: ({ row }) => row.original.program?.programName ?? '-',
+    enableSorting: false,
+  }),
+  columnHelper.display({
+    id: 'creatorName',
+    header: 'Creator',
+    cell: ({ row }) => row.original.creator?.username ?? '-',
+    enableSorting: false,
   }),
   columnHelper.display({
     id: 'actions',
@@ -50,12 +61,12 @@ const columns = [
   }),
 ]
 
-const data = ref<Program[]>(props.programs)
+const data = ref<Course[]>(props.courses)
 const sorting = ref<SortingState>([])
 const globalFilter = ref('')
 
 watch(
-  () => props.programs,
+  () => props.courses,
   (val) => {
     data.value = val
   },
@@ -91,18 +102,16 @@ const table = useVueTable({
 <template>
   <div class="p-2 space-y-4">
     <div class="flex justify-between items-center">
-        <input
-            v-model="globalFilter"
-            type="text"
-            placeholder="Cari program..."
-            class="w-full max-w-sm border rounded px-3 py-2 text-sm"
-        />
-
-        <RouterLink to="programs/create" class="px-4 py-2 md:font-medium md:text-sm lg:text-lg text-xs font-semibold rounded-md bg-primary cursor-pointer text-primary-foreground hover:bg-primary/90 active:scale-95 transition-all duration-200">
-            Tambah Program
+      <input
+        v-model="globalFilter"
+        type="text"
+        placeholder="Cari course..."
+        class="w-full max-w-sm border rounded px-3 py-2 text-sm"
+      />
+        <RouterLink to="courses/create" class="px-4 py-2 md:font-medium md:text-sm lg:text-lg text-xs font-semibold rounded-md bg-primary cursor-pointer text-primary-foreground hover:bg-primary/90 active:scale-95 transition-all duration-200">
+            Tambah Course
         </RouterLink>
     </div>
-
 
     <div class="overflow-x-auto">
       <table class="min-w-full border-collapse border border-gray-300">
@@ -137,16 +146,7 @@ const table = useVueTable({
               :key="cell.id"
               class="border border-gray-300 px-3 py-2 text-sm"
             >
-              <div v-if="cell.column.id === 'imageProgram'">
-                <Image
-                  v-if="cell.getValue()"
-                  :src="cell.getValue() as string"
-                  class="h-10 w-auto rounded object-cover"
-                />
-                <span v-else>-</span>
-              </div>
-
-              <div v-else-if="cell.column.id === 'actions'" class="flex gap-2">
+              <div v-if="cell.column.id === 'actions'" class="flex gap-2">
                 <button
                   type="button"
                   @click="emit('view', row.original)"

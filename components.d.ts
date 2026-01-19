@@ -14,6 +14,9 @@ declare module 'vue' {
     AboutSection: typeof import('./src/components/LandingPage/AboutSection.vue')['default']
     AuthLayout: typeof import('./src/components/layout/AuthLayout.vue')['default']
     BgBlock: typeof import('./src/components/ui/bgBlock.vue')['default']
+    CoursesTable: typeof import('./src/components/dashboard/admin/courses/CoursesTable.vue')['default']
+    CourseTable: typeof import('./src/components/dashboard/admin/courses/CourseTable.vue')['default']
+    DashboardLayout: typeof import('./src/components/layout/DashboardLayout.vue')['default']
     Editor: typeof import('primevue/editor')['default']
     Footer: typeof import('./src/components/layout/Footer.vue')['default']
     Form: typeof import('./src/components/dashboard/admin/courses/Form.vue')['default']
@@ -30,5 +33,6 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     Sidebar: typeof import('./src/components/layout/Sidebar.vue')['default']
     UploadImage: typeof import('./src/components/ui/UploadImage.vue')['default']
+    UserTable: typeof import('./src/components/dashboard/admin/users/UserTable.vue')['default']
   }
 }
