@@ -7,9 +7,11 @@ import {
   useVueTable,
   createColumnHelper,
   type SortingState,
+  type FilterFn,
 } from '@tanstack/vue-table'
 import { ref, watch } from 'vue'
-import type { Course } from '../../../../types/entites/course';
+import type { Course } from '../../../../types/entites/course'
+import { Icon } from '@iconify/vue'
 
 const props = defineProps<{
   courses: Course[]
@@ -24,9 +26,11 @@ const emit = defineEmits<{
 const columnHelper = createColumnHelper<Course>()
 
 const columns = [
-  columnHelper.accessor('ID', {
+  columnHelper.display({
+    id: 'no',
     header: 'No',
-    enableSorting: true,
+    cell: ({ row }) => row.index + 1,
+    enableSorting: false,
   }),
   columnHelper.accessor('nameCourse', {
     header: 'Nama Course',
@@ -60,8 +64,14 @@ const columns = [
     enableSorting: false,
   }),
   columnHelper.display({
+    id: 'registration',
+    header: 'Registrations',
+    enableSorting: false,
+  }),
+  columnHelper.display({
     id: 'actions',
     header: 'Aksi',
+    enableSorting: false,
   }),
 ]
 
@@ -77,6 +87,13 @@ watch(
   { deep: true }
 )
 
+const fuzzyFilter: FilterFn<any> = (row, columnId, value) => {
+  const cellValue = row.getValue(columnId)
+  return String(cellValue)
+    .toLowerCase()
+    .includes(String(value).toLowerCase())
+}
+
 const table = useVueTable({
   get data() {
     return data.value
@@ -90,6 +107,7 @@ const table = useVueTable({
       return globalFilter.value
     },
   },
+  globalFilterFn: fuzzyFilter,
   onSortingChange: (updater) => {
     sorting.value =
       typeof updater === 'function' ? updater(sorting.value) : updater
@@ -105,16 +123,19 @@ const table = useVueTable({
 
 <template>
   <div class="p-2 space-y-4">
-    <div class="flex justify-between items-center">
+    <div class="flex justify-between items-center gap-4">
       <input
         v-model="globalFilter"
         type="text"
         placeholder="Cari course..."
         class="w-full max-w-sm border rounded px-3 py-2 text-sm"
       />
-        <RouterLink to="courses/create" class="px-4 py-2 md:font-medium md:text-sm lg:text-lg text-xs font-semibold rounded-md bg-primary cursor-pointer text-primary-foreground hover:bg-primary/90 active:scale-95 transition-all duration-200">
-            Tambah Course
-        </RouterLink>
+      <RouterLink
+        to="/dashboard/admin/courses/create"
+        class="px-4 py-2 md:font-medium md:text-sm lg:text-lg text-xs font-semibold rounded-md bg-primary cursor-pointer text-primary-foreground hover:bg-primary/90 active:scale-95 transition-all duration-200"
+      >
+        Tambah Course
+      </RouterLink>
     </div>
 
     <div class="overflow-x-auto">
@@ -125,8 +146,14 @@ const table = useVueTable({
               v-for="header in headerGroup.headers"
               :key="header.id"
               :colSpan="header.colSpan"
-              class="border border-gray-300 bg-gray-100 px-3 py-2 text-left text-sm font-semibold cursor-pointer select-none"
-              @click="header.column.getToggleSortingHandler()?.($event)"
+              :class="[
+                'border border-gray-300 bg-gray-100 px-3 py-2 text-left text-sm font-semibold select-none',
+                header.column.getCanSort() ? 'cursor-pointer' : 'cursor-default',
+              ]"
+              @click="
+                header.column.getCanSort() &&
+                header.column.getToggleSortingHandler()?.($event)
+              "
             >
               <FlexRender
                 v-if="!header.isPlaceholder"
@@ -148,30 +175,44 @@ const table = useVueTable({
             <td
               v-for="cell in row.getVisibleCells()"
               :key="cell.id"
-              class="border border-gray-300 px-3 py-2 text-sm"
+              class="border border-gray-300 px-3 py-2 text-xs"
             >
               <div v-if="cell.column.id === 'actions'" class="flex gap-2">
                 <button
                   type="button"
                   @click="emit('view', row.original)"
-                  class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                  class="text-blue-600 hover:text-blue-800 font-medium"
                 >
                   Lihat
                 </button>
                 <button
                   type="button"
                   @click="emit('edit', row.original)"
-                  class="text-green-600 hover:text-green-800 text-sm font-medium"
+                  class="text-green-600 hover:text-green-800 font-medium"
                 >
                   Edit
                 </button>
                 <button
                   type="button"
                   @click="emit('delete', row.original)"
-                  class="text-red-600 hover:text-red-800 text-sm font-medium"
+                  class="text-red-600 hover:text-red-800 font-medium"
                 >
                   Hapus
                 </button>
+              </div>
+
+              <div
+                v-else-if="cell.column.id === 'registration'"
+                class="flex items-center gap-1 text-xs text-gray-600"
+              >
+                <Icon icon="mdi:users-group" width="13" height="13" class="text-green-400" />
+                {{ 10 }} registered
+                <RouterLink
+                  :to="`/dashboard/admin/courses/${row.original.ID}/registrations`"
+                  class="ml-auto hover:scale-105 transition-all duration-200 text-green-400 hover:text-yellow-500"
+                >
+                  <Icon icon="mdi:arrow-top-right" width="10" height="10" />
+                </RouterLink>
               </div>
 
               <template v-else>

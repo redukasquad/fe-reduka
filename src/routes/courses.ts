@@ -1,11 +1,11 @@
 import type { RouteRecordRaw } from "vue-router";
-import Index from "../pages/dashboard/admin/courses/Index.vue";
+import IndeX from "../pages/courses/Index.vue";
 
 export const coursesRoutes:RouteRecordRaw[]=[
   {
     path: "/courses",
     name: "Courses",
-    component:Index,
+    component:IndeX,
     meta: {
       layout: "default" as const,
       seo: {

@@ -19,7 +19,6 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'edit', program: Program): void
   (e: 'delete', program: Program): void
-  (e: 'view', program: Program): void
 }>()
 
 const columnHelper = createColumnHelper<Program>()
@@ -147,13 +146,6 @@ const table = useVueTable({
               </div>
 
               <div v-else-if="cell.column.id === 'actions'" class="flex gap-2">
-                <button
-                  type="button"
-                  @click="emit('view', row.original)"
-                  class="text-blue-600 hover:text-blue-800 text-sm font-medium"
-                >
-                  Lihat
-                </button>
                 <button
                   type="button"
                   @click="emit('edit', row.original)"
