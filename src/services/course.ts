@@ -7,19 +7,24 @@ export class CourseService{
     ApiResponse<Course[]>>
     {
         const res=await api.get('/courses')
-        return res.data
+        return res.data.data
     }
 
-    static async findAllRegistrations(id:string) : Promise<
+    static async findAllRegistrations(id:number) : Promise<
     ApiResponse<Course[]>>
     {
         const res=await api.get(`/courses/${id}/registrations`)
         return res.data
     }
      
-    static async findOne(id:string) : Promise<
+    static async findOne(id:number) : Promise<
     ApiResponse<Course>>{
         const res=await api.get(`/courses/${id}`)
+        return res.data
+    }
+    static async delete(id:number) : Promise<
+    ApiResponse<Course>>{
+        const res=await api.delete(`/courses/${id}`)
         return res.data
     }
 }

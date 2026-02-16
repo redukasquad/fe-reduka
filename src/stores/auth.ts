@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import type { User } from "../types/entites/user";
-import type { AuthState } from "../types/services/auth";
+import type { AuthState } from "../types/entites/auth";
 import { AuthService } from "../services/auth";
 
 export const useAuth = defineStore("auth", {

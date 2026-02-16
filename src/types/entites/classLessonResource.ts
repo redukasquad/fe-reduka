@@ -1,10 +1,10 @@
 import type { ClassLesson } from "./classLesson";
 
 export interface ClassLessonResource {
-  ID: number;
-  CreatedAt: string;
-  UpdatedAt: string;
-  DeletedAt?: string | null;
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt?: string | null;
   classLessonID: number;
   type: 'video' | 'document' | 'link' | 'zoom' | 'recording';
   title: string;

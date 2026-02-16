@@ -25,7 +25,7 @@ const columnHelper = createColumnHelper<Program>()
 
 
 const columns = [
-  columnHelper.accessor('ID', {
+  columnHelper.accessor('id', {
     header: 'No',
     enableSorting: true,
   }),
@@ -37,7 +37,7 @@ const columns = [
     header: 'Gambar',
     enableSorting: false,
   }),
-  columnHelper.accessor('CreatedAt', {
+  columnHelper.accessor('createdAt', {
     header: 'Dijalankan Pada',
     cell: (info) =>
       new Date(info.getValue() as string).toLocaleDateString('id-ID'),
@@ -111,7 +111,7 @@ const table = useVueTable({
               v-for="header in headerGroup.headers"
               :key="header.id"
               :colSpan="header.colSpan"
-              class="border border-gray-300 bg-gray-100 px-3 py-2 text-left text-sm font-semibold cursor-pointer select-none"
+              class="border border-gray-300 bg-gray-100 px-3 py-2 text-left text-sm font-semibold cursor-pointer select-none text-nowrap"
               @click="header.column.getToggleSortingHandler()?.($event)"
             >
               <FlexRender
@@ -134,7 +134,7 @@ const table = useVueTable({
             <td
               v-for="cell in row.getVisibleCells()"
               :key="cell.id"
-              class="border border-gray-300 px-3 py-2 text-sm"
+              class="border border-gray-300 px-3 py-2 text-sm text-nowrap"
             >
               <div v-if="cell.column.id === 'imageProgram'">
                 <Image

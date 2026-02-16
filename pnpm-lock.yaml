@@ -11,6 +11,9 @@ importers:
       '@iconify/vue':
         specifier: ^5.0.0
         version: 5.0.0(vue@3.5.25(typescript@5.9.3))
+      '@imagekit/vue':
+        specifier: ^4.0.0
+        version: 4.0.0(vue@3.5.25(typescript@5.9.3))
       '@primeuix/themes':
         specifier: ^2.0.2
         version: 2.0.2
@@ -38,6 +41,9 @@ importers:
       pinia-plugin-persistedstate:
         specifier: ^4.7.1
         version: 4.7.1(pinia@3.0.4(typescript@5.9.3)(vue@3.5.25(typescript@5.9.3)))
+      primeicons:
+        specifier: ^7.0.0
+        version: 7.0.0
       primevue:
         specifier: ^4.5.4
         version: 4.5.4(vue@3.5.25(typescript@5.9.3))
@@ -276,6 +282,14 @@ packages:
     resolution: {integrity: sha512-C+KuEWIF5nSBrobFJhT//JS87OZ++QDORB6f2q2Wm6fl2mueSTpFBeBsveK0KW9hWiZ4mNiPjsh6Zs4jjdROSg==}
     peerDependencies:
       vue: '>=3'
+
+  '@imagekit/javascript@5.2.1':
+    resolution: {integrity: sha512-+wGuuDceDhUX9KsMSj806uoRSCVQYG+K530/WIJhrWVxVpzxFEgqHIhExwdOP8QjrRaHr9q/kif3h7X8QP8zrA==}
+
+  '@imagekit/vue@4.0.0':
+    resolution: {integrity: sha512-6rS4rFt12bsLchQXZg/Cn0hZFfYDcPS/TZA4XQGbRATlj0LncL3kSPp4rD6vaQ38ensSKFeSgU+ieKtTJPEP/g==}
+    peerDependencies:
+      vue: '>=3.0.0'
 
   '@jridgewell/gen-mapping@0.3.13':
     resolution: {integrity: sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA==}
@@ -990,6 +1004,9 @@ packages:
     resolution: {integrity: sha512-3Ybi1tAuwAP9s0r1UQ2J4n5Y0G05bJkpUIO0/bI9MhwmD70S5aTWbXGBwxHrelT+XM1k6dM0pk+SwNkpTRN7Pg==}
     engines: {node: ^10 || ^12 || >=14}
 
+  primeicons@7.0.0:
+    resolution: {integrity: sha512-jK3Et9UzwzTsd6tzl2RmwrVY/b8raJ3QZLzoDACj+oTJ0oX7L9Hy+XnVwgo4QVKlKpnP/Ur13SXV/pVh4LzaDw==}
+
   primevue@4.5.4:
     resolution: {integrity: sha512-nTyEohZABFJhVIpeUxgP0EJ8vKcJAhD+Z7DYj95e7ie/MNUCjRNcGjqmE1cXtXi4z54qDfTSI9h2uJ51qz2DIw==}
     engines: {node: '>=12.11.0'}
@@ -1284,6 +1301,13 @@ snapshots:
   '@iconify/vue@5.0.0(vue@3.5.25(typescript@5.9.3))':
     dependencies:
       '@iconify/types': 2.0.0
+      vue: 3.5.25(typescript@5.9.3)
+
+  '@imagekit/javascript@5.2.1': {}
+
+  '@imagekit/vue@4.0.0(vue@3.5.25(typescript@5.9.3))':
+    dependencies:
+      '@imagekit/javascript': 5.2.1
       vue: 3.5.25(typescript@5.9.3)
 
   '@jridgewell/gen-mapping@0.3.13':
@@ -1930,6 +1954,8 @@ snapshots:
       nanoid: 3.3.11
       picocolors: 1.1.1
       source-map-js: 1.2.1
+
+  primeicons@7.0.0: {}
 
   primevue@4.5.4(vue@3.5.25(typescript@5.9.3)):
     dependencies:

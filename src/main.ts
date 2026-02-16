@@ -8,6 +8,7 @@ import Toast from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import PrimeVue from 'primevue/config';
+import 'primeicons/primeicons.css'
 import Aura from '@primeuix/themes/aura';
 
 const pinia = createPinia()

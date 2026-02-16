@@ -2,10 +2,10 @@ import type { UniversityProgram } from "./universityProgram";
 import type { User } from "./user";
 
 export interface UserTarget {
-  ID: number;
-  CreatedAt: string;
-  UpdatedAt: string;
-  DeletedAt?: string | null;
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt?: string | null;
   userId: number;
   universityProgramId: number;
   priority: number;

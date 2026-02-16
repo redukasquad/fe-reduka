@@ -35,7 +35,7 @@ const onSubmit = form.handleSubmit(async (values) => {
   })
 
   if (error.value) {
-    toast(error.value, { type: "error" })
+    toast(message.value, { type: "error" })
     return
   }
 

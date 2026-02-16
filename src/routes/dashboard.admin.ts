@@ -13,6 +13,7 @@ const AdminCoursesIndex = () => import("../pages/dashboard/admin/courses/Index.v
 const AdminCoursesCreate = () => import("../pages/dashboard/admin/courses/Create.vue");
 const AdminCoursesUpdate = () => import("../pages/dashboard/admin/courses/Update.vue");
 const AdminCoursesView = () => import("../pages/dashboard/admin/courses/View.vue");
+const AdminCoursesRegistration = () => import("../pages/dashboard/admin/courses/Registration.vue");
 
 // Programs
 const AdminProgramsIndex = () => import("../pages/dashboard/admin/programs/Index.vue");
@@ -98,6 +99,13 @@ export const dashboardAdminRoutes: RouteRecordRaw[] = [
     path: "/dashboard/admin/courses/:id/update",
     name: "admin-courses-update",
     component: AdminCoursesUpdate,
+    props: true,
+    meta: { ...adminMeta, title: "Edit Course" },
+  },
+  {
+    path: "/dashboard/admin/courses/:id/registrations",
+    name: "admin-courses-registration",
+    component: AdminCoursesRegistration,
     props: true,
     meta: { ...adminMeta, title: "Edit Course" },
   },

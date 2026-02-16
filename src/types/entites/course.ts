@@ -4,10 +4,10 @@ import type { RegistrationQuestion } from "./registrationQuestion";
 import type { User } from "./user";
 
 export interface Course {
-  ID: number;
-  CreatedAt: string;
-  UpdatedAt: string;
-  DeletedAt?: string | null;
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt?: string | null;
   programId: number;
   createdByUserId: number;
   imageCourse:string;

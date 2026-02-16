@@ -12,7 +12,12 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AboutSection: typeof import('./src/components/LandingPage/AboutSection.vue')['default']
+    Accordion: typeof import('primevue/accordion')['default']
+    AccordionContent: typeof import('primevue/accordioncontent')['default']
+    AccordionHeader: typeof import('primevue/accordionheader')['default']
+    AccordionPanel: typeof import('primevue/accordionpanel')['default']
     AuthLayout: typeof import('./src/components/layout/AuthLayout.vue')['default']
+    Badge: typeof import('primevue/badge')['default']
     BgBlock: typeof import('./src/components/ui/bgBlock.vue')['default']
     Button: typeof import('primevue/button')['default']
     CoursesTable: typeof import('./src/components/dashboard/admin/courses/CoursesTable.vue')['default']
@@ -22,6 +27,8 @@ declare module 'vue' {
     Editor: typeof import('primevue/editor')['default']
     Footer: typeof import('./src/components/layout/Footer.vue')['default']
     Form: typeof import('./src/components/dashboard/admin/courses/Form.vue')['default']
+    FormAnswer: typeof import('./src/components/dashboard/admin/courses/FormAnswer.vue')['default']
+    FormQuestion: typeof import('./src/components/dashboard/admin/courses/FormQuestion.vue')['default']
     FormSubject: typeof import('./src/components/dashboard/admin/courses/FormSubject.vue')['default']
     Header: typeof import('./src/components/layout/Header.vue')['default']
     HeroSection: typeof import('./src/components/LandingPage/HeroSection.vue')['default']

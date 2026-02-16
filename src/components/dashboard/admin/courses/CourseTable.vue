@@ -18,8 +18,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'edit', course: Course): void
-  (e: 'delete', course: Course): void
+  (e: 'delete', id:number ): void
   (e: 'view', course: Course): void
 }>()
 
@@ -55,12 +54,6 @@ const columns = [
     id: 'programName',
     header: 'Program',
     cell: ({ row }) => row.original.program?.programName ?? '-',
-    enableSorting: false,
-  }),
-  columnHelper.display({
-    id: 'creatorName',
-    header: 'Creator',
-    cell: ({ row }) => row.original.creator?.username ?? '-',
     enableSorting: false,
   }),
   columnHelper.display({
@@ -128,13 +121,14 @@ const table = useVueTable({
         v-model="globalFilter"
         type="text"
         placeholder="Cari course..."
-        class="w-full max-w-sm border rounded px-3 py-2 text-sm"
+        class="w-full max-w-xs border rounded px-3 py-2 text-sm"
       />
       <RouterLink
         to="/dashboard/admin/courses/create"
-        class="px-4 py-2 md:font-medium md:text-sm lg:text-lg text-xs font-semibold rounded-md bg-primary cursor-pointer text-primary-foreground hover:bg-primary/90 active:scale-95 transition-all duration-200"
+        class="px-4 py-2 md:font-medium md:text-sm lg:text-lg text-xs text-nowrap font-semibold rounded-md bg-primary cursor-pointer text-primary-foreground hover:bg-primary/90 active:scale-95 transition-all duration-200"
       >
-        Tambah Course
+       <span class="md:block hidden">Tambah Course</span>
+       <Icon icon="mdi:plus" class="md:hidden block" />
       </RouterLink>
     </div>
 
@@ -175,7 +169,7 @@ const table = useVueTable({
             <td
               v-for="cell in row.getVisibleCells()"
               :key="cell.id"
-              class="border border-gray-300 px-3 py-2 text-xs"
+              class="border border-gray-300 px-3 py-2 text-[10px] text-nowrap"
             >
               <div v-if="cell.column.id === 'actions'" class="flex gap-2">
                 <button
@@ -187,14 +181,7 @@ const table = useVueTable({
                 </button>
                 <button
                   type="button"
-                  @click="emit('edit', row.original)"
-                  class="text-green-600 hover:text-green-800 font-medium"
-                >
-                  Edit
-                </button>
-                <button
-                  type="button"
-                  @click="emit('delete', row.original)"
+                  @click="emit('delete', row.original.id)"
                   class="text-red-600 hover:text-red-800 font-medium"
                 >
                   Hapus
@@ -203,12 +190,12 @@ const table = useVueTable({
 
               <div
                 v-else-if="cell.column.id === 'registration'"
-                class="flex items-center gap-1 text-xs text-gray-600"
+                class="flex items-center gap-1 text-nowrap text-[10px] text-gray-600"
               >
                 <Icon icon="mdi:users-group" width="13" height="13" class="text-green-400" />
                 {{ 10 }} registered
                 <RouterLink
-                  :to="`/dashboard/admin/courses/${row.original.ID}/registrations`"
+                  :to="`/dashboard/admin/courses/${row.original.id}/registrations`"
                   class="ml-auto hover:scale-105 transition-all duration-200 text-green-400 hover:text-yellow-500"
                 >
                   <Icon icon="mdi:arrow-top-right" width="10" height="10" />

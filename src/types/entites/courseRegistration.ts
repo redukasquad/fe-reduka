@@ -3,10 +3,10 @@ import type { RegistrationAnswer } from "./registrationAnswer";
 import type { User } from "./user";
 
 export interface CourseRegistration {
-  ID: number;
-  CreatedAt: string;
-  UpdatedAt: string;
-  DeletedAt?: string | null;
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt?: string | null;
   userId: number;
   courseId: number;
   status: 'pending' | 'approved' | 'rejected';

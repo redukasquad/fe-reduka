@@ -3,10 +3,10 @@ import type { ClassSubject } from "./classSubject";
 import type { User } from "./user";
 
 export interface ClassLesson {
-  ID: number;
-  CreatedAt: string;
-  UpdatedAt: string;
-  DeletedAt?: string | null;
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt?: string | null;
   subjectId: number;
   createdByUserId: number;
   title: string;
