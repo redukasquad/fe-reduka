@@ -20,6 +20,7 @@ declare module 'vue' {
     Badge: typeof import('primevue/badge')['default']
     BgBlock: typeof import('./src/components/ui/bgBlock.vue')['default']
     Button: typeof import('primevue/button')['default']
+    ColRegistered: typeof import('./src/components/dashboard/admin/courses/ColRegistered.vue')['default']
     CoursesTable: typeof import('./src/components/dashboard/admin/courses/CoursesTable.vue')['default']
     CourseTable: typeof import('./src/components/dashboard/admin/courses/CourseTable.vue')['default']
     DashboardLayout: typeof import('./src/components/layout/DashboardLayout.vue')['default']

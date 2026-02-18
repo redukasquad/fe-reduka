@@ -27,6 +27,7 @@ export const CreateCourseSchema = z
     }
   )
 
+
 export const UpdateCourseSchema = z
   .object({
     programId: z.number().int().positive().optional(),
@@ -57,3 +58,8 @@ export const UpdateCourseSchema = z
       path: ["endDate"]
     }
   )
+
+
+export type CreateCourseInput = z.infer<typeof CreateCourseSchema>
+
+export type UpdateCourseInput = z.infer<typeof UpdateCourseSchema>

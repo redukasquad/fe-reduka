@@ -11,15 +11,25 @@ import {
 } from '@tanstack/vue-table'
 import { ref, watch } from 'vue'
 import type { Course } from '../../../../types/entites/course'
-import { Icon } from '@iconify/vue'
+import ColRegistered from './ColRegistered.vue'
 
 const props = defineProps<{
   courses: Course[]
+  meta: {
+    page: number
+    perPage: number
+    totalItems: number
+    totalPages: number
+  }
+  q: string
 }>()
 
 const emit = defineEmits<{
-  (e: 'delete', id:number ): void
+  (e: 'delete', id: number): void
   (e: 'view', course: Course): void
+  (e: 'page-change', page: number): void
+  (e: 'per-page-change', perPage: number): void
+  (e: 'search', q: string): void
 }>()
 
 const columnHelper = createColumnHelper<Course>()
@@ -28,13 +38,14 @@ const columns = [
   columnHelper.display({
     id: 'no',
     header: 'No',
-    cell: ({ row }) => row.index + 1,
-    enableSorting: false,
+    cell: ({ row }) =>
+      (props.meta.page - 1) * props.meta.perPage + row.index + 1,
   }),
+
   columnHelper.accessor('nameCourse', {
     header: 'Nama Course',
-    enableSorting: true,
   }),
+
   columnHelper.display({
     id: 'dateRange',
     header: 'Tanggal',
@@ -43,48 +54,40 @@ const columns = [
       const end = new Date(row.original.endDate).toLocaleDateString('id-ID')
       return `${start} - ${end}`
     },
-    enableSorting: false,
   }),
+
   columnHelper.accessor('isFree', {
     header: 'Label',
-    cell: (info) => (info.getValue() ? 'Gratis' : 'Berbayar'),
-    enableSorting: true,
+    cell: info => (info.getValue() ? 'Gratis' : 'Berbayar'),
   }),
+
   columnHelper.display({
     id: 'programName',
     header: 'Program',
     cell: ({ row }) => row.original.program?.programName ?? '-',
-    enableSorting: false,
   }),
+
   columnHelper.display({
     id: 'registration',
     header: 'Registrations',
-    enableSorting: false,
   }),
+
   columnHelper.display({
     id: 'actions',
     header: 'Aksi',
-    enableSorting: false,
   }),
 ]
 
 const data = ref<Course[]>(props.courses)
 const sorting = ref<SortingState>([])
-const globalFilter = ref('')
+const globalFilter = ref(props.q)
 
-watch(
-  () => props.courses,
-  (val) => {
-    data.value = val
-  },
-  { deep: true }
-)
+watch(() => props.courses, v => (data.value = v), { deep: true })
+watch(() => props.q, v => (globalFilter.value = v))
 
 const fuzzyFilter: FilterFn<any> = (row, columnId, value) => {
   const cellValue = row.getValue(columnId)
-  return String(cellValue)
-    .toLowerCase()
-    .includes(String(value).toLowerCase())
+  return String(cellValue).toLowerCase().includes(String(value).toLowerCase())
 }
 
 const table = useVueTable({
@@ -101,12 +104,10 @@ const table = useVueTable({
     },
   },
   globalFilterFn: fuzzyFilter,
-  onSortingChange: (updater) => {
-    sorting.value =
-      typeof updater === 'function' ? updater(sorting.value) : updater
-  },
-  onGlobalFilterChange: (val) => {
-    globalFilter.value = String(val)
+  onGlobalFilterChange: val => {
+    const v = String(val)
+    globalFilter.value = v
+    emit('search', v)
   },
   getCoreRowModel: getCoreRowModel(),
   getSortedRowModel: getSortedRowModel(),
@@ -123,84 +124,61 @@ const table = useVueTable({
         placeholder="Cari course..."
         class="w-full max-w-xs border rounded px-3 py-2 text-sm"
       />
+
       <RouterLink
         to="/dashboard/admin/courses/create"
-        class="px-4 py-2 md:font-medium md:text-sm lg:text-lg text-xs text-nowrap font-semibold rounded-md bg-primary cursor-pointer text-primary-foreground hover:bg-primary/90 active:scale-95 transition-all duration-200"
+        class="px-4 py-2 font-semibold rounded-md bg-primary text-primary-foreground"
       >
-       <span class="md:block hidden">Tambah Course</span>
-       <Icon icon="mdi:plus" class="md:hidden block" />
+        Tambah Course
       </RouterLink>
     </div>
 
     <div class="overflow-x-auto">
-      <table class="min-w-full border-collapse border border-gray-300">
+      <table class="min-w-full border border-gray-300">
         <thead>
-          <tr v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
+          <tr v-for="hg in table.getHeaderGroups()" :key="hg.id">
             <th
-              v-for="header in headerGroup.headers"
-              :key="header.id"
-              :colSpan="header.colSpan"
-              :class="[
-                'border border-gray-300 bg-gray-100 px-3 py-2 text-left text-sm font-semibold select-none',
-                header.column.getCanSort() ? 'cursor-pointer' : 'cursor-default',
-              ]"
-              @click="
-                header.column.getCanSort() &&
-                header.column.getToggleSortingHandler()?.($event)
-              "
+              v-for="h in hg.headers"
+              :key="h.id"
+              :colSpan="h.colSpan"
+              class="border px-3 py-2 bg-gray-100 text-sm"
             >
               <FlexRender
-                v-if="!header.isPlaceholder"
-                :render="header.column.columnDef.header"
-                :props="header.getContext()"
+                v-if="!h.isPlaceholder"
+                :render="h.column.columnDef.header"
+                :props="h.getContext()"
               />
-              <span v-if="header.column.getIsSorted() === 'asc'"> ▲</span>
-              <span v-else-if="header.column.getIsSorted() === 'desc'"> ▼</span>
             </th>
           </tr>
         </thead>
 
         <tbody>
-          <tr
-            v-for="row in table.getRowModel().rows"
-            :key="row.id"
-            class="hover:bg-gray-50"
-          >
+          <tr v-for="row in table.getRowModel().rows" :key="row.id">
             <td
               v-for="cell in row.getVisibleCells()"
               :key="cell.id"
-              class="border border-gray-300 px-3 py-2 text-[10px] text-nowrap"
+              class="border px-3 py-2 text-[12px]"
             >
               <div v-if="cell.column.id === 'actions'" class="flex gap-2">
                 <button
-                  type="button"
                   @click="emit('view', row.original)"
-                  class="text-blue-600 hover:text-blue-800 font-medium"
+                  class="text-blue-600"
                 >
                   Lihat
                 </button>
+
                 <button
-                  type="button"
                   @click="emit('delete', row.original.id)"
-                  class="text-red-600 hover:text-red-800 font-medium"
+                  class="text-red-600"
                 >
                   Hapus
                 </button>
               </div>
 
-              <div
+              <ColRegistered
                 v-else-if="cell.column.id === 'registration'"
-                class="flex items-center gap-1 text-nowrap text-[10px] text-gray-600"
-              >
-                <Icon icon="mdi:users-group" width="13" height="13" class="text-green-400" />
-                {{ 10 }} registered
-                <RouterLink
-                  :to="`/dashboard/admin/courses/${row.original.id}/registrations`"
-                  class="ml-auto hover:scale-105 transition-all duration-200 text-green-400 hover:text-yellow-500"
-                >
-                  <Icon icon="mdi:arrow-top-right" width="10" height="10" />
-                </RouterLink>
-              </div>
+                :id="row.original.id"
+              />
 
               <template v-else>
                 <FlexRender
@@ -212,6 +190,56 @@ const table = useVueTable({
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <div class="flex items-center justify-between pt-2">
+      <div class="flex items-center gap-2">
+        <span class="text-sm">Rows:</span>
+        <select
+          :value="meta.perPage"
+          @change="
+            e =>
+              emit(
+                'per-page-change',
+                Number((e.target as HTMLSelectElement).value)
+              )
+          "
+          class="border rounded px-2 py-1 text-sm"
+        >
+          <option :value="5">5</option>
+          <option :value="10">10</option>
+          <option :value="20">20</option>
+          <option :value="50">50</option>
+        </select>
+      </div>
+
+      <div class="flex items-center gap-1">
+        <button
+          class="px-2 py-1 border rounded"
+          :disabled="meta.page <= 1"
+          @click="emit('page-change', meta.page - 1)"
+        >
+          Prev
+        </button>
+
+        <button
+          v-for="p in meta.totalPages"
+          :key="p"
+          class="px-3 py-1 border rounded"
+          :class="p === meta.page ? 'bg-blue-600 text-white' : ''"
+          @click="emit('page-change', p)"
+        >
+          {{ p }}
+        </button>
+
+        <button
+          class="px-2 py-1 border rounded"
+          :disabled="meta.page >= meta.totalPages"
+          @click="emit('page-change', meta.page + 1)"
+        >
+          Next
+        </button>
+      </div>
     </div>
   </div>
 </template>

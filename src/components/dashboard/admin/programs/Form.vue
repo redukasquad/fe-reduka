@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { toTypedSchema } from '@vee-validate/zod'
 import { useField, useForm } from 'vee-validate'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import type { ZodType } from 'zod'
 import UploadImage from '../../../ui/UploadImage.vue'
 import Editor from 'primevue/editor'
+import { useMutation } from '@tanstack/vue-query'
+import { ProgramService } from '../../../../services/program'
+import { toast } from 'vue3-toastify'
 
 const { schema } = defineProps<{
   schema: ZodType
@@ -28,15 +31,26 @@ const { value: description, errorMessage: descriptionError } =
     initialValue: '',
   })
 
+const mutate=useMutation({
+  mutationFn:async(data:any)=>{
+    await ProgramService.create(data)
+  },
+  onSuccess:()=>{
+    toast.success('Sucessfully created')
+  }
+})
+
 
 const { value: image } =
   useField<string | null>('imageProgram')
 
 const onSubmit = handleSubmit(async (values) => {
-  console.log(values)
+   mutate.mutate(values)
 })
 
 const isValid = computed(() => !valid || isSubmitting.value)
+const uploadKey = ref(0)
+
 </script>
 
 <template>
@@ -44,7 +58,7 @@ const isValid = computed(() => !valid || isSubmitting.value)
       @submit="onSubmit"
       class="h-full flex flex-col gap-4 w-full max-w-5xl mx-auto p-4"
     >
-      <UploadImage v-model="image" />
+      <UploadImage v-model="image" :key="uploadKey" />
 
       <div>
         <input

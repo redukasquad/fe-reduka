@@ -1,17 +1,31 @@
 <script setup lang="ts">
-import { useQuery } from '@tanstack/vue-query'
+import { useMutation, useQuery } from '@tanstack/vue-query'
 import { ProgramService } from '../../../../services/program'
 import ProgramTable from '../../../../components/dashboard/admin/programs/ProgramTable.vue'
 import { computed } from 'vue'
 import DashboardLayout from '../../../../components/layout/DashboardLayout.vue'
+import { toast } from 'vue3-toastify'
 
-const { data, isLoading, isError } = useQuery({
+const { data, isLoading, isError, refetch } = useQuery({
   queryKey: ['programs'],
   queryFn: ProgramService.findAll,
 })
 
 const programs = computed(() => data.value?.data || [])
 
+const mutate=useMutation({
+    mutationFn:async(id:number)=>{
+        await ProgramService.delete(id)
+    },
+    onSuccess:()=>{
+        refetch()
+        toast.success('Successfully deleted')
+    }
+})
+
+const handleDelete=async(id:number)=>{
+    mutate.mutate(id)
+}
 </script>
 
 <template>
@@ -29,7 +43,7 @@ const programs = computed(() => data.value?.data || [])
             </div>
 
             <div v-else>
-                <ProgramTable :programs="programs" />
+                <ProgramTable :programs="programs" @delete="handleDelete" />
             </div>
             </div>
         </div>

@@ -23,9 +23,11 @@ const columnHelper = createColumnHelper<User>()
 
 
 const columns = [
-  columnHelper.accessor('ID', {
+  columnHelper.display({
+    id: 'no',
     header: 'No',
-    enableSorting: true,
+    cell: ({ row }) =>
+      row.index + 1,
   }),
   columnHelper.accessor('username', {
     header: 'Nama',

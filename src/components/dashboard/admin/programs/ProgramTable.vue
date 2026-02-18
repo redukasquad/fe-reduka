@@ -18,16 +18,18 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'edit', program: Program): void
-  (e: 'delete', program: Program): void
+  (e: 'delete', id:number ): void
 }>()
 
 const columnHelper = createColumnHelper<Program>()
 
 
 const columns = [
-  columnHelper.accessor('id', {
+  columnHelper.display({
+    id: 'no',
     header: 'No',
-    enableSorting: true,
+    cell: ({ row }) =>
+      row.index + 1,
   }),
   columnHelper.accessor('programName', {
     header: 'Nama Program',
@@ -37,7 +39,7 @@ const columns = [
     header: 'Gambar',
     enableSorting: false,
   }),
-  columnHelper.accessor('createdAt', {
+  columnHelper.accessor('CreatedAt', {
     header: 'Dijalankan Pada',
     cell: (info) =>
       new Date(info.getValue() as string).toLocaleDateString('id-ID'),
@@ -148,14 +150,7 @@ const table = useVueTable({
               <div v-else-if="cell.column.id === 'actions'" class="flex gap-2">
                 <button
                   type="button"
-                  @click="emit('edit', row.original)"
-                  class="text-green-600 hover:text-green-800 text-sm font-medium"
-                >
-                  Edit
-                </button>
-                <button
-                  type="button"
-                  @click="emit('delete', row.original)"
+                  @click="emit('delete', row.original.ID)"
                   class="text-red-600 hover:text-red-800 text-sm font-medium"
                 >
                   Hapus

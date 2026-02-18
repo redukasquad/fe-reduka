@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { toTypedSchema } from '@vee-validate/zod'
 import { useField, useForm } from 'vee-validate'
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 import type { ZodType } from 'zod'
 import UploadImage from '../../../ui/UploadImage.vue'
 import Editor from 'primevue/editor'
@@ -10,8 +10,11 @@ import DatePicker from 'primevue/datepicker'
 import InputText from 'primevue/inputtext'
 import Button from 'primevue/button'
 
-import { useQuery } from '@tanstack/vue-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { ProgramService } from '../../../../services/program'
+import type { CreateCourseInput } from '../../../../schemas/course'
+import { CourseService } from '../../../../services/course'
+import { toast } from 'vue3-toastify'
 
 const { schema } = defineProps<{
   schema: ZodType
@@ -20,13 +23,19 @@ const { schema } = defineProps<{
 const {
   handleSubmit,
   isSubmitting,
-  meta: { value: { valid } }
+  meta: { value: { valid } },
+  resetForm
 } = useForm({
   validationSchema: toTypedSchema(schema),
 })
 
+const uploadKey = ref(0)
+
+
 const { value: programId, errorMessage: programError } =
-  useField<number>('programId')
+  useField<number | null>('programId', undefined, {
+    initialValue: null
+  })
 
 const { value: nameCourse, errorMessage: nameError } =
   useField<string>('nameCourse')
@@ -57,13 +66,30 @@ const { data, isLoading } = useQuery({
 const programOptions = computed(() =>
   data.value?.data?.map((p: any) => ({
     label: p.programName,
-    value: p.id,
+    value: p.ID,
   })) ?? []
 )
 
-const onSubmit = handleSubmit(async (values) => {
-  console.log(values)
+const queryClient = useQueryClient()
+
+const mutation=useMutation({
+ mutationFn:async(data:CreateCourseInput)=>{
+  await CourseService.create(data)
+ },
+ onSuccess:()=>{
+  toast.success('Successfully created')
+  queryClient.invalidateQueries({
+    queryKey: ['courses']
+  })
+     uploadKey.value++
+ }
 })
+
+const onSubmit = handleSubmit(async (values) => {
+  mutation.mutate(values)
+  resetForm()
+})
+
 
 const isDisabled = computed(() => !valid || isSubmitting.value)
 </script>
@@ -85,11 +111,11 @@ const isDisabled = computed(() => !valid || isSubmitting.value)
        />
     </div>
 
-    <UploadImage v-model="image" />
+    <UploadImage v-model="image" :key="uploadKey"  />
 
     <div>
       <Dropdown
-        v-model="programId"
+        v-model:modelValue="programId"
         :options="programOptions"
         optionLabel="label"
         optionValue="value"

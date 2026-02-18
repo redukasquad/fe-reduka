@@ -73,8 +73,8 @@ const currentSubject = computed(() => {
       <div class="flex md:flex-row flex-col gap-4 items-center border-b-2 border-b-gray-300 pb-4 rounded-b-md">
         <div class="flex-1">
           <Image
-            :src="course.imageCourse || 'https://buildwithangga.com/themes/front/images/landing-page/privilege/keuntungan%20utama%20belajar%20ui%20ux%20coding%20di%20BuildWithAngga.png'"
-            class="w-full h-auto"
+            :src="course.image || 'https://buildwithangga.com/themes/front/images/landing-page/privilege/keuntungan%20utama%20belajar%20ui%20ux%20coding%20di%20BuildWithAngga.png'"
+            class="w-full h-auto rounded-md shadow-md"
             :alt="course.nameCourse + '-image'"
           />
         </div>
@@ -82,7 +82,10 @@ const currentSubject = computed(() => {
           <h1 class="lg:text-3xl md:text-2xl sm:text-xl text-lg text-center font-bold">
             {{ course.nameCourse }}
           </h1>
-          <p class="text-sm text-justify opacity-90">{{ course.description }}</p>
+          <p
+            class="text-sm text-justify opacity-90"
+            v-html="course.description"
+          />
         </div>
       </div>
 

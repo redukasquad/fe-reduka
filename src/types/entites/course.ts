@@ -10,7 +10,7 @@ export interface Course {
   deletedAt?: string | null;
   programId: number;
   createdByUserId: number;
-  imageCourse:string;
+  image:string;
   nameCourse: string;
   description: string;
   startDate: string;
