@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { toTypedSchema } from '@vee-validate/zod'
 import { useField, useForm } from 'vee-validate'
-import { computed, ref, watch } from 'vue'
+import { computed, ref} from 'vue'
 import type { ZodType } from 'zod'
 import UploadImage from '../../../ui/UploadImage.vue'
 import Editor from 'primevue/editor'
