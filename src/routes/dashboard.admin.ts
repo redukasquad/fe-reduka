@@ -26,6 +26,8 @@ const AdminTryoutsIndex = () => import("../pages/dashboard/admin/tryouts/Index.v
 const AdminTryoutsCreate = () => import("../pages/dashboard/admin/tryouts/Create.vue");
 const AdminTryoutsUpdate = () => import("../pages/dashboard/admin/tryouts/Update.vue");
 const AdminTryoutsView = () => import("../pages/dashboard/admin/tryouts/View.vue");
+const AdminTryoutsRegistration = () => import("../pages/dashboard/admin/tryouts/Registration.vue");
+
 
 const adminMeta = {
   layout: "default",
@@ -164,5 +166,12 @@ export const dashboardAdminRoutes: RouteRecordRaw[] = [
     component: AdminTryoutsUpdate,
     props: true,
     meta: { ...adminMeta, title: "Edit Tryout" },
+  },
+  {
+    path: "/dashboard/admin/tryouts/:id/registrations",
+    name: "admin-tryouts-registration",
+    component: AdminTryoutsRegistration,
+    props: true,
+    meta: { ...adminMeta, title: "Edit Course" },
   },
 ];

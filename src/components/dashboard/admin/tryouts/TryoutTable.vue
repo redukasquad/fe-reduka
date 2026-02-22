@@ -13,6 +13,7 @@ import { ref, watch } from 'vue'
 import { Image } from '@unpic/vue'
 import type { TryOut } from '../../../../types/entites/tryout'
 import { Icon } from '@iconify/vue'
+import ColRegistered from './ColRegistered.vue'
 
 const props = defineProps<{
   tryouts: TryOut[]
@@ -26,6 +27,8 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
+  (e: 'view', id: number): void
+  (e: 'update', id: number): void
   (e: 'delete', id: number): void
   (e: 'page-change', page: number): void
   (e: 'per-page-change', perPage: number): void
@@ -33,7 +36,21 @@ const emit = defineEmits<{
   (e: 'toggle-publish', id: number, value: boolean): void
 }>()
 
+const dateFormatter = new Intl.DateTimeFormat('id-ID', {
+  day: '2-digit',
+  month: 'short',
+  year: 'numeric',
+  hour: '2-digit',
+  minute: '2-digit',
+})
+
 const columnHelper = createColumnHelper<TryOut>()
+
+const currencyFormatter = new Intl.NumberFormat('id-ID', {
+  style: 'currency',
+  currency: 'IDR',
+  minimumFractionDigits: 0,
+})
 
 const columns = [
   columnHelper.display({
@@ -48,7 +65,7 @@ const columns = [
   }),
 
   columnHelper.accessor('imageUrl', {
-    header: 'Gambar',
+    header: 'Poster',
   }),
 
   columnHelper.accessor('isFree', {
@@ -56,16 +73,44 @@ const columns = [
     cell: info => (info.getValue() ? 'Gratis' : 'Berbayar'),
   }),
 
-  columnHelper.accessor('price', {
-    header: 'Harga',
-    cell: info =>
-      info.row.original.isFree
-        ? '-'
-        : `Rp ${Number(info.getValue() || 0).toLocaleString('id-ID')}`,
-  }),
+    columnHelper.accessor('price', {
+        header: 'Harga',
+        cell: info => {
+            const { isFree, price } = info.row.original
+
+            if (isFree) return '-'
+
+            return currencyFormatter.format(Number(price ?? 0))
+        },
+    }),
+
+    columnHelper.accessor('registrationStart', {
+    header: 'Mulai',
+    cell: info => {
+        const value = info.getValue()
+        if (!value) return '-'
+
+        return dateFormatter.format(new Date(value as string))
+    },
+    }),
+
+    columnHelper.accessor('registrationEnd', {
+    header: 'Selesai',
+    cell: info => {
+        const value = info.getValue()
+        if (!value) return '-'
+
+        return dateFormatter.format(new Date(value as string))
+    },
+    }),
 
   columnHelper.accessor('isPublished', {
     header: 'Status',
+  }),
+
+ columnHelper.display({
+    id: 'registration',
+    header: 'Registrations',
   }),
 
   columnHelper.display({
@@ -120,6 +165,14 @@ const table = useVueTable({
         placeholder="Cari tryout..."
         class="w-full sm:max-w-xs border rounded-md px-3 py-2 text-xs md:text-sm"
       />
+
+      <RouterLink
+        to="/dashboard/admin/tryouts/create"
+        class="flex items-center justify-center gap-2 px-4 py-2 font-semibold rounded-md bg-primary text-primary-foreground"
+      >
+        <span class="text-xl sm:hidden">+</span>
+        <span class="hidden sm:inline">Tryout Baru</span>
+      </RouterLink>
     </div>
 
     <div class="overflow-x-auto">
@@ -129,7 +182,7 @@ const table = useVueTable({
             <th
               v-for="h in hg.headers"
               :key="h.id"
-              class="border px-3 py-2 bg-gray-100 text-xs md:text-sm"
+              class="border px-3 py-2 bg-gray-100 text-xs md:text-sm text-nowrap" 
             >
               <FlexRender
                 v-if="!h.isPlaceholder"
@@ -145,7 +198,7 @@ const table = useVueTable({
             <td
               v-for="cell in row.getVisibleCells()"
               :key="cell.id"
-              class="border px-3 py-2 text-xs md:text-sm"
+              class="border px-3 py-2 text-xs md:text-sm text-nowrap"
             >
               <div v-if="cell.column.id === 'imageUrl'">
                 <Image
@@ -181,12 +234,33 @@ const table = useVueTable({
 
               <div v-else-if="cell.column.id === 'actions'" class="flex gap-2">
                 <button
-                  @click="emit('delete', row.original.id)"
-                  class="text-red-600 hover:opacity-80"
+                    @click="emit('view', row.original.id)"
+                    class="text-blue-600 hover:text-blue-800 transition"
+                    title="Lihat"
                 >
-                  Hapus
+                    <Icon icon="mdi:eye-outline" width="20" />
+                </button>
+
+                <button
+                    @click="emit('update', row.original.id)"
+                    class="text-yellow-600 hover:text-yellow-800 transition"
+                    title="Edit"
+                >
+                    <Icon icon="mdi:pencil-outline" width="20" />
+                </button>
+                <button
+                    @click="emit('delete', row.original.id)"
+                    class="text-red-600 hover:text-red-800 transition"
+                    title="Hapus"
+                >
+                    <Icon icon="mdi:delete-outline" width="20" />
                 </button>
               </div>
+
+              <ColRegistered
+                v-else-if="cell.column.id === 'registration'"
+                :id="row.original.id"
+              />
 
               <template v-else>
                 <FlexRender

@@ -27,7 +27,8 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'delete', id: number): void
-  (e: 'view', course: Course): void
+  (e: 'view', id: number): void
+  (e: 'update', id: number): void
   (e: 'page-change', page: number): void
   (e: 'per-page-change', perPage: number): void
   (e: 'search', q: string): void
@@ -163,17 +164,26 @@ const table = useVueTable({
             >
               <div v-if="cell.column.id === 'actions'" class="flex gap-2">
                 <button
-                  @click="emit('view', row.original)"
-                  class="text-blue-600 cursor-pointer hover:opacity-80"
+                    @click="emit('view', row.original.id)"
+                    class="text-blue-600 hover:text-blue-800 transition"
+                    title="Lihat"
                 >
-                  Lihat
+                    <Icon icon="mdi:eye-outline" width="20" />
                 </button>
 
                 <button
-                  @click="emit('delete', row.original.id)"
-                  class="text-red-600 cursor-pointer hover:opacity-80"
+                    @click="emit('update', row.original.id)"
+                    class="text-yellow-600 hover:text-yellow-800 transition"
+                    title="Edit"
                 >
-                  Hapus
+                    <Icon icon="mdi:pencil-outline" width="20" />
+                </button>
+                <button
+                    @click="emit('delete', row.original.id)"
+                    class="text-red-600 hover:text-red-800 transition"
+                    title="Hapus"
+                >
+                    <Icon icon="mdi:delete-outline" width="20" />
                 </button>
               </div>
 

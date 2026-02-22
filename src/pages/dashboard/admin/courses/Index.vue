@@ -4,7 +4,6 @@ import { computed, reactive, watch } from 'vue'
 import DashboardLayout from '../../../../components/layout/DashboardLayout.vue'
 import { CourseService } from '../../../../services/course'
 import CoursesTable from '../../../../components/dashboard/admin/courses/CourseTable.vue'
-import type { Course } from '../../../../types/entites/course'
 import { useRouter, useRoute } from 'vue-router'
 import { toast } from 'vue3-toastify'
 
@@ -72,8 +71,8 @@ const courseMutation = useMutation({
   },
 })
 
-const handleView = (course: Course) => {
-  router.push({ name: 'admin-courses-view', params: { id: course.id } })
+const handleView = (id: number) => {
+  router.push({ name: 'admin-courses-view', params: { id: id } })
 }
 
 const handleDelete = (id: number) => {
@@ -102,7 +101,7 @@ const handleSearch = (q: string) => {
 <template>
   <DashboardLayout>
     <div class="backdrop-blur min-h-screen px-4">
-      <div class="bg-white rounded-lg shadow overflow-hidden">
+      <div class="bg-white/20 rounded-lg shadow overflow-hidden">
         <h1 class="text-2xl font-bold p-4 text-gray-800">Daftar Courses</h1>
 
         <div v-if="isLoading" class="p-8 text-center text-gray-600">

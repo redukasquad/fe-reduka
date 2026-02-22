@@ -13,9 +13,12 @@ const { schema } = defineProps<{
   schema: ZodType
 }>()
 
+const uploadKey = ref(0)
+
 const {
   handleSubmit,
   isSubmitting,
+  resetForm,
   meta: {
     value: { valid },
   },
@@ -46,10 +49,11 @@ const { value: image } =
 
 const onSubmit = handleSubmit(async (values) => {
    mutate.mutate(values)
+   resetForm()
+  uploadKey.value++
 })
 
 const isValid = computed(() => !valid || isSubmitting.value)
-const uploadKey = ref(0)
 
 </script>
 

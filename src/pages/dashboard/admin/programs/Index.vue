@@ -31,7 +31,7 @@ const handleDelete=async(id:number)=>{
 <template>
     <DashboardLayout>
         <div class="backdrop-blur px-4">
-            <div class="bg-white rounded-lg shadow overflow-hidden">
+            <div class="bg-white/20 rounded-lg shadow overflow-hidden">
             <h1 class="text-2xl font-bold p-4 text-gray-800">Daftar Programs</h1>
 
             <div v-if="isLoading" class="p-8 text-center text-gray-600">

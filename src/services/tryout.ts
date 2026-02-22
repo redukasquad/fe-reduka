@@ -1,4 +1,4 @@
-import type { CreateProgramSchemaType } from "../schemas/programs";
+import type { CreateTryOutInput } from "../schemas/tryout";
 import type { ApiResponse, Paginated } from "../types/api";
 import type { TryOut } from "../types/entites/tryout";
 import api from "./api";
@@ -28,7 +28,7 @@ export class TryoutService{
         return res.data
     }
 
-    static async create(data:CreateProgramSchemaType) : Promise<
+    static async create(data:CreateTryOutInput) : Promise<
     ApiResponse<TryOut>>
     {
         const res=await api.post(`/tryouts`, data)

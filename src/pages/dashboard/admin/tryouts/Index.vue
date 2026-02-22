@@ -6,8 +6,6 @@ import { TryoutService } from '../../../../services/tryout'
 import TryoutTable from '../../../../components/dashboard/admin/tryouts/TryoutTable.vue'
 import { useRouter, useRoute } from 'vue-router'
 import { toast } from 'vue3-toastify'
-import type { TryOut } from '../../../../types/entites/tryout'
-
 const router = useRouter()
 const route = useRoute()
 
@@ -68,8 +66,8 @@ const tryoutMutation = useMutation({
   },
 })
 
-const handleView = (tryout: TryOut) => {
-  router.push({ name: 'admin-tryouts-view', params: { id: tryout.id } })
+const handleView = (id: number) => {
+  router.push({ name: 'admin-tryouts-view', params: { id: id } })
 }
 
 const handleDelete = (id: number) => {
@@ -92,12 +90,14 @@ const handleSearch = (q: string) => {
   query.page = 1
   refetch()
 }
+
+
 </script>
 
 <template>
   <DashboardLayout>
     <div class="backdrop-blur min-h-screen px-4">
-      <div class="bg-white rounded-lg shadow overflow-hidden">
+      <div class="bg-white/20 rounded-lg shadow overflow-hidden">
         <h1 class="text-2xl font-bold p-4 text-gray-800">Daftar Tryouts</h1>
 
         <div v-if="isLoading" class="p-8 text-center text-gray-600">

@@ -11,13 +11,15 @@ import {
 import { ref, watch } from 'vue'
 import type { Program } from '../../../../types/entites/program'
 import { Image } from '@unpic/vue';
+import { Icon } from '@iconify/vue';
 
 const props = defineProps<{
   programs: Program[]
 }>()
 
 const emit = defineEmits<{
-  (e: 'edit', program: Program): void
+  (e: 'view', id: number): void
+  (e: 'update', id: number): void
   (e: 'delete', id:number ): void
 }>()
 
@@ -99,8 +101,8 @@ const table = useVueTable({
             class="w-full max-w-sm border rounded px-3 py-2 text-sm"
         />
 
-        <RouterLink to="programs/create" class="px-4 py-2 md:font-medium md:text-sm gap-1 lg:text-lg text-xs font-semibold rounded-md bg-primary cursor-pointer text-primary-foreground hover:bg-primary/90 active:scale-95 transition-all duration-200">
-            <span class="text-xl sm:hidden">+</span>
+        <RouterLink to="programs/create" class="px-4 py-2 md:font-medium md:text-sm lg:text-lg text-xs font-semibold rounded-md bg-primary cursor-pointer text-primary-foreground hover:bg-primary/90 active:scale-95 transition-all duration-200">
+            <span class="text-xl">+</span>
             <span class="hidden sm:inline">Tambah Program</span>
         </RouterLink>
     </div>
@@ -150,11 +152,26 @@ const table = useVueTable({
 
               <div v-else-if="cell.column.id === 'actions'" class="flex gap-2">
                 <button
-                  type="button"
-                  @click="emit('delete', row.original.ID)"
-                  class="text-red-600 hover:text-red-800 text-sm font-medium"
+                    @click="emit('view', row.original.ID)"
+                    class="text-blue-600 hover:text-blue-800 transition"
+                    title="Lihat"
                 >
-                  Hapus
+                    <Icon icon="mdi:eye-outline" width="20" />
+                </button>
+
+                <button
+                    @click="emit('update', row.original.ID)"
+                    class="text-yellow-600 hover:text-yellow-800 transition"
+                    title="Edit"
+                >
+                    <Icon icon="mdi:pencil-outline" width="20" />
+                </button>
+                <button
+                    @click="emit('delete', row.original.ID)"
+                    class="text-red-600 hover:text-red-800 transition"
+                    title="Hapus"
+                >
+                    <Icon icon="mdi:delete-outline" width="20" />
                 </button>
               </div>
 
