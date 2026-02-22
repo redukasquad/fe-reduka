@@ -3,7 +3,6 @@ import { useForm, useField } from "vee-validate"
 import { toTypedSchema } from "@vee-validate/zod"
 import { RegisterSchema } from "../../schemas/auth"
 import { Icon } from "@iconify/vue"
-import LoginGoogle from "../../components/ui/LoginGoogle.vue"
 import { computed, reactive } from "vue"
 import { AuthService } from "../../services/auth"
 import { useApi } from "../../composable/useApi"
@@ -118,7 +117,6 @@ const togglePassword = (type: "password" | "confirmPassword") => {
           <div class="flex-1 h-0.5 rounded-full bg-gray-300" />
         </div>
 
-        <LoginGoogle message="Daftar dengan Google" />
         <p class="text-sm text-center md:text-black text-white">Have an account? <RouterLink to="/auth/login" class="text-blue-700 hover:text-blue-900">login</RouterLink></p>
     </form> 
 </template>

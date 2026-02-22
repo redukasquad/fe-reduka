@@ -3,7 +3,6 @@ import { useForm, useField } from "vee-validate"
 import { toTypedSchema } from "@vee-validate/zod"
 import { LoginSchema } from "../../schemas/auth"
 import { Icon } from "@iconify/vue"
-import LoginGoogle from "../../components/ui/LoginGoogle.vue"
 import { computed } from "vue"
 import { useApi } from "../../composable/useApi"
 import { AuthService } from "../../services/auth"
@@ -102,7 +101,6 @@ const isDisabled = computed(() => {
             <p class="text-xs text-gray-500">Or</p>
             <div class="flex-1 h-0.5 rounded-full bg-gray-300" />
         </div>
-        <LoginGoogle message="Login dengan Google" />
         <p class="text-sm">Don't have an account? <RouterLink to="/auth/register" class="text-blue-700 hover:text-blue-900">register</RouterLink></p>
     </form>  
 </template>
