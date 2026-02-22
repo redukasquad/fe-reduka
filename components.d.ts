@@ -51,6 +51,7 @@ declare module 'vue' {
     TabPanel: typeof import('primevue/tabpanel')['default']
     TabPanels: typeof import('primevue/tabpanels')['default']
     Tabs: typeof import('primevue/tabs')['default']
+    TryoutTable: typeof import('./src/components/dashboard/admin/tryouts/TryoutTable.vue')['default']
     UploadImage: typeof import('./src/components/ui/UploadImage.vue')['default']
     UserTable: typeof import('./src/components/dashboard/admin/users/UserTable.vue')['default']
   }

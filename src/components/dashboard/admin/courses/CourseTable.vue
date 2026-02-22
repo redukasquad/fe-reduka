@@ -12,6 +12,7 @@ import {
 import { ref, watch } from 'vue'
 import type { Course } from '../../../../types/entites/course'
 import ColRegistered from './ColRegistered.vue'
+import { Icon } from '@iconify/vue';
 
 const props = defineProps<{
   courses: Course[]
@@ -117,19 +118,20 @@ const table = useVueTable({
 
 <template>
   <div class="p-2 space-y-4">
-    <div class="flex justify-between items-center gap-4">
+    <div class="flex  justify-between gap-4">
       <input
         v-model="globalFilter"
         type="text"
         placeholder="Cari course..."
-        class="w-full max-w-xs border rounded px-3 py-2 text-sm"
+        class="w-full sm:max-w-xs border rounded-md px-3 py-2 text-xs text-nowrap md:text-sm"
       />
 
       <RouterLink
         to="/dashboard/admin/courses/create"
-        class="px-4 py-2 font-semibold rounded-md bg-primary text-primary-foreground"
+        class="flex items-center gap-1 justify-center gap-2 px-4 py-2 font-semibold rounded-md bg-primary text-primary-foreground"
       >
-        Tambah Course
+        <span class="text-xl">+</span>
+        <span class="hidden sm:inline">Tambah Course</span>
       </RouterLink>
     </div>
 
@@ -141,7 +143,7 @@ const table = useVueTable({
               v-for="h in hg.headers"
               :key="h.id"
               :colSpan="h.colSpan"
-              class="border px-3 py-2 bg-gray-100 text-sm"
+              class="border px-3 py-2 bg-gray-100 text-xs text-nowrap md:text-sm"
             >
               <FlexRender
                 v-if="!h.isPlaceholder"
@@ -162,14 +164,14 @@ const table = useVueTable({
               <div v-if="cell.column.id === 'actions'" class="flex gap-2">
                 <button
                   @click="emit('view', row.original)"
-                  class="text-blue-600"
+                  class="text-blue-600 cursor-pointer hover:opacity-80"
                 >
                   Lihat
                 </button>
 
                 <button
                   @click="emit('delete', row.original.id)"
-                  class="text-red-600"
+                  class="text-red-600 cursor-pointer hover:opacity-80"
                 >
                   Hapus
                 </button>
@@ -194,7 +196,7 @@ const table = useVueTable({
 
     <div class="flex items-center justify-between pt-2">
       <div class="flex items-center gap-2">
-        <span class="text-sm">Rows:</span>
+        <span class="text-xs text-nowrap md:text-sm">Rows:</span>
         <select
           :value="meta.perPage"
           @change="
@@ -204,7 +206,7 @@ const table = useVueTable({
                 Number((e.target as HTMLSelectElement).value)
               )
           "
-          class="border rounded px-2 py-1 text-sm"
+          class="border rounded px-2 py-1 text-xs text-nowrap md:text-sm"
         >
           <option :value="5">5</option>
           <option :value="10">10</option>
@@ -213,13 +215,13 @@ const table = useVueTable({
         </select>
       </div>
 
-      <div class="flex items-center gap-1">
+      <div class="flex gap-1">
         <button
           class="px-2 py-1 border rounded"
           :disabled="meta.page <= 1"
           @click="emit('page-change', meta.page - 1)"
         >
-          Prev
+           <Icon  icon="heroicons:chevron-left" />
         </button>
 
         <button
@@ -237,7 +239,7 @@ const table = useVueTable({
           :disabled="meta.page >= meta.totalPages"
           @click="emit('page-change', meta.page + 1)"
         >
-          Next
+           <Icon  icon="heroicons:chevron-right" />
         </button>
       </div>
     </div>
