@@ -28,7 +28,6 @@ const { value: questionText, errorMessage: questionTextError } =
 const { value: questionType, errorMessage: questionTypeError } =
   useField<CreateRegistrationQuestionInput["questionType"]>("questionType")
 
-    console.log(props.lastQuestion)
 
 watch(
   () => visible.value,
@@ -94,7 +93,7 @@ const isDisabled = computed(
         <input
           v-model="questionText"
           type="text"
-          placeholder="Question text"
+          placeholder="Soal pertanyaan"
           class="w-full border px-3 py-2 rounded bg-gray-100 outline-none focus:ring-2 focus:ring-primary"
         />
         <p v-if="questionTextError" class="text-red-600 text-xs">
@@ -103,7 +102,9 @@ const isDisabled = computed(
       </div>
 
       <div class="space-y-1">
+        <label for="questionType">Tipe Soal</label>
         <select
+          id="questionType"
           v-model="questionType"
           class="w-full border px-3 py-2 rounded bg-gray-100 outline-none focus:ring-2 focus:ring-primary"
         >
@@ -111,7 +112,7 @@ const isDisabled = computed(
           <option value="text">Text</option>
           <option value="select">Select</option>
           <option value="radio">Radio</option>
-          <option value="checkbox">Checkbox</option>
+          <option value="file">File</option>
         </select>
         <p v-if="questionTypeError" class="text-red-600 text-xs">
           {{ questionTypeError }}

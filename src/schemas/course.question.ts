@@ -4,7 +4,6 @@ export const QuestionTypeEnum = z.enum([
   "text",
   "select",
   "radio",
-  "checkbox",
   "file"
 ])
 
@@ -24,7 +23,6 @@ export const UpdateRegistrationQuestionSchema = z.object({
 
   questionType: QuestionTypeEnum
     .optional(),
-
 })
 
 export type CreateRegistrationQuestionInput =
