@@ -128,9 +128,9 @@ const table = useVueTable({
 
       <RouterLink
         to="/dashboard/admin/courses/create"
-        class="flex items-center gap-1 justify-center gap-2 px-4 py-2 font-semibold rounded-md bg-primary text-primary-foreground"
+        class="flex items-center justify-center gap-2 px-4 py-2 font-semibold rounded-md bg-primary text-primary-foreground"
       >
-        <span class="text-xl">+</span>
+        <span class="text-xl sm:hidden">+</span>
         <span class="hidden sm:inline">Tambah Course</span>
       </RouterLink>
     </div>
