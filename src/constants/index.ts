@@ -54,7 +54,7 @@ export const tutorMenu = [
   {
     id: 3,
     path: '/dashboard/tutor/tryouts',
-    name: 'Tryout Questions',
+    name: 'Tryout',
     icon: 'mdi:clipboard-edit-outline'
   }
 ]

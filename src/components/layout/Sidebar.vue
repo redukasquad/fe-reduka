@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { adminMenu } from '../../constants'
+import { adminMenu, tutorMenu } from '../../constants'
 import { Icon } from '@iconify/vue'
 import { useAuth } from '../../stores/auth'
 import { useTool } from '../../stores/tool'
@@ -35,13 +35,14 @@ const isActiveMenu = (menuPath: string): boolean => {
   if (currentPath === menuPath) return true
 
   if (
-    currentPath.startsWith(menuPath + '/') && 
-    menuPath !== '/dashboard/admin'
+    (currentPath.startsWith(menuPath + '/') && 
+    menuPath !== '/dashboard/admin') || (currentPath.startsWith(menuPath + '/') && 
+    menuPath !== '/dashboard/tutor')
   ) {
     return true
   }
 
-  if (currentPath === '/dashboard/admin' && menuPath === '/dashboard/admin') {
+  if ((currentPath === '/dashboard/admin' && menuPath === '/dashboard/admin') || (currentPath === '/dashboard/tutor' && menuPath === '/dashboard/tutor')) {
     return true
   }
 
@@ -92,7 +93,7 @@ const isActiveMenu = (menuPath: string): boolean => {
 
       <nav class="flex-1 px-3 py-4 overflow-y-auto">
         <RouterLink
-          v-for="menu in adminMenu"
+          v-for="menu in (auth.user?.role === 'ADMIN'?adminMenu : tutorMenu)"
           :key="menu.id"
           :to="menu.path"
           :class="[
