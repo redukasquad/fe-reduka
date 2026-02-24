@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue';
-import Form from '../../../../components/dashboard/admin/programs/Form.vue'
+import Form from '../../../../components/dashboard/admin/programs/FormPrograms.vue'
 import { UpdateProgramSchema } from '../../../../schemas/programs';
 import DashboardLayout from '../../../../components/layout/DashboardLayout.vue';
 </script>

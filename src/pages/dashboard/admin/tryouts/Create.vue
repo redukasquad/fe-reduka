@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue';
-import Form from '../../../../components/dashboard/admin/tryouts/Form.vue';
+import Form from '../../../../components/dashboard/admin/tryouts/FormTryout.vue';
 import DashboardLayout from '../../../../components/layout/DashboardLayout.vue';
 import { createTryOutInputSchema } from '../../../../schemas/tryout';
 

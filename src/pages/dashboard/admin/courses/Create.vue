@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue';
-import Form from '../../../../components/dashboard/admin/courses/Form.vue';
+import Form from '../../../../components/dashboard/admin/courses/FormCourses.vue';
 import DashboardLayout from '../../../../components/layout/DashboardLayout.vue';
 import { CreateCourseSchema } from '../../../../schemas/course';
 
