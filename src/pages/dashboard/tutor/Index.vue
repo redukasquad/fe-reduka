@@ -2,6 +2,7 @@
 import { useRoute } from 'vue-router'
 import { computed } from 'vue'
 import { useTool } from '../../../stores/tool'
+import DashboardLayout from '../../../components/layout/DashboardLayout.vue'
 
 const route = useRoute()
 
@@ -12,13 +13,7 @@ const tool=useTool()
 </script>
 
 <template>
-  <div :class="['h-screen overflow-auto',]">
-    <template v-if="isTutorRoot">
-      <div class="text-8xl">hallo</div>
-    </template>
-
-    <template v-else>
-      <RouterView />
-    </template>
-  </div>
+  <DashboardLayout>
+    <h1>hallo</h1>
+  </DashboardLayout>
 </template>

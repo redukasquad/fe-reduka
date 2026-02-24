@@ -9,4 +9,18 @@ export class CourseRegistrationService{
     const res = await api.get(`/courses/${tryoutId}/registrations`)
     return res.data
   }
+
+  static async approve(
+    idRegistration:number
+  ): Promise<ApiResponse<CourseRegistration>> {
+    const res = await api.put(`/registrations/${idRegistration}/approve`)
+    return res.data
+  }
+
+  static async reject(
+    idRegistration:number
+  ): Promise<ApiResponse<CourseRegistration>> {
+    const res = await api.put(`/registrations/${idRegistration}/reject`)
+    return res.data
+  }
 }

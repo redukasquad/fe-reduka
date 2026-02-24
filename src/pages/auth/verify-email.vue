@@ -10,7 +10,7 @@ const showResendForm=ref(false)
 
 
 <template>
-  <div class="w-full h-screen flex flex-col items-center lg:items-end xl:items-center justify-center px-6 text-center">
+  <div class="w-full h-screen flex flex-col items-center lg:items-end xl:items-center justify-center px-6 text-center z-50">
     <div class="max-w-md w-full space-y-6">
       <div class="space-y-3">
         <h1 class="text-2xl font-semibold font-heading">

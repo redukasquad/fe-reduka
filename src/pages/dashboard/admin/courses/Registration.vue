@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { useQuery } from '@tanstack/vue-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { useRoute } from 'vue-router'
 import { computed } from 'vue'
 import { CourseRegistrationService } from '../../../../services/course.registration'
 import CourseRegistrationTable from '../../../../components/dashboard/admin/courses/CourseRegistrationTable.vue'
+import { toast } from 'vue3-toastify'
 
 const route = useRoute()
+const queryClient = useQueryClient()
+
 const courseId = Number(route.params.id)
 
 const { data, isLoading, isError } = useQuery({
@@ -18,16 +21,56 @@ const { data, isLoading, isError } = useQuery({
 
 const courseRegistrations = computed(() => data.value ?? [])
 
+
+const courseRegistrationMutation = useMutation({
+  mutationFn: async ({
+    id,
+    action,
+  }: {
+    id: number
+    action: 'APPROVE' | 'REJECT'
+  }) => {
+    if (action === 'APPROVE') {
+      return await CourseRegistrationService.approve(id)
+    } else {
+      return await CourseRegistrationService.reject(id)
+    }
+  },
+
+  onSuccess: (_, variables) => {
+    if (variables.action === 'APPROVE') {
+      toast.success('Pendaftaran disetujui')
+    } else {
+      toast.success('Pendaftaran ditolak')
+    }
+
+    queryClient.invalidateQueries({
+      queryKey: ['course-registration', courseId],
+    })
+  },
+
+  onError: () => {
+    toast.error('Gagal memproses pendaftaran')
+  },
+})
+
+
 function handleView(id: number) {
   console.log('view', id)
 }
 
 function handleApprove(id: number) {
-  console.log('approve', id)
+  courseRegistrationMutation.mutate({
+    id,
+    action: 'APPROVE',
+  })
 }
 
 function handleReject(id: number) {
-  console.log('reject', id)
+  courseRegistrationMutation.mutate({
+    id,
+    action: 'REJECT',
+  })
 }
 </script>
 

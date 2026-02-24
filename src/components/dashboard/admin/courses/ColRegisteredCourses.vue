@@ -1,9 +1,24 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
+import { useQuery } from '@tanstack/vue-query';
+import { CourseRegistrationService } from '../../../../services/course.registration';
+import { onMounted } from 'vue';
 
 const props = defineProps<{
   id: number | string
 }>()
+
+const { data } = useQuery({
+  queryKey: ['course-registration', Number(props.id)],
+  queryFn: async () => {
+    const res = await CourseRegistrationService.getRegistration(Number(props.id))
+    return res.data
+  },
+})
+
+const countRegister = onMounted(()=>(
+  data.value?.length
+))
 </script>
 
 <template>
@@ -15,7 +30,7 @@ const props = defineProps<{
       class="text-green-500 text-xs"
     />
 
-    <span>{{ 10 }} registered</span>
+    <span>{{ countRegister }} registered</span>
 
     <RouterLink
       :to="`/dashboard/admin/courses/${id}/registrations`"

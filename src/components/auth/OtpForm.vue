@@ -61,6 +61,7 @@ const onPaste = (e: ClipboardEvent) => {
 }
 
 const onSubmit = form.handleSubmit(async (values) => {
+  console.log('click')
   await call(values)
 
   if (message.value.includes("successfully")) {
@@ -84,7 +85,7 @@ const isDisabled = computed(() => {
 </script>
 
 <template>
-    <form @submit="onSubmit" class="space-y-4">
+    <form @submit="onSubmit" class="space-y-4 z-50">
         <div
           class="flex justify-between gap-2"
           @paste.prevent="onPaste"
