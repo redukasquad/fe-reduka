@@ -14,6 +14,6 @@ const tool=useTool()
 
 <template>
   <DashboardLayout>
-    <h1>hallo</h1>
+    hallo
   </DashboardLayout>
 </template>

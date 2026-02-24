@@ -32,21 +32,11 @@ const handleLogout = () => {
 const isActiveMenu = (menuPath: string): boolean => {
   const currentPath = route.path
 
-  if (currentPath === menuPath) return true
-
-  if (
-    (currentPath.startsWith(menuPath + '/') && 
-    menuPath !== '/dashboard/admin') || (currentPath.startsWith(menuPath + '/') && 
-    menuPath !== '/dashboard/tutor')
-  ) {
-    return true
+  if (menuPath === '/dashboard/admin' || menuPath === '/dashboard/tutor') {
+    return currentPath === menuPath
   }
 
-  if ((currentPath === '/dashboard/admin' && menuPath === '/dashboard/admin') || (currentPath === '/dashboard/tutor' && menuPath === '/dashboard/tutor')) {
-    return true
-  }
-
-  return false
+  return currentPath.startsWith(menuPath)
 }
 
 

@@ -109,7 +109,7 @@ const handleSearch = (q: string) => {
         </div>
 
         <div v-else-if="isError" class="p-8 text-center text-red-600">
-          Gagal memuat data program.
+          Gagal memuat data courses.
         </div>
 
         <div v-else>

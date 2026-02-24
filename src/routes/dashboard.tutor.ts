@@ -6,10 +6,17 @@ import type { RouteMeta } from "vue-router";
 const TutorCoursesIndex = () =>
   import("../pages/dashboard/tutor/courses/index.vue");
 
+const TutorCoursesView = () =>
+  import("../pages/dashboard/tutor/courses/View.vue");
+
+
 
 // ===== TRYOUTS =====
 const TutorTryoutsIndex = () =>
   import("../pages/dashboard/tutor/tryouts/index.vue");
+
+const TutorTryoutsView = () =>
+  import("../pages/dashboard/tutor/tryouts/View.vue");
 
 const tutorMeta = {
   layout: "default" as const,
@@ -39,12 +46,24 @@ export const dashboardTutorRoutes: RouteRecordRaw[] = [
     component: TutorCoursesIndex,
     meta: { ...tutorMeta, title: "My Courses" },
   },
+  {
+    path: "/dashboard/tutor/courses/:id",
+    name: "tutor-courses-view",
+    component: TutorCoursesView,
+    meta: { ...tutorMeta, title: "My Courses" },
+  },
 
   // ===== TRYOUTS =====
   {
     path: "/dashboard/tutor/tryouts",
     name: "tutor-tryouts",
     component: TutorTryoutsIndex,
+    meta: { ...tutorMeta, title: "My Tryouts" },
+  },
+  {
+    path: "/dashboard/tutor/tryouts/:id",
+    name: "tutor-tryouts-view",
+    component: TutorTryoutsView,
     meta: { ...tutorMeta, title: "My Tryouts" },
   },
 ];
