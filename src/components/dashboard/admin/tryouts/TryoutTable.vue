@@ -13,7 +13,7 @@ import { ref, watch } from 'vue'
 import { Image } from '@unpic/vue'
 import type { TryOut } from '../../../../types/entites/tryout'
 import { Icon } from '@iconify/vue'
-import ColRegistered from './ColRegistered.vue'
+import ColRegistered from './ColRegisteredTryouts.vue'
 
 const props = defineProps<{
   tryouts: TryOut[]

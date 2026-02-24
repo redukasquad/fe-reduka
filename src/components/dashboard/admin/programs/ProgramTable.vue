@@ -102,7 +102,6 @@ const table = useVueTable({
         />
 
         <RouterLink to="programs/create" class="px-4 py-2 md:font-medium md:text-sm lg:text-lg text-xs font-semibold rounded-md bg-primary cursor-pointer text-primary-foreground hover:bg-primary/90 active:scale-95 transition-all duration-200">
-            <span class="text-xl">+</span>
             <span class="hidden sm:inline">Tambah Program</span>
         </RouterLink>
     </div>

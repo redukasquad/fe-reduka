@@ -20,7 +20,7 @@ export interface TryOutRegistration {
   registeredAt: string
 
   user?: User
-  tryOutPackage?: TryOut
+  tryOut?: TryOut
   approvedBy?: User
   attempt?: TryOutAttempt
 }

@@ -11,7 +11,7 @@ import {
 } from '@tanstack/vue-table'
 import { ref, watch } from 'vue'
 import type { Course } from '../../../../types/entites/course'
-import ColRegistered from './ColRegistered.vue'
+import ColRegistered from './ColRegisteredCourses.vue'
 import { Icon } from '@iconify/vue';
 
 const props = defineProps<{

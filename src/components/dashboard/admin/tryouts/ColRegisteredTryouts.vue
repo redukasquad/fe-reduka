@@ -1,9 +1,24 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
+import { TryoutRegistrationService } from '../../../../services/tryouts.registration';
+import { computed } from 'vue';
+import { useQuery } from '@tanstack/vue-query';
 
 const props = defineProps<{
   id: number | string
 }>()
+
+
+const { data, isLoading, isError } = useQuery({
+  queryKey: ['tryout-registration', props.id],
+  queryFn: async () => {
+    const res = await TryoutRegistrationService.getRegistration(props.id ? Number(props.id) : 0)
+    return res.data
+  },
+})
+
+const tryoutRegistration = computed(() => data.value ?? [])
+
 </script>
 
 <template>
@@ -15,7 +30,7 @@ const props = defineProps<{
       class="text-green-500 text-xs"
     />
 
-    <span>{{ 10 }} registered</span>
+    <span>{{ tryoutRegistration.length }} registered</span>
 
     <RouterLink
       :to="`/dashboard/admin/tryouts/${id}/registrations`"
