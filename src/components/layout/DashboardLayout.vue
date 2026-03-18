@@ -12,7 +12,7 @@ const tool = useTool();
   <div
     :class="[
       'h-screen overflow-auto transition-all duration-500',
-      tool.isSidebarOpen ? 'pl-64' : 'pl-20',
+      tool.isSidebarOpen ? 'pl-68' : 'pl-24',
       props.className
     ]"
   >

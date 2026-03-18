@@ -1,24 +1,9 @@
 <script setup lang="ts">
-import { useQuery } from '@tanstack/vue-query';
-import { TryOutQuestionService } from '../../../../services/tryout.question';
-import { computed } from 'vue';
-
-const props=defineProps<{
-    tryoutId:number
+const props = defineProps<{
+  isLoading: boolean
+  subtest: any
+  isError: boolean
 }>()
-
-const {data, isLoading, isError }=useQuery({
-    queryKey:['subtest-count-question', props.tryoutId],
-    queryFn:async()=>{
-        return await TryOutQuestionService.getSubtestQuestionCount(props.tryoutId)
-    }
-})
-
-
-const subtest=computed(()=>(
-    data.value?.data || []
-))
-
 
 </script>
 
@@ -42,7 +27,7 @@ const subtest=computed(()=>(
     class="grid md:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-4"
   >
     <Card
-      v-for="s in subtest"
+      v-for="s in props.subtest"
       :key="s.id"
       class="hover:shadow-lg transition backdrop-blur-sm"
     >
@@ -66,6 +51,13 @@ const subtest=computed(()=>(
             <span class="text-gray-500">Jumlah Soal</span>
             <span class="font-medium">
               {{ s.questionCount }}
+            </span>
+          </div>
+          
+          <div class="flex justify-between">
+            <span class="text-gray-500">Total soal di tryout</span>
+            <span class="font-medium">
+              {{ s.currentQuestionCount }}
             </span>
           </div>
 

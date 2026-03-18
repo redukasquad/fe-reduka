@@ -4,6 +4,7 @@ export const createTryOutInputSchema = z.object({
   name: z.string().min(1),
   description: z.string().optional(),
   imageUrl: z.string().url().optional(),
+  driveLink: z.string().url(),
   isFree: z.boolean(),
   price: z.number().nonnegative().optional(),
   qrisImageUrl: z.string().url().optional(),
@@ -19,6 +20,7 @@ export const createTryOutInputSchema = z.object({
       message: "Invalid registration range",
     })
   }
+
   if (!data.isFree && (!data.price || data.price <= 0)) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
@@ -32,6 +34,7 @@ export const updateTryOutInputSchema = z.object({
   name: z.string().min(1).optional(),
   description: z.string().optional(),
   imageUrl: z.string().url().optional(),
+  driveLink: z.string().url().optional(),
   isFree: z.boolean().optional(),
   price: z.number().nonnegative().optional(),
   qrisImageUrl: z.string().url().optional(),
@@ -51,6 +54,7 @@ export const updateTryOutInputSchema = z.object({
       message: "Invalid registration range",
     })
   }
+
   if (data.isFree === false && data.price !== undefined && data.price <= 0) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
@@ -59,7 +63,6 @@ export const updateTryOutInputSchema = z.object({
     })
   }
 })
-
 
 export const grantTutorPermissionInputSchema = z.object({
   userId: z.number().int().nonnegative(),

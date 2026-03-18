@@ -59,9 +59,7 @@ const handleView = (id: number) => {
     </template>
 
     <template #content>
-      <p class="text-sm text-gray-600 line-clamp-3">
-        {{ data.description }}
-      </p>
+      <p v-html="data.description" class="text-sm text-gray-600 line-clamp-3" />
 
       <div class="mt-3 text-xs text-gray-500">
         {{ formatDate(data.startDate) }}

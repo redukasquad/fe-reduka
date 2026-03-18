@@ -15,6 +15,7 @@ import { TryoutService } from '../../../../services/tryout'
 
 const { schema } = defineProps<{
   schema: ZodType
+
 }>()
 
 const {
@@ -40,6 +41,9 @@ const { value: description, errorMessage: descriptionError } =
 
 const { value: imageUrl } =
   useField<string | null>('imageUrl')
+
+const { value: driveLink, errorMessage: driveLinkError } =
+  useField<string>('driveLink')
 
 const { value: isFree } =
   useField<boolean>('isFree', undefined, {
@@ -76,10 +80,11 @@ watch(isFree, (val) => {
 
 const mutate = useMutation({
   mutationFn: async (data: any) => {
+    console.log(data)
     await TryoutService.create(data)
   },
   onSuccess: () => {
-    toast.success('Successfully created')
+    toast.success('Berhasil membuat tryout')
   },
 })
 
@@ -96,13 +101,13 @@ const isValid = computed(() => !valid || isSubmitting.value)
   <form
     @submit="onSubmit"
     class="h-full flex flex-col gap-6 w-full max-w-5xl mx-auto p-6"
-  > 
+  >
     <UploadImage v-model="imageUrl" :key="uploadKey" />
 
     <div>
       <InputText
         v-model="name"
-        placeholder="Nama TryOut"
+        placeholder="Nama Tryout"
         class="w-full"
       />
       <p class="text-red-500 text-sm mt-1">{{ nameError }}</p>
@@ -115,6 +120,15 @@ const isValid = computed(() => !valid || isSubmitting.value)
         placeholder="Masukkan deskripsi lengkap tryout"
       />
       <p class="text-red-500 text-sm">{{ descriptionError }}</p>
+    </div>
+
+    <div>
+      <InputText
+        v-model="driveLink"
+        placeholder="Link Pemabahasan Google Drive Soal"
+        class="w-full"
+      />
+      <p class="text-red-500 text-sm mt-1">{{ driveLinkError }}</p>
     </div>
 
     <div class="flex items-center justify-between p-4 border rounded-lg">
@@ -143,7 +157,7 @@ const isValid = computed(() => !valid || isSubmitting.value)
       <div>
         <InputText
           v-model="qrisImageUrl"
-          placeholder="QRIS Image URL"
+          placeholder="Link Gambar QRIS"
           class="w-full"
         />
         <p class="text-red-500 text-sm mt-1">{{ qrisImageUrlError }}</p>
@@ -152,7 +166,7 @@ const isValid = computed(() => !valid || isSubmitting.value)
       <div>
         <InputText
           v-model="paymentLink"
-          placeholder="Payment Link"
+          placeholder="Link Pembayaran"
           class="w-full"
         />
         <p class="text-red-500 text-sm mt-1">{{ paymentLinkError }}</p>
@@ -165,7 +179,7 @@ const isValid = computed(() => !valid || isSubmitting.value)
           v-model="registrationStart"
           showTime
           hourFormat="24"
-          placeholder="Registration Start"
+          placeholder="Mulai Pendaftaran"
           class="w-full"
         />
         <p class="text-red-500 text-sm mt-1">{{ registrationStartError }}</p>
@@ -176,7 +190,7 @@ const isValid = computed(() => !valid || isSubmitting.value)
           v-model="registrationEnd"
           showTime
           hourFormat="24"
-          placeholder="Registration End"
+          placeholder="Akhir Pendaftaran"
           class="w-full"
         />
         <p class="text-red-500 text-sm mt-1">{{ registrationEndError }}</p>
@@ -185,9 +199,9 @@ const isValid = computed(() => !valid || isSubmitting.value)
 
     <div class="flex items-center justify-between p-4 border rounded-lg">
       <div>
-        <div class="font-medium">Publish TryOut</div>
+        <div class="font-medium">Publikasikan Tryout</div>
         <div class="text-sm text-surface-500">
-          Aktifkan jika tryout bisa diakses pengguna
+          Aktifkan jika tryout dapat diakses oleh pengguna
         </div>
       </div>
       <InputSwitch v-model="isPublished" />
@@ -198,7 +212,7 @@ const isValid = computed(() => !valid || isSubmitting.value)
       class="self-end mt-6 px-6 py-2 rounded-md bg-primary text-primary-foreground disabled:opacity-50"
       :disabled="isValid"
     >
-      Submit
+      Simpan
     </button>
   </form>
 </template>

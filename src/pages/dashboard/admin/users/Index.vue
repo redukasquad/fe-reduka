@@ -52,7 +52,10 @@ const handleChangeRole = (user: User, role: string) => {
         </div>
 
         <div v-else>
-          <UserTable :users="users" @change-role="handleChangeRole" />
+          <UserTable v-if="users.length>0" :users="users" @change-role="handleChangeRole" />
+          <div v-else class="p-8 text-center text-gray-600">
+            Tidak ada data pengguna.
+          </div>
         </div>
       </div>
     </div>

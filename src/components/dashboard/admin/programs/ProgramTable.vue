@@ -107,7 +107,7 @@ const table = useVueTable({
     </div>
 
 
-    <div class="overflow-x-auto">
+    <div class="overflow-x-auto" v-if="props.programs.length>0">
       <table class="min-w-full border-collapse border border-gray-300">
         <thead>
           <tr v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
@@ -184,6 +184,14 @@ const table = useVueTable({
           </tr>
         </tbody>
       </table>
+        </div>
+        <div class="mt-4" v-else>
+            <p class="text-gray-500 text-center text-2xl">
+                Saat ini belum ada program yang dapat ditampilkan.
+            </p>
+            <p class="text-gray-400 text-center mt-2">
+                Program akan muncul di sini ketika sudah tersedia.
+            </p>
+        </div>
     </div>
-  </div>
 </template>

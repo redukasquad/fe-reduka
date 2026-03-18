@@ -174,154 +174,163 @@ const table = useVueTable({
         <span class="hidden sm:inline">Tryout Baru</span>
       </RouterLink>
     </div>
-
-    <div class="overflow-x-auto">
-      <table class="min-w-full border border-gray-300">
-        <thead>
-          <tr v-for="hg in table.getHeaderGroups()" :key="hg.id">
-            <th
-              v-for="h in hg.headers"
-              :key="h.id"
-              class="border px-3 py-2 bg-gray-100 text-xs md:text-sm text-nowrap" 
-            >
-              <FlexRender
-                v-if="!h.isPlaceholder"
-                :render="h.column.columnDef.header"
-                :props="h.getContext()"
-              />
-            </th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr v-for="row in table.getRowModel().rows" :key="row.id">
-            <td
-              v-for="cell in row.getVisibleCells()"
-              :key="cell.id"
-              class="border px-3 py-2 text-xs md:text-sm text-nowrap"
-            >
-              <div v-if="cell.column.id === 'imageUrl'">
-                <Image
-                  v-if="cell.getValue()"
-                  :src="cell.getValue() as string"
-                  class="h-10 rounded"
-                />
-              </div>
-
-              <div v-else-if="cell.column.id === 'isPublished'">
-                <button
-                  @click="
-                    emit(
-                      'toggle-publish',
-                      row.original.id,
-                      !row.original.isPublished
-                    )
-                  "
-                  :class="
-                    row.original.isPublished
-                      ? 'bg-green-500'
-                      : 'bg-gray-400'
-                  "
-                  class="text-white px-3 py-1 rounded text-xs"
+    <div v-if="tryouts.length > 0">
+        <div class="overflow-x-auto">
+        <table class="min-w-full border border-gray-300">
+            <thead>
+            <tr v-for="hg in table.getHeaderGroups()" :key="hg.id">
+                <th
+                v-for="h in hg.headers"
+                :key="h.id"
+                class="border px-3 py-2 bg-gray-100 text-xs md:text-sm text-nowrap" 
                 >
-                  {{
-                    row.original.isPublished
-                      ? 'Published'
-                      : 'Unpublished'
-                  }}
-                </button>
-              </div>
-
-              <div v-else-if="cell.column.id === 'actions'" class="flex gap-2">
-                <button
-                    @click="emit('view', row.original.id)"
-                    class="text-blue-600 hover:text-blue-800 transition"
-                    title="Lihat"
-                >
-                    <Icon icon="mdi:eye-outline" width="20" />
-                </button>
-
-                <button
-                    @click="emit('update', row.original.id)"
-                    class="text-yellow-600 hover:text-yellow-800 transition"
-                    title="Edit"
-                >
-                    <Icon icon="mdi:pencil-outline" width="20" />
-                </button>
-                <button
-                    @click="emit('delete', row.original.id)"
-                    class="text-red-600 hover:text-red-800 transition"
-                    title="Hapus"
-                >
-                    <Icon icon="mdi:delete-outline" width="20" />
-                </button>
-              </div>
-
-              <ColRegistered
-                v-else-if="cell.column.id === 'registration'"
-                :id="row.original.id"
-              />
-
-              <template v-else>
                 <FlexRender
-                  :render="cell.column.columnDef.cell"
-                  :props="cell.getContext()"
+                    v-if="!h.isPlaceholder"
+                    :render="h.column.columnDef.header"
+                    :props="h.getContext()"
                 />
-              </template>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+                </th>
+            </tr>
+            </thead>
+    
+            <tbody>
+            <tr v-for="row in table.getRowModel().rows" :key="row.id">
+                <td
+                v-for="cell in row.getVisibleCells()"
+                :key="cell.id"
+                class="border px-3 py-2 text-xs md:text-sm text-nowrap"
+                >
+                <div v-if="cell.column.id === 'imageUrl'">
+                    <Image
+                    v-if="cell.getValue()"
+                    :src="cell.getValue() as string"
+                    class="h-10 rounded"
+                    />
+                </div>
+    
+                <div v-else-if="cell.column.id === 'isPublished'">
+                    <button
+                    @click="
+                        emit(
+                        'toggle-publish',
+                        row.original.id,
+                        !row.original.isPublished
+                        )
+                    "
+                    :class="
+                        row.original.isPublished
+                        ? 'bg-green-500'
+                        : 'bg-gray-400'
+                    "
+                    class="text-white px-3 py-1 rounded text-xs"
+                    >
+                    {{
+                        row.original.isPublished
+                        ? 'Published'
+                        : 'Unpublished'
+                    }}
+                    </button>
+                </div>
+    
+                <div v-else-if="cell.column.id === 'actions'" class="flex gap-2">
+                    <button
+                        @click="emit('view', row.original.id)"
+                        class="text-blue-600 hover:text-blue-800 transition"
+                        title="Lihat"
+                    >
+                        <Icon icon="mdi:eye-outline" width="20" />
+                    </button>
+    
+                    <button
+                        @click="emit('update', row.original.id)"
+                        class="text-yellow-600 hover:text-yellow-800 transition"
+                        title="Edit"
+                    >
+                        <Icon icon="mdi:pencil-outline" width="20" />
+                    </button>
+                    <button
+                        @click="emit('delete', row.original.id)"
+                        class="text-red-600 hover:text-red-800 transition"
+                        title="Hapus"
+                    >
+                        <Icon icon="mdi:delete-outline" width="20" />
+                    </button>
+                </div>
+    
+                <ColRegistered
+                    v-else-if="cell.column.id === 'registration'"
+                    :id="row.original.id"
+                />
+    
+                <template v-else>
+                    <FlexRender
+                    :render="cell.column.columnDef.cell"
+                    :props="cell.getContext()"
+                    />
+                </template>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        </div>
+    
+        <div class="flex items-center justify-between pt-2">
+        <div class="flex items-center gap-2">
+            <span class="text-xs md:text-sm">Rows:</span>
+            <select
+            :value="meta.perPage"
+            @change="
+                e =>
+                emit(
+                    'per-page-change',
+                    Number((e.target as HTMLSelectElement).value)
+                )
+            "
+            class="border rounded px-2 py-1 text-xs md:text-sm"
+            >
+            <option :value="5">5</option>
+            <option :value="10">10</option>
+            <option :value="20">20</option>
+            <option :value="50">50</option>
+            </select>
+        </div>
+    
+        <div class="flex gap-1">
+            <button
+            :disabled="meta.page <= 1"
+            @click="emit('page-change', meta.page - 1)"
+            class="px-2 py-1 border rounded"
+            >
+            <Icon icon="heroicons:chevron-left" />
+            </button>
+    
+            <button
+            v-for="p in meta.totalPages"
+            :key="p"
+            @click="emit('page-change', p)"
+            :class="p === meta.page ? 'bg-blue-600 text-white' : ''"
+            class="px-3 py-1 border rounded"
+            >
+            {{ p }}
+            </button>
+    
+            <button
+            :disabled="meta.page >= meta.totalPages"
+            @click="emit('page-change', meta.page + 1)"
+            class="px-2 py-1 border rounded"
+            >
+            <Icon icon="heroicons:chevron-right" />
+            </button>
+        </div>
+        </div>
     </div>
-
-    <div class="flex items-center justify-between pt-2">
-      <div class="flex items-center gap-2">
-        <span class="text-xs md:text-sm">Rows:</span>
-        <select
-          :value="meta.perPage"
-          @change="
-            e =>
-              emit(
-                'per-page-change',
-                Number((e.target as HTMLSelectElement).value)
-              )
-          "
-          class="border rounded px-2 py-1 text-xs md:text-sm"
-        >
-          <option :value="5">5</option>
-          <option :value="10">10</option>
-          <option :value="20">20</option>
-          <option :value="50">50</option>
-        </select>
-      </div>
-
-      <div class="flex gap-1">
-        <button
-          :disabled="meta.page <= 1"
-          @click="emit('page-change', meta.page - 1)"
-          class="px-2 py-1 border rounded"
-        >
-          <Icon icon="heroicons:chevron-left" />
-        </button>
-
-        <button
-          v-for="p in meta.totalPages"
-          :key="p"
-          @click="emit('page-change', p)"
-          :class="p === meta.page ? 'bg-blue-600 text-white' : ''"
-          class="px-3 py-1 border rounded"
-        >
-          {{ p }}
-        </button>
-
-        <button
-          :disabled="meta.page >= meta.totalPages"
-          @click="emit('page-change', meta.page + 1)"
-          class="px-2 py-1 border rounded"
-        >
-          <Icon icon="heroicons:chevron-right" />
-        </button>
-      </div>
+    <div class="mt-4" v-else>
+        <p class="text-gray-600 text-center text-2xl font-medium">
+            Tidak ada TryOut ditemukan
+        </p>
+        <p class="text-gray-400 text-center mt-2">
+            TryOut akan muncul di sini ketika sudah tersedia.
+        </p>
     </div>
   </div>
 </template>

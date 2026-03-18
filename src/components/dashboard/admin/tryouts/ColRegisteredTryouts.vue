@@ -9,7 +9,7 @@ const props = defineProps<{
 }>()
 
 
-const { data, isLoading, isError } = useQuery({
+const { data, } = useQuery({
   queryKey: ['tryout-registration', props.id],
   queryFn: async () => {
     const res = await TryoutRegistrationService.getRegistration(props.id ? Number(props.id) : 0)

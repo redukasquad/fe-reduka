@@ -29,7 +29,7 @@ export class TryoutService{
     }
 
     static async create(data:CreateTryOutInput) : Promise<
-    ApiResponse<TryOut>>
+      ApiResponse<TryOut>>
     {
         const res=await api.post(`/tryouts`, data)
         return res.data
