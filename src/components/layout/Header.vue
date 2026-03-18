@@ -2,7 +2,7 @@
 import { Image } from '@unpic/vue'
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useAuth } from '../../stores/auth'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { headerMenu } from '../../constants'
 import { Icon } from '@iconify/vue'
 
@@ -26,10 +26,11 @@ const dashboardRoute = computed(() => {
   }
 })
 
-const router = useRoute()
+const route = useRoute()
+const router = useRouter()
 
 const showHeader = computed(() => {
-  const path = router.path
+  const path = route.path
   return !path.startsWith('/dashboard/admin') &&
          !path.startsWith('/dashboard/tutor')
 })
@@ -61,6 +62,16 @@ const isMobileRegisterLight = computed(() => {
   return !isScrolling.value || isMobileMenuOpen.value
 })
 
+const isProfileMenuOpen = ref(false)
+
+const toggleProfileMenu = () => {
+  isProfileMenuOpen.value = !isProfileMenuOpen.value
+}
+
+const logout = () => {
+  auth.logout()
+  router.push('/auth/login')
+}
 </script>
 
 <template>
@@ -88,7 +99,7 @@ const isMobileRegisterLight = computed(() => {
           :to="menu.path"
           :class="[
             'font-medium flex items-center gap-2 active:scale-95 active:shadow lg:text-xs xl:text-sm font-heading px-4 py-2 rounded-md underline-offset-4 transition-all duration-200',
-            router.path.startsWith(menu.path)
+            route.path.startsWith(menu.path)
               ? 'bg-blue-200 text-primary font-semibold'
               : 'hover:bg-blue-200 hover:text-primary hover:font-semibold'
           ]"
@@ -107,41 +118,70 @@ const isMobileRegisterLight = computed(() => {
             >
               Login
             </RouterLink>
+
             <RouterLink
               to="/auth/register"
-              :class="['px-4 py-2 rounded-sm text-sm font-semibold transition-all duration-200', !isScrolling?'text-primary ring ring-primary bg-primary/10 hover:bg-primary/20':'text-primary-foreground ring ring-primary-foreground hover:bg-white/5']"
+              :class="[
+                'px-4 py-2 rounded-sm text-sm font-semibold transition-all duration-200',
+                !isScrolling
+                  ? 'text-primary ring ring-primary bg-primary/10 hover:bg-primary/20'
+                  : 'text-primary-foreground ring ring-primary-foreground hover:bg-white/5'
+              ]"
             >
               Register
             </RouterLink>
           </div>
 
-          <RouterLink
-            v-else
-            :to="dashboardRoute"
-            class="hover:scale-105 transition-all duration-200 flex flex-col justify-center items-center"
-          >
-            <img
-              :src="user?.profileImage || '/profile.jpg'"
-              class="size-9 rounded-full shadow-md"
-              loading="lazy"
-            />
-            <p class="text-xs text-center">
-              {{ user?.username || 'User' }}
-            </p>
-          </RouterLink>
+          <div v-else class="relative">
+            <button
+              @click="toggleProfileMenu"
+              class="hover:scale-105 transition-all duration-200 flex flex-col justify-center items-center"
+            >
+              <img
+                :src="user?.profileImage || '/profile.jpg'"
+                class="size-9 rounded-full shadow-md"
+                loading="lazy"
+              />
+              <p class="text-xs text-center">
+                {{ user?.username || 'User' }}
+              </p>
+            </button>
+
+            <div
+              v-if="isProfileMenuOpen"
+              class="absolute right-0 mt-2 w-40 bg-white text-black rounded-md shadow-lg overflow-hidden"
+            >
+              <RouterLink
+                :to="dashboardRoute"
+                class="block px-4 py-2 hover:bg-gray-100"
+              >
+                Dashboard
+              </RouterLink>
+
+              <button
+                @click="logout"
+                class="w-full text-left px-4 py-2 hover:bg-gray-100 text-red-500"
+              >
+                Logout
+              </button>
+            </div>
+          </div>
         </nav>
       </div>
 
       <button
         @click="toggleMobileMenu"
         class="lg:hidden flex flex-col justify-center items-center w-10 h-10 relative z-50"
-        aria-label="Toggle menu"
       >
         <span
           :class="[
             'block w-6 h-0.5 transition-all duration-300',
             isMobileMenuOpen ? 'rotate-45 translate-y-1.5' : '',
-            isScrolling ? 'bg-primary-foreground' : isMobileMenuOpen?'bg-primary-foreground':'bg-primary'
+            isScrolling
+              ? 'bg-primary-foreground'
+              : isMobileMenuOpen
+              ? 'bg-primary-foreground'
+              : 'bg-primary'
           ]"
         ></span>
 
@@ -149,7 +189,11 @@ const isMobileRegisterLight = computed(() => {
           :class="[
             'block w-6 h-0.5 my-1.5 transition-all duration-300',
             isMobileMenuOpen ? 'opacity-0' : '',
-            isScrolling ? 'bg-primary-foreground' : isMobileMenuOpen?'bg-primary-foreground':'bg-primary'
+            isScrolling
+              ? 'bg-primary-foreground'
+              : isMobileMenuOpen
+              ? 'bg-primary-foreground'
+              : 'bg-primary'
           ]"
         ></span>
 
@@ -157,7 +201,11 @@ const isMobileRegisterLight = computed(() => {
           :class="[
             'block w-6 h-0.5 transition-all duration-300',
             isMobileMenuOpen ? '-rotate-45 -translate-y-1.5' : '',
-            isScrolling ? 'bg-primary-foreground' : isMobileMenuOpen?'bg-primary-foreground':'bg-primary'
+            isScrolling
+              ? 'bg-primary-foreground'
+              : isMobileMenuOpen
+              ? 'bg-primary-foreground'
+              : 'bg-primary'
           ]"
         ></span>
       </button>
@@ -177,7 +225,7 @@ const isMobileRegisterLight = computed(() => {
           @click="closeMobileMenu"
           :class="[
             'font-medium text-lg flex items-center gap-2 font-heading px-6 py-3 rounded-md w-full text-center transition-all duration-200',
-            router.path.startsWith(menu.path)
+            route.path.startsWith(menu.path)
               ? 'bg-blue-200 text-primary font-semibold'
               : 'hover:bg-blue-200 hover:text-primary hover:font-semibold text-primary-foreground'
           ]"
@@ -196,36 +244,37 @@ const isMobileRegisterLight = computed(() => {
           >
             Login
           </RouterLink>
-          <RouterLink
-              to="/auth/register"
-              @click="closeMobileMenu"
-              :class="[
-                'px-6 py-3 rounded-sm text-base font-semibold transition-all duration-200 text-center',
-                isMobileRegisterLight
-                  ? 'text-primary ring-2 ring-primary/40 hover:bg-primary/5'
-                  : 'text-primary-foreground ring ring-primary-foreground hover:bg-white/5'
-              ]"
-            >
-              Register
-            </RouterLink>
 
+          <RouterLink
+            to="/auth/register"
+            @click="closeMobileMenu"
+            :class="[
+              'px-6 py-3 rounded-sm text-base font-semibold transition-all duration-200 text-center',
+              isMobileRegisterLight
+                ? 'text-primary ring-2 ring-primary/40 hover:bg-primary/5'
+                : 'text-primary-foreground ring ring-primary-foreground hover:bg-white/5'
+            ]"
+          >
+            Register
+          </RouterLink>
         </div>
 
-        <RouterLink
-          v-else
-          :to="dashboardRoute"
-          @click="closeMobileMenu"
-          class="hover:scale-105 transition-all duration-200 flex flex-col justify-center items-center gap-2"
-        >
-          <Image
-            :src="user?.profileImage || '/profile.jpg'"
-            class="size-16 rounded-full shadow-md"
-            loading="lazy"
-          />
-          <p class="text-sm text-center text-primary-foreground font-medium">
-            {{ user?.username || 'User' }}
-          </p>
-        </RouterLink>
+        <div v-else class="flex flex-col gap-3 w-full">
+          <RouterLink
+            :to="dashboardRoute"
+            @click="closeMobileMenu"
+            class="px-6 py-3 rounded-sm text-base font-semibold text-center bg-white text-black"
+          >
+            Dashboard
+          </RouterLink>
+
+          <button
+            @click="logout"
+            class="px-6 py-3 rounded-sm text-base font-semibold text-center text-red-500 bg-white"
+          >
+            Logout
+          </button>
+        </div>
       </div>
     </div>
   </header>
