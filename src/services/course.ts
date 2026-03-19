@@ -1,4 +1,4 @@
-import type { CreateCourseInput } from "../schemas/course";
+import type { CreateCourseInput, UpdateCourseInput } from "../schemas/course";
 import type { ApiResponse, Paginated } from "../types/api";
 import type { Course } from "../types/entites/course";
 import api from "./api";
@@ -14,7 +14,6 @@ export class CourseService{
         page: String(query.page),
         perPage: String(query.perPage),
         })
-
         const res = await api.get(`/courses?${params.toString()}`)
         return res.data
     }
@@ -23,15 +22,19 @@ export class CourseService{
         const res = await api.get(`/courses/${id}`)
         return res.data
     }
-    static async delete(id:number) : Promise<
-    ApiResponse<Course>>{
-        const res=await api.delete(`/courses/${id}`)
+
+    static async create(data: CreateCourseInput): Promise<ApiResponse<Course>> {
+        const res = await api.post('/courses', data)
         return res.data
     }
 
-    static async create(data:CreateCourseInput) : Promise<
-    ApiResponse<Course>>{
-        const res=await api.post('/courses', data)
+    static async update(id: number, data: UpdateCourseInput): Promise<ApiResponse<Course>> {
+        const res = await api.put(`/courses/${id}`, data)
+        return res.data
+    }
+
+    static async delete(id: number): Promise<ApiResponse<Course>> {
+        const res = await api.delete(`/courses/${id}`)
         return res.data
     }
 }

@@ -3,6 +3,21 @@ import { Icon } from '@iconify/vue';
 import Form from '../../../../components/dashboard/admin/programs/FormPrograms.vue'
 import { UpdateProgramSchema } from '../../../../schemas/programs';
 import DashboardLayout from '../../../../components/layout/DashboardLayout.vue';
+import { useQuery } from '@tanstack/vue-query';
+import { useRoute } from 'vue-router';
+import { ProgramService } from '../../../../services/program';
+import { computed } from 'vue';
+
+const route = useRoute();
+const id = Number(route.params.id);
+
+const { data, isLoading, isError } = useQuery({
+  queryKey: ['program', id],
+  queryFn: () => ProgramService.findOne(id),
+  enabled: !!id,
+});
+
+const initialData = computed(() => data.value?.data);
 </script>
 
 <template>
@@ -23,6 +38,13 @@ import DashboardLayout from '../../../../components/layout/DashboardLayout.vue';
         </span>
     </RouterLink>
     <h1 class="text-3xl font-bold text-center mb-4 text-primary">Update Program</h1>
-    <Form :schema="UpdateProgramSchema" />
+    
+    <div v-if="isLoading" class="text-center py-8">
+      Memuat data...
+    </div>
+    <div v-else-if="isError" class="text-center py-8 text-red-600">
+      Gagal memuat data program.
+    </div>
+    <Form v-else :schema="UpdateProgramSchema" :initial-data="initialData" is-update />
   </DashboardLayout>
 </template>

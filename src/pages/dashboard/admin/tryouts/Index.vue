@@ -6,6 +6,7 @@ import { TryoutService } from '../../../../services/tryout'
 import TryoutTable from '../../../../components/dashboard/admin/tryouts/TryoutTable.vue'
 import { useRouter, useRoute } from 'vue-router'
 import { toast } from 'vue3-toastify'
+
 const router = useRouter()
 const route = useRoute()
 
@@ -70,8 +71,26 @@ const handleView = (id: number) => {
   router.push({ name: 'admin-tryouts-view', params: { id: id } })
 }
 
+const handleUpdate = (id: number) => {
+  router.push({ name: 'admin-tryouts-update', params: { id: id } })
+}
+
 const handleDelete = (id: number) => {
   tryoutMutation.mutate(id)
+}
+
+const publishMutation = useMutation({
+  mutationFn: async ({ id, isPublished }: { id: number; isPublished: boolean }) => {
+    await TryoutService.togglePublish(id, isPublished)
+  },
+  onSuccess: () => {
+    refetch()
+    toast('Status publikasi diperbarui', { type: 'success' })
+  },
+})
+
+const handleTogglePublish = (id: number, value: boolean) => {
+  publishMutation.mutate({ id, isPublished: value })
 }
 
 const handlePageChange = (page: number) => {
@@ -114,7 +133,9 @@ const handleSearch = (q: string) => {
             :meta="metaData"
             :q="query.q"
             @view="handleView"
+            @update="handleUpdate"
             @delete="handleDelete"
+            @toggle-publish="handleTogglePublish"
             @page-change="handlePageChange"
             @per-page-change="handlePerPageChange"
             @search="handleSearch"

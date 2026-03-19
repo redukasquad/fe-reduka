@@ -126,14 +126,14 @@ export const dashboardAdminRoutes: RouteRecordRaw[] = [
     meta: { ...adminMeta, title: "Create Program" },
   },
   {
-    path: "/dashboard/admin/programs/:id",
+    path: "/dashboard/admin/programs/view/:id",
     name: "admin-programs-view",
     component: AdminProgramsView,
     props: true,
     meta: { ...adminMeta, title: "Detail Program" },
   },
   {
-    path: "/dashboard/admin/programs/:id/update",
+    path: "/dashboard/admin/programs/update/:id",
     name: "admin-programs-update",
     component: AdminProgramsUpdate,
     props: true,

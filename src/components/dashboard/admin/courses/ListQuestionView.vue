@@ -134,7 +134,7 @@ const deleteQuestion = (id: number) => {
                     </span>
                 </div>
 
-                <div class="flex justify-start gap-2 items-center gap-4">
+                <div class="flex justify-start items-center gap-3">
 
                     <div
                     class="text-white bg-primary/80 px-2 py-0.5 text-[10px] rounded-full"

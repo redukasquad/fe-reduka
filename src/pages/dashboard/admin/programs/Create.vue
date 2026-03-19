@@ -24,7 +24,7 @@ import DashboardLayout from '../../../../components/layout/DashboardLayout.vue';
             </span>
         </RouterLink>
         <h1 class="text-3xl font-bold text-center mb-4 text-primary">New Program</h1>
-        <Form :schema="CreateProgramSchema" />
+        <Form :schema="CreateProgramSchema" :is-update="false" />
     </div>
   </DashboardLayout>
 </template>

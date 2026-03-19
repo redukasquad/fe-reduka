@@ -1,32 +1,15 @@
-import { z } from "zod";
+import { z } from "zod"
 
+// Matches BE CreateSubjectInput — courseId is URL param, not body
 export const CreateSubjectSchema = z.object({
-  courseId: z.number({
-    required_error: "Course ID is required",
-  }).int().positive(),
-
-  name: z
-    .string({
-      required_error: "Name is required",
-    })
-    .min(1, "Name cannot be empty"),
-
-  description: z
-    .string()
-    .optional()
-});
+  name: z.string().min(1, "Nama subject wajib diisi"),
+  description: z.string().optional(),
+})
 
 export const UpdateSubjectSchema = z.object({
-  name: z
-    .string()
-    .min(1, "Name cannot be empty")
-    .optional(),
+  name: z.string().min(1, "Nama tidak boleh kosong").optional(),
+  description: z.string().optional(),
+})
 
-  description: z
-    .string()
-    .optional(),
-});
-
-
-export type CreateSubjectInput = z.infer<typeof CreateSubjectSchema>;
-export type UpdateSubjectInput = z.infer<typeof UpdateSubjectSchema>;
+export type CreateSubjectInput = z.infer<typeof CreateSubjectSchema>
+export type UpdateSubjectInput = z.infer<typeof UpdateSubjectSchema>

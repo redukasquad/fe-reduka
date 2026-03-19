@@ -8,7 +8,7 @@ import Editor from 'primevue/editor'
 import Dropdown from 'primevue/dropdown'
 import DatePicker from 'primevue/datepicker'
 import InputText from 'primevue/inputtext'
-import Button from 'primevue/button'
+import { Icon } from '@iconify/vue'
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { ProgramService } from '../../../../services/program'
@@ -97,94 +97,181 @@ const isDisabled = computed(() => !valid || isSubmitting.value)
 <template>
   <form
     @submit="onSubmit"
-    class="max-w-5xl mx-auto flex flex-col gap-6 p-6 bg-surface rounded-xl shadow"
+    class="max-w-5xl mx-auto space-y-8"
   >
-    <div class="flex justify-between items-center px-4 mt-4">
-      <h2 class="text-2xl font-semibold">New course</h2>
-      <Button
-        type="button"
-        @click="isFree = !isFree"
-        :label="isFree ? 'Gratis' : 'Berbayar'"
-        :icon="isFree ? 'pi pi-check' : 'pi pi-dollar'"
-        :severity="isFree ? 'success' : 'danger'"
-        outlined
-       />
-    </div>
-
-    <UploadImage v-model="image" :key="uploadKey"  />
-
-    <div>
-      <Dropdown
-        v-model:modelValue="programId"
-        :options="programOptions"
-        optionLabel="label"
-        optionValue="value"
-        placeholder="Pilih Program"
-        class="w-full"
-        :loading="isLoading"
-      />
-      <small class="text-red-500">{{ programError }}</small>
-    </div>
-
-    <div>
-      <InputText
-        v-model="nameCourse"
-        placeholder="Nama Course"
-        class="w-full"
-      />
-      <small class="text-red-500">{{ nameError }}</small>
-    </div>
-
-    <div class="grid grid-cols-2 gap-4">
-      <div>
-        <DatePicker
-          v-model="startDate"
-          showIcon
-          placeholder="Start Date"
-          class="w-full"
-        />
-        <small class="text-red-500">{{ startError }}</small>
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 space-y-8">
+      <!-- Section: Header & Status -->
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-gray-50">
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800 flex items-center gap-2">
+            <Icon icon="mdi:book-plus" class="text-primary" />
+            Buat Course Baru
+          </h2>
+          <p class="text-sm text-gray-400 mt-1">Lengkapi informasi course di bawah ini.</p>
+        </div>
+        
+        <div class="flex items-center gap-3 bg-gray-50 p-1 rounded-xl border border-gray-100">
+          <button 
+            type="button"
+            @click="isFree = true"
+            :class="[isFree ? 'bg-white text-primary shadow-sm' : 'text-gray-400 hover:text-gray-600', 'px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2']"
+          >
+            <Icon icon="mdi:check-circle" v-if="isFree" />
+            Gratis
+          </button>
+          <button 
+            type="button"
+            @click="isFree = false"
+            :class="[!isFree ? 'bg-white text-primary shadow-sm' : 'text-gray-400 hover:text-gray-600', 'px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2']"
+          >
+            <Icon icon="mdi:currency-usd" v-if="!isFree" />
+            Berbayar
+          </button>
+        </div>
       </div>
 
-      <div>
-        <DatePicker
-          v-model="endDate"
-          showIcon
-          placeholder="End Date"
-          class="w-full"
-        />
-        <small class="text-red-500">{{ endError }}</small>
+      <!-- Section: Media -->
+      <div class="space-y-4">
+        <label class=" text-sm font-bold text-gray-700 uppercase tracking-wider flex items-center gap-2">
+          <Icon icon="mdi:image-plus" class="text-primary text-lg" />
+          Thumbnail Course
+        </label>
+        <div class="flex justify-center">
+          <UploadImage v-model="image" :key="uploadKey" class="w-full max-w-md aspect-video" />
+        </div>
+        <p class="text-[11px] text-gray-400 text-center italic">Format: JPG, PNG, WEBP. Maks 2MB.</p>
       </div>
-    </div>
 
-    <div class="flex flex-col gap-2">
-      <label class="font-medium">Deskripsi</label>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Section: Basic Info -->
+        <div class="space-y-6">
+          <div class="space-y-2">
+            <label class="text-sm font-bold text-gray-700 uppercase tracking-wider flex items-center gap-2">
+              <Icon icon="mdi:school-outline" class="text-primary text-lg" />
+              Program Terkait
+            </label>
+            <Dropdown
+              v-model:modelValue="programId"
+              :options="programOptions"
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Pilih Program Utama"
+              class="w-full rounded-xl border-gray-200 bg-gray-50/50"
+              :loading="isLoading"
+            />
+            <p v-if="programError" class="text-red-500 text-xs font-medium mt-1 flex items-center gap-1">
+              <Icon icon="mdi:alert-circle" />
+              {{ programError }}
+            </p>
+          </div>
 
-      <Editor
-        v-model="description"
-        editorStyle="height:300px"
-      />
+          <div class="space-y-2">
+            <label class="text-sm font-bold text-gray-700 uppercase tracking-wider flex items-center gap-2">
+              <Icon icon="mdi:format-title" class="text-primary text-lg" />
+              Nama Course
+            </label>
+            <InputText
+              v-model="nameCourse"
+              placeholder="Contoh: Matematika Dasar Intensif"
+              class="w-full px-4 py-3 rounded-xl border-gray-200 bg-gray-50/50"
+            />
+            <p v-if="nameError" class="text-red-500 text-xs font-medium mt-1 flex items-center gap-1">
+              <Icon icon="mdi:alert-circle" />
+              {{ nameError }}
+            </p>
+          </div>
 
-      <small class="text-red-500">{{ descriptionError }}</small>
-    </div>
+          <div class="space-y-2">
+            <label class="text-sm font-bold text-gray-700 uppercase tracking-wider flex items-center gap-2">
+              <Icon icon="mdi:whatsapp" class="text-primary text-lg" />
+              Link Grup WhatsApp
+            </label>
+            <InputText
+              v-model="whatsappGroupLink"
+              placeholder="https://chat.whatsapp.com/..."
+              class="w-full px-4 py-3 rounded-xl border-gray-200 bg-gray-50/50"
+            />
+            <p v-if="waError" class="text-red-500 text-xs font-medium mt-1 flex items-center gap-1">
+              <Icon icon="mdi:alert-circle" />
+              {{ waError }}
+            </p>
+          </div>
+        </div>
 
-    <div>
-      <InputText
-        v-model="whatsappGroupLink"
-        placeholder="Link Grup WhatsApp (opsional)"
-        class="w-full"
-      />
-      <small class="text-red-500">{{ waError }}</small>
-    </div>
+        <!-- Section: Dates -->
+        <div class="space-y-6">
+          <div class="p-6 bg-primary/5 rounded-2xl border border-primary/10 space-y-6">
+            <h3 class="font-bold text-primary flex items-center gap-2 text-sm uppercase tracking-wider">
+              <Icon icon="mdi:calendar-range" />
+              Periode Course
+            </h3>
+            
+            <div class="space-y-2">
+              <label class="text-xs font-bold text-gray-500 uppercase">Tanggal Mulai</label>
+              <DatePicker
+                v-model="startDate"
+                showIcon
+                placeholder="Pilih Tanggal Mulai"
+                class="w-full rounded-xl border-gray-200"
+              />
+              <p v-if="startError" class="text-red-500 text-xs font-medium mt-1 flex items-center gap-1">
+                <Icon icon="mdi:alert-circle" />
+                {{ startError }}
+              </p>
+            </div>
 
-    <div class="flex justify-end">
-      <Button
-        type="submit"
-        label="Create Course"
-        icon="pi pi-check"
-        :loading="isSubmitting"
-        :disabled="isDisabled"
-      />
+            <div class="space-y-2">
+              <label class="text-xs font-bold text-gray-500 uppercase">Tanggal Berakhir</label>
+              <DatePicker
+                v-model="endDate"
+                showIcon
+                placeholder="Pilih Tanggal Berakhir"
+                class="w-full rounded-xl border-gray-200"
+              />
+              <p v-if="endError" class="text-red-500 text-xs font-medium mt-1 flex items-center gap-1">
+                <Icon icon="mdi:alert-circle" />
+                {{ endError }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Description -->
+      <div class="space-y-2">
+        <label class=" text-sm font-bold text-gray-700 uppercase tracking-wider flex items-center gap-2">
+          <Icon icon="mdi:text-box-outline" class="text-primary text-lg" />
+          Deskripsi Lengkap
+        </label>
+        <div class="rounded-xl border border-gray-200 overflow-hidden bg-gray-50/50">
+          <Editor
+            v-model="description"
+            editorStyle="height:350px"
+            placeholder="Jelaskan apa yang akan dipelajari, jadwal, dan persyaratan lainnya..."
+            class="border-none"
+          />
+        </div>
+        <p v-if="descriptionError" class="text-red-500 text-xs font-medium mt-1 flex items-center gap-1">
+          <Icon icon="mdi:alert-circle" />
+          {{ descriptionError }}
+        </p>
+      </div>
+
+      <!-- Footer: Actions -->
+      <div class="flex items-center justify-between pt-8 border-t border-gray-50">
+        <p class="text-xs text-gray-400 italic">
+          * Pastikan periode tanggal valid sebelum menyimpan.
+        </p>
+        <button
+          type="submit"
+          class="flex items-center gap-2 px-8 py-3 rounded-xl bg-primary text-primary-foreground font-bold shadow-lg shadow-primary/20 hover:bg-primary/90 active:scale-95 transition-all duration-200 disabled:bg-gray-300 disabled:shadow-none disabled:cursor-not-allowed"
+          :disabled="isDisabled"
+        >
+          <Icon v-if="isSubmitting" icon="mdi:loading" class="animate-spin text-xl" />
+          <Icon v-else icon="mdi:content-save-check" class="text-xl" />
+          Simpan Course
+        </button>
+      </div>
     </div>
   </form>
 </template>

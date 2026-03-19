@@ -1,130 +1,135 @@
 <script setup lang="ts">
-import { computed, nextTick, watch } from "vue"
+import { computed, watch } from "vue"
 import { useForm, useField } from "vee-validate"
 import { toTypedSchema } from "@vee-validate/zod"
-import {
-  CreateRegistrationQuestionSchema,
-  type CreateRegistrationQuestionInput
-} from "../../../../schemas/course.question"
+import { z } from "zod"
 import { useMutation, useQueryClient } from "@tanstack/vue-query"
-import { CourseQuestionService } from "../../../../services/course.question"
 import { toast } from "vue3-toastify"
+import { CourseQuestionService } from "../../../../services/course.question"
 
 const visible = defineModel<boolean>({ default: false })
 
 const props = defineProps<{
-  courseId?: number
-  lastQuestion: number
+  courseId: number
+  lastQuestion: number  // auto-set questionOrder = lastQuestion
 }>()
 
-const form = useForm({
-  validationSchema: toTypedSchema(CreateRegistrationQuestionSchema),
-  validateOnMount: true
+// Matches BE CreateQuestionInput exactly
+const Schema = z.object({
+  questionText: z.string().min(1, "Teks pertanyaan wajib diisi"),
+  questionType: z.enum(["text", "select", "radio", "file"], {
+    required_error: "Tipe pertanyaan wajib dipilih",
+  }),
 })
 
-const { value: questionText, errorMessage: questionTextError } =
-  useField<string>("questionText")
-
-const { value: questionType, errorMessage: questionTypeError } =
-  useField<CreateRegistrationQuestionInput["questionType"]>("questionType")
-
-
-watch(
-  () => visible.value,
-  async (v) => {
-    if (v) {
-      await nextTick()
-
-      form.setFieldValue("questionText", "")
-      form.setFieldValue("questionType", "" as any)
-    } else {
-      form.resetForm()
-    }
-  }
-)
+type FormValues = z.infer<typeof Schema>
 
 const queryClient = useQueryClient()
 
-const mutate = useMutation<
-  unknown,
-  Error,
-  { courseId: number; data: CreateRegistrationQuestionInput }
->({
-  mutationFn: async ({ courseId, data }) =>
-    await CourseQuestionService.create(courseId,{
-        ... data,
-        questionOrder:props.lastQuestion
-    }),
-
-  onSuccess: () => {
-    queryClient.invalidateQueries({
-      queryKey: ["course-questions", props.courseId]
-    })
-    visible.value = false
-    form.resetForm()
-    toast("Successfully created question", { type: "success" })
-  }
+const { handleSubmit, isSubmitting, resetForm, meta } = useForm({
+  validationSchema: toTypedSchema(Schema),
 })
 
-const onSubmit = form.handleSubmit(
-  (values: CreateRegistrationQuestionInput) => {
-    mutate.mutate({
-      courseId: Number(props.courseId),
-      data: values
-    })
-  }
-)
+const { value: questionText, errorMessage: textError } = useField<string>("questionText")
+const { value: questionType, errorMessage: typeError } = useField<FormValues["questionType"]>("questionType")
 
-const isDisabled = computed(
-  () => !form.meta.value.valid || form.isSubmitting.value
-)
+watch(() => visible.value, v => { if (!v) resetForm() })
+
+const QUESTION_TYPES = [
+  { value: 'text', label: 'Text', desc: 'Jawaban bebas teks' },
+  { value: 'select', label: 'Select', desc: 'Pilihan dropdown' },
+  { value: 'radio', label: 'Radio', desc: 'Ya / Tidak' },
+  { value: 'file', label: 'File', desc: 'Upload file' },
+]
+
+const { mutate, isPending } = useMutation({
+  mutationFn: (values: FormValues) =>
+    CourseQuestionService.create(props.courseId, {
+      ...values,
+      questionOrder: props.lastQuestion,
+    }),
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ['course-questions', props.courseId] })
+    visible.value = false
+    resetForm()
+    toast.success('Pertanyaan berhasil ditambahkan')
+  },
+  onError: (err: any) => toast.error(err?.response?.data?.message ?? 'Gagal menambahkan pertanyaan'),
+})
+
+const onSubmit = handleSubmit(values => mutate(values))
+const isDisabled = computed(() => !meta.value.valid || isSubmitting.value || isPending.value)
 </script>
 
 <template>
   <Dialog
     v-model:visible="visible"
     modal
-    header="Add New Question"
-    :style="{ width: '800px' }"
+    header="Tambah Pertanyaan Registrasi"
+    :style="{ width: '560px' }"
+    @hide="resetForm()"
   >
-    <form @submit.prevent="onSubmit" class="space-y-4 mt-3">
+    <form @submit.prevent="onSubmit" class="space-y-4 pt-2">
 
-      <div class="space-y-1">
+      <!-- Order badge -->
+      <div class="flex items-center gap-2 text-sm text-gray-500">
+        <span class="bg-primary/10 text-primary px-2 py-0.5 rounded-full text-xs font-medium">
+          Urutan #{{ lastQuestion }}
+        </span>
+        <span>Pertanyaan baru akan ditambahkan di urutan ini</span>
+      </div>
+
+      <!-- Question text -->
+      <div>
+        <label class="text-sm font-medium text-gray-700 mb-1 block">Teks Pertanyaan</label>
         <input
           v-model="questionText"
           type="text"
-          placeholder="Soal pertanyaan"
-          class="w-full border px-3 py-2 rounded bg-gray-100 outline-none focus:ring-2 focus:ring-primary"
+          placeholder="Contoh: Mengapa kamu tertarik mengikuti kursus ini?"
+          class="w-full border rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/30"
         />
-        <p v-if="questionTextError" class="text-red-600 text-xs">
-          {{ questionTextError }}
-        </p>
+        <p v-if="textError" class="text-red-500 text-xs mt-1">{{ textError }}</p>
       </div>
 
-      <div class="space-y-1">
-        <label for="questionType">Tipe Soal</label>
-        <select
-          id="questionType"
-          v-model="questionType"
-          class="w-full border px-3 py-2 rounded bg-gray-100 outline-none focus:ring-2 focus:ring-primary"
+      <!-- Question type -->
+      <div>
+        <label class="text-sm font-medium text-gray-700 mb-2 block">Tipe Pertanyaan</label>
+        <div class="grid grid-cols-2 gap-2">
+          <button
+            v-for="t in QUESTION_TYPES"
+            :key="t.value"
+            type="button"
+            @click="questionType = t.value as any"
+            :class="[
+              'flex flex-col items-start p-3 rounded-lg border text-left transition-all',
+              questionType === t.value
+                ? 'border-primary bg-primary/5 ring-1 ring-primary'
+                : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+            ]"
+          >
+            <span class="font-medium text-sm">{{ t.label }}</span>
+            <span class="text-xs text-gray-400 mt-0.5">{{ t.desc }}</span>
+          </button>
+        </div>
+        <p v-if="typeError" class="text-red-500 text-xs mt-1">{{ typeError }}</p>
+      </div>
+
+      <div class="flex justify-end gap-2 pt-1">
+        <button
+          type="button"
+          @click="visible = false"
+          class="px-4 py-2 rounded-lg border text-sm text-gray-600 hover:bg-gray-50 transition-colors"
         >
-          <option value="" disabled>Pilih tipe pertanyaan</option>
-          <option value="text">Text</option>
-          <option value="select">Select</option>
-          <option value="radio">Radio</option>
-          <option value="file">File</option>
-        </select>
-        <p v-if="questionTypeError" class="text-red-600 text-xs">
-          {{ questionTypeError }}
-        </p>
+          Batal
+        </button>
+        <button
+          type="submit"
+          :disabled="isDisabled"
+          class="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
+        >
+          {{ isPending ? 'Menyimpan...' : 'Tambah Pertanyaan' }}
+        </button>
       </div>
-
-      <Button
-        type="submit"
-        :disabled="isDisabled"
-      >
-        <span>Add Question</span>
-      </Button>
     </form>
   </Dialog>
 </template>

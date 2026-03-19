@@ -5,6 +5,9 @@ import ProgramTable from '../../../../components/dashboard/admin/programs/Progra
 import { computed } from 'vue'
 import DashboardLayout from '../../../../components/layout/DashboardLayout.vue'
 import { toast } from 'vue3-toastify'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const { data, isLoading, isError, refetch } = useQuery({
   queryKey: ['programs'],
@@ -20,11 +23,24 @@ const mutate=useMutation({
     onSuccess:()=>{
         refetch()
         toast.success('Successfully deleted')
+    },
+    onError: (error: any) => {
+        toast.error(error.message || 'Failed to delete program')
     }
 })
 
 const handleDelete=async(id:number)=>{
-    mutate.mutate(id)
+    if(confirm('Apakah Anda yakin ingin menghapus program ini?')) {
+        mutate.mutate(id)
+    }
+}
+
+const handleView = (id: number) => {
+  router.push(`/dashboard/admin/programs/view/${id}`)
+}
+
+const handleUpdate = (id: number) => {
+  router.push(`/dashboard/admin/programs/update/${id}`)
 }
 </script>
 
@@ -43,7 +59,12 @@ const handleDelete=async(id:number)=>{
             </div>
 
             <div v-else>
-                <ProgramTable :programs="programs" @delete="handleDelete" />
+                <ProgramTable 
+                    :programs="programs" 
+                    @delete="handleDelete" 
+                    @view="handleView"
+                    @update="handleUpdate"
+                />
             </div>
             </div>
         </div>

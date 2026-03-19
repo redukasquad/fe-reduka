@@ -78,7 +78,7 @@ router.beforeEach((to, _, next) => {
   if (to.meta.roles && user) {
     const allowedRoles = to.meta.roles as UserRole[]
 
-    if (!allowedRoles.includes(user.role)) {
+    if (!user.role || !allowedRoles.includes(user.role)) {
       return next("/courses")
     }
   }

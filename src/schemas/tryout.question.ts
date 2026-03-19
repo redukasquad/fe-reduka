@@ -47,3 +47,7 @@ export const CreateTryoutQuestionSchema = z.object({
 })
 
 export type CreateTryoutQuestionInput = z.infer<typeof CreateTryoutQuestionSchema>
+
+export const UpdateTryoutQuestionSchema = CreateTryoutQuestionSchema.partial()
+
+export type UpdateTryoutQuestionInput = z.infer<typeof UpdateTryoutQuestionSchema>

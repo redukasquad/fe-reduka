@@ -16,6 +16,7 @@ export interface TryOut {
   name: string
   description?: string
   imageUrl?: string
+  driveLink?: string
 
   isFree: boolean
   price?: number

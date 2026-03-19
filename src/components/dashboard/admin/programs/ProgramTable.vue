@@ -7,6 +7,7 @@ import {
   useVueTable,
   createColumnHelper,
   type SortingState,
+  type FilterFn,
 } from '@tanstack/vue-table'
 import { ref, watch } from 'vue'
 import type { Program } from '../../../../types/entites/program'
@@ -42,7 +43,7 @@ const columns = [
     enableSorting: false,
   }),
   columnHelper.accessor('CreatedAt', {
-    header: 'Dijalankan Pada',
+    header: 'Dibuat Pada',
     cell: (info) =>
       new Date(info.getValue() as string).toLocaleDateString('id-ID'),
     enableSorting: true,
@@ -65,6 +66,11 @@ watch(
   { deep: true }
 )
 
+const fuzzyFilter: FilterFn<any> = (row, columnId, value) => {
+  const cellValue = row.getValue(columnId)
+  return String(cellValue).toLowerCase().includes(String(value).toLowerCase())
+}
+
 const table = useVueTable({
   get data() {
     return data.value
@@ -78,6 +84,7 @@ const table = useVueTable({
       return globalFilter.value
     },
   },
+  globalFilterFn: fuzzyFilter,
   onSortingChange: (updater) => {
     sorting.value =
       typeof updater === 'function' ? updater(sorting.value) : updater
@@ -93,7 +100,7 @@ const table = useVueTable({
 
 <template>
   <div class="p-2 space-y-4">
-    <div class="flex justify-between items-center">
+    <div class="flex justify-between items-center gap-4">
         <input
             v-model="globalFilter"
             type="text"
@@ -101,7 +108,8 @@ const table = useVueTable({
             class="w-full max-w-sm border rounded px-3 py-2 text-sm"
         />
 
-        <RouterLink to="programs/create" class="px-4 py-2 md:font-medium md:text-sm lg:text-lg text-xs font-semibold rounded-md bg-primary cursor-pointer text-primary-foreground hover:bg-primary/90 active:scale-95 transition-all duration-200">
+        <RouterLink to="/dashboard/admin/programs/create" class="flex items-center justify-center gap-2 px-4 py-2 font-semibold rounded-md bg-primary text-primary-foreground hover:bg-primary/90 active:scale-95 transition-all duration-200">
+            <span class="text-xl sm:hidden">+</span>
             <span class="hidden sm:inline">Tambah Program</span>
         </RouterLink>
     </div>
@@ -115,7 +123,7 @@ const table = useVueTable({
               v-for="header in headerGroup.headers"
               :key="header.id"
               :colSpan="header.colSpan"
-              class="border border-gray-300 bg-gray-100 px-3 py-2 text-left text-sm font-semibold cursor-pointer select-none text-nowrap"
+              class="border border-gray-300 bg-gray-100 px-3 py-2 text-left text-xs md:text-sm font-semibold cursor-pointer select-none text-nowrap"
               @click="header.column.getToggleSortingHandler()?.($event)"
             >
               <FlexRender
@@ -138,7 +146,7 @@ const table = useVueTable({
             <td
               v-for="cell in row.getVisibleCells()"
               :key="cell.id"
-              class="border border-gray-300 px-3 py-2 text-sm text-nowrap"
+              class="border border-gray-300 px-3 py-2 text-[12px] md:text-sm text-nowrap"
             >
               <div v-if="cell.column.id === 'imageProgram'">
                 <Image
@@ -185,9 +193,9 @@ const table = useVueTable({
         </tbody>
       </table>
         </div>
-        <div class="mt-4" v-else>
-            <p class="text-gray-500 text-center text-2xl">
-                Saat ini belum ada program yang dapat ditampilkan.
+        <div class="py-8" v-else>
+            <p class="text-gray-500 text-center text-xl font-medium">
+                Tidak ada program ditemukan
             </p>
             <p class="text-gray-400 text-center mt-2">
                 Program akan muncul di sini ketika sudah tersedia.
