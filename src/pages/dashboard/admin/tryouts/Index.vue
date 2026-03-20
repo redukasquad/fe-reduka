@@ -40,8 +40,8 @@ watch(
 )
 
 const { data, refetch, isLoading, isError } = useQuery({
-  queryKey: ['tryouts', query.q, query.page, query.perPage],
-  queryFn: () => TryoutService.findAll(query),
+  queryKey: computed(() => ['tryouts', query.q, query.page, query.perPage]),
+  queryFn: () => TryoutService.findAll({ q: query.q, page: query.page, perPage: query.perPage }),
   placeholderData: keepPreviousData,
 })
 

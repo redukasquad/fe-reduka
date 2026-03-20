@@ -26,6 +26,11 @@ export class TryoutService{
         return res.data
     }
 
+    static async getSubtests(id: number): Promise<ApiResponse<any[]>> {
+        const res = await api.get(`/tryouts/${id}/subtests`)
+        return res.data
+    }
+
     static async create(data: CreateTryOutInput): Promise<ApiResponse<TryOut>> {
         const res = await api.post(`/tryouts`, data)
         return res.data

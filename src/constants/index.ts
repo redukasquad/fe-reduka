@@ -47,12 +47,18 @@ export const tutorMenu = [
   },
   {
     id: 2,
-    path: '/dashboard/tutor/courses',
-    name: 'My Courses',
-    icon: 'mdi:book-open-variant'
+    path: '/dashboard/tutor/classes',
+    name: 'My Classes',
+    icon: 'mdi:book-edit-outline'
   },
   {
     id: 3,
+    path: '/dashboard/tutor/courses',
+    name: 'Semua Courses',
+    icon: 'mdi:book-open-variant'
+  },
+  {
+    id: 4,
     path: '/dashboard/tutor/tryouts',
     name: 'Tryout',
     icon: 'mdi:clipboard-edit-outline'

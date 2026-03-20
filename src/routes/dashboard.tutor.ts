@@ -9,6 +9,19 @@ const TutorCoursesIndex = () =>
 const TutorCoursesView = () =>
   import("../pages/dashboard/tutor/courses/View.vue");
 
+const TutorCoursesUpdate = () =>
+  import("../pages/dashboard/tutor/courses/Update.vue");
+
+// ===== CLASSES (My Classes — tutor manage sendiri) =====
+const TutorClassesIndex = () =>
+  import("../pages/dashboard/tutor/classes/index.vue");
+
+const TutorClassesCreate = () =>
+  import("../pages/dashboard/tutor/classes/Create.vue");
+
+const TutorClassesView = () =>
+  import("../pages/dashboard/tutor/classes/View.vue");
+
 
 
 // ===== TRYOUTS =====
@@ -39,18 +52,47 @@ export const dashboardTutorRoutes: RouteRecordRaw[] = [
     },
   },
 
-  // ===== COURSES =====
+  // ===== COURSES (read-only) =====
   {
     path: "/dashboard/tutor/courses",
     name: "tutor-courses",
     component: TutorCoursesIndex,
-    meta: { ...tutorMeta, title: "My Courses" },
+    meta: { ...tutorMeta, title: "Courses" },
   },
   {
     path: "/dashboard/tutor/courses/:id",
     name: "tutor-courses-view",
     component: TutorCoursesView,
-    meta: { ...tutorMeta, title: "My Courses" },
+    props: true,
+    meta: { ...tutorMeta, title: "Detail Course" },
+  },
+  {
+    path: "/dashboard/tutor/courses/:id/update",
+    name: "tutor-courses-update",
+    component: TutorCoursesUpdate,
+    props: true,
+    meta: { ...tutorMeta, title: "Edit Course" },
+  },
+
+  // ===== CLASSES (tutor manage sendiri) =====
+  {
+    path: "/dashboard/tutor/classes",
+    name: "tutor-classes",
+    component: TutorClassesIndex,
+    meta: { ...tutorMeta, title: "My Classes" },
+  },
+  {
+    path: "/dashboard/tutor/classes/create",
+    name: "tutor-classes-create",
+    component: TutorClassesCreate,
+    meta: { ...tutorMeta, title: "Buat Class" },
+  },
+  {
+    path: "/dashboard/tutor/classes/:id",
+    name: "tutor-classes-view",
+    component: TutorClassesView,
+    props: true,
+    meta: { ...tutorMeta, title: "Kelola Class" },
   },
 
   // ===== TRYOUTS =====

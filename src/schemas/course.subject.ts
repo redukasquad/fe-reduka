@@ -2,7 +2,7 @@ import { z } from "zod"
 
 // Matches BE CreateSubjectInput — courseId is URL param, not body
 export const CreateSubjectSchema = z.object({
-  name: z.string().min(1, "Nama subject wajib diisi"),
+  name: z.string().min(1, "Nama kelas wajib diisi"),
   description: z.string().optional(),
 })
 

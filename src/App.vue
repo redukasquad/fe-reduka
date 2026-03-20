@@ -20,7 +20,7 @@ const route = useRoute()
       </transition>
     </RouterView>
 
-    <Footer v-if="route.meta.layout !== 'plain'" />
+    <Footer v-if="route.meta.layout !== 'plain' && !route.path.startsWith('/dashboard')" />
   </div>
 </template>
 

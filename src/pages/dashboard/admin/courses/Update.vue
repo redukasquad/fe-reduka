@@ -55,14 +55,14 @@ const { value: whatsappGroupLink, errorMessage: waError } = useField<string>('wh
 
 watch(course, (val) => {
   if (!val) return
-  programId.value = val.programId
+  programId.value = val.programId ?? null
   nameCourse.value = val.nameCourse
   description.value = val.description ?? ''
   startDate.value = new Date(val.startDate)
   endDate.value = new Date(val.endDate)
   isFree.value = val.isFree
   image.value = val.image ?? null
-  whatsappGroupLink.value = val.whatsappGroupLink ?? ''
+  whatsappGroupLink.value = val.whatsAppGroupLink ?? '' // whatsAppGroupLink (capital A) from BE
 }, { immediate: true })
 
 const mutation = useMutation({

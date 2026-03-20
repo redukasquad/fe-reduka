@@ -9,7 +9,7 @@ export interface TryOutRegistration {
   deletedAt?: string | null
 
   userId: number
-  tryOutPackageId: number
+  tryOutId: number
 
   paymentProofUrl?: string
   paymentStatus: PaymentStatus

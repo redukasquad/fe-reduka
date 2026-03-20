@@ -22,9 +22,7 @@ const {
   handleSubmit,
   isSubmitting,
   resetForm,
-  meta: {
-    value: { valid },
-  },
+  meta,
 } = useForm({
   validationSchema: toTypedSchema(schema),
 })
@@ -94,7 +92,7 @@ const onSubmit = handleSubmit(async (values) => {
   uploadKey.value++
 })
 
-const isValid = computed(() => !valid || isSubmitting.value)
+const isValid = computed(() => !meta.value.valid || isSubmitting.value)
 </script>
 
 <template>

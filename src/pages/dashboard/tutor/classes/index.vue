@@ -1,14 +1,13 @@
 <script setup lang="ts">
-// Tutor Courses — READ ONLY
-// Tutor hanya bisa lihat semua courses yang tersedia.
-// Untuk manage subjects/lessons, gunakan My Classes (/dashboard/tutor/classes)
+// My Classes — courses yang di-assign ke tutor untuk dikelola lesson-nya
+// Tutor TIDAK bisa buat course baru — itu hak admin
 import { computed, reactive, watch } from 'vue'
 import { useQuery, keepPreviousData } from '@tanstack/vue-query'
 import { useRoute, useRouter } from 'vue-router'
 import { Icon } from '@iconify/vue'
 import { Image } from '@unpic/vue'
 import DashboardLayout from '../../../../components/layout/DashboardLayout.vue'
-import { CourseService } from '../../../../services/course'
+import { CourseTutorService } from '../../../../services/course.tutor.service'
 
 const route = useRoute()
 const router = useRouter()
@@ -33,8 +32,8 @@ watch(() => ({ q: query.q, page: query.page }), (val) => {
 })
 
 const { data, isLoading, isError } = useQuery({
-  queryKey: computed(() => ['courses', query.q, query.page, query.perPage]),
-  queryFn: () => CourseService.findAll(query),
+  queryKey: computed(() => ['my-courses', query.q, query.page, query.perPage]),
+  queryFn: () => CourseTutorService.getMyCourses(query),
   placeholderData: keepPreviousData,
   staleTime: 1000 * 60 * 2,
 })
@@ -54,18 +53,9 @@ const dateFormatter = new Intl.DateTimeFormat('id-ID', { day: '2-digit', month: 
     <div class="py-6 px-4 md:px-8 space-y-6 backdrop-blur">
 
       <!-- Header -->
-      <div class="flex items-center justify-between flex-wrap gap-3">
-        <div>
-          <h1 class="text-xl font-bold text-gray-800">Semua Courses</h1>
-          <p class="text-sm text-gray-500 mt-0.5">Lihat semua course yang tersedia di platform.</p>
-        </div>
-        <RouterLink
-          :to="{ name: 'tutor-classes' }"
-          class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
-        >
-          <Icon icon="mdi:book-edit-outline" />
-          Kelola My Classes
-        </RouterLink>
+      <div>
+        <h1 class="text-xl font-bold text-gray-800">My Classes</h1>
+        <p class="text-sm text-gray-500 mt-0.5">Course yang kamu ampu — kelola pertemuan & materi di sini.</p>
       </div>
 
       <!-- Search -->
@@ -81,8 +71,8 @@ const dateFormatter = new Intl.DateTimeFormat('id-ID', { day: '2-digit', month: 
       </div>
 
       <!-- Skeleton -->
-      <div v-if="isLoading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        <div v-for="n in 8" :key="n" class="bg-white rounded-xl border overflow-hidden animate-pulse">
+      <div v-if="isLoading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div v-for="n in 6" :key="n" class="bg-white rounded-xl border overflow-hidden animate-pulse">
           <div class="h-40 bg-gray-200" />
           <div class="p-4 space-y-2">
             <div class="h-4 bg-gray-200 rounded w-3/4" />
@@ -93,20 +83,21 @@ const dateFormatter = new Intl.DateTimeFormat('id-ID', { day: '2-digit', month: 
 
       <div v-else-if="isError" class="py-16 text-center text-red-500">
         <Icon icon="mdi:alert-circle-outline" class="text-5xl mb-2" />
-        <p>Gagal memuat data courses.</p>
+        <p>Gagal memuat data.</p>
       </div>
 
-      <div v-else-if="courses.length === 0" class="py-16 text-center text-gray-400 space-y-2">
+      <!-- Empty — tutor tidak bisa buat course sendiri -->
+      <div v-else-if="courses.length === 0" class="py-16 text-center text-gray-400 space-y-3">
         <Icon icon="mdi:book-off-outline" class="text-5xl" />
-        <p class="font-medium">Tidak ada course ditemukan.</p>
+        <p class="font-medium">Belum ada course yang kamu ampu.</p>
+        <p class="text-sm text-gray-400">Hubungi admin untuk di-assign ke course.</p>
       </div>
 
-      <!-- Grid — read only, tidak ada tombol edit/delete -->
-      <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        <RouterLink
+      <!-- Grid -->
+      <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div
           v-for="course in courses"
           :key="course.id"
-          :to="{ name: 'tutor-courses-view', params: { id: course.id } }"
           class="group bg-white rounded-xl border shadow-sm hover:shadow-md transition-all overflow-hidden flex flex-col"
         >
           <div class="relative h-40 bg-gray-100 overflow-hidden">
@@ -126,20 +117,32 @@ const dateFormatter = new Intl.DateTimeFormat('id-ID', { day: '2-digit', month: 
               {{ course.isFree ? 'GRATIS' : 'BERBAYAR' }}
             </span>
           </div>
+
           <div class="flex flex-col flex-1 p-4 gap-2">
-            <h3 class="font-semibold text-gray-800 text-sm leading-snug line-clamp-2 group-hover:text-primary transition-colors">
-              {{ course.nameCourse }}
-            </h3>
+            <h3 class="font-semibold text-gray-800 text-sm leading-snug line-clamp-2">{{ course.nameCourse }}</h3>
             <p v-if="course.program" class="text-xs text-gray-400 flex items-center gap-1">
               <Icon icon="mdi:school-outline" class="text-primary" />
               {{ course.program.programName }}
             </p>
-            <p class="text-xs text-gray-400 flex items-center gap-1 mt-auto">
+            <div class="flex items-center gap-2 text-xs text-gray-400">
+              <Icon icon="mdi:book-open-variant" class="text-primary" />
+              <span>{{ course.classes?.length ?? 0 }} kelas</span>
+              <span class="mx-1">·</span>
               <Icon icon="mdi:calendar-range" class="text-primary" />
-              {{ dateFormatter.format(new Date(course.startDate)) }}
-            </p>
+              <span>{{ dateFormatter.format(new Date(course.startDate)) }}</span>
+            </div>
+
+            <div class="flex items-center gap-2 mt-auto pt-3 border-t border-gray-50">
+              <RouterLink
+                :to="{ name: 'tutor-classes-view', params: { id: course.id } }"
+                class="flex-1 text-center px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-xs font-medium hover:bg-primary/90 transition-colors"
+              >
+                <Icon icon="mdi:book-edit-outline" class="inline mr-1" />
+                Kelola Pertemuan
+              </RouterLink>
+            </div>
           </div>
-        </RouterLink>
+        </div>
       </div>
 
       <!-- Pagination -->

@@ -1,9 +1,10 @@
+// Course Tutor service — tutor-specific course operations
+// API: GET /tutor/my-courses
 import type { ApiResponse, Paginated } from "../types/api"
 import type { Course } from "../types/entites/course"
 import api from "./api"
 
 export class CourseTutorService {
-  // GET /tutor/my-courses — courses milik tutor yang login
   static async getMyCourses(query: {
     q?: string
     page?: number

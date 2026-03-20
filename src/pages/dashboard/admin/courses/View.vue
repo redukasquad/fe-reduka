@@ -1,23 +1,21 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
+import { useMutation, useQuery } from '@tanstack/vue-query'
 import { Icon } from '@iconify/vue'
 import { Image } from '@unpic/vue'
 import { toast } from 'vue3-toastify'
 import DashboardLayout from '../../../../components/layout/DashboardLayout.vue'
-import FormSubject from '../../../../components/dashboard/admin/courses/FormSubject.vue'
+import ClassPanel from '../../../../components/dashboard/classes/ClassPanel.vue'
 import ListQuestionView from '../../../../components/dashboard/admin/courses/ListQuestionView.vue'
 import { CourseService } from '../../../../services/course'
-import { CourseSubjectService } from '../../../../services/course.subject'
 import { CourseRegistrationService } from '../../../../services/course.registration'
 
 const route = useRoute()
 const router = useRouter()
 const courseId = Number(route.params.id)
-const queryClient = useQueryClient()
 
-const { data, isLoading, isError, refetch } = useQuery({
+const { data, isLoading, isError } = useQuery({
   queryKey: ['course', courseId],
   queryFn: () => CourseService.findOne(courseId),
   enabled: !!courseId,
@@ -27,28 +25,11 @@ const course = computed(() => data.value?.data ?? null)
 
 // Registration count
 const { data: regData } = useQuery({
-  queryKey: ['course-registration', courseId],
+  queryKey: ['course-registrations', courseId],
   queryFn: () => CourseRegistrationService.getRegistration(courseId),
   enabled: !!courseId,
 })
 const registrationCount = computed(() => regData.value?.data?.length ?? 0)
-
-// Subjects
-const showAddSubject = ref(false)
-const activeSubjectId = ref<number | null>(null)
-const activeSubject = computed(() =>
-  course.value?.subjects?.find(s => s.id === activeSubjectId.value) ?? null
-)
-
-const deleteSubjectMutation = useMutation({
-  mutationFn: (id: number) => CourseSubjectService.remove(id),
-  onSuccess: () => {
-    refetch()
-    activeSubjectId.value = null
-    toast.success('Subject dihapus')
-  },
-  onError: (err: any) => toast.error(err?.response?.data?.message ?? 'Gagal menghapus subject'),
-})
 
 // Delete course
 const confirmDelete = ref(false)
@@ -64,7 +45,7 @@ const deleteMutation = useMutation({
 const dateFormatter = new Intl.DateTimeFormat('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })
 
 // Active tab
-const activeTab = ref<'subjects' | 'questions' | 'info'>('subjects')
+const activeTab = ref<'classes' | 'questions' | 'info'>('classes')
 </script>
 
 <template>
@@ -160,8 +141,8 @@ const activeTab = ref<'subjects' | 'questions' | 'info'>('subjects')
             <div class="flex flex-wrap gap-3 pt-1">
               <div class="flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 rounded-lg text-sm">
                 <Icon icon="mdi:book-open-variant" class="text-primary" />
-                <span class="font-medium">{{ course.subjects?.length ?? 0 }}</span>
-                <span class="text-gray-500">subjects</span>
+                <span class="font-medium">{{ course.classes?.length ?? 0 }}</span>
+                <span class="text-gray-500">kelas</span>
               </div>
               <RouterLink
                 :to="{ name: 'admin-courses-registration', params: { id: course.id } }"
@@ -173,8 +154,8 @@ const activeTab = ref<'subjects' | 'questions' | 'info'>('subjects')
                 <Icon icon="mdi:arrow-top-right" class="text-gray-400 text-xs" />
               </RouterLink>
               <a
-                v-if="course.whatsappGroupLink"
-                :href="course.whatsappGroupLink"
+                v-if="course.whatsAppGroupLink"
+                :href="course.whatsAppGroupLink"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="flex items-center gap-1.5 px-3 py-1.5 bg-green-50 rounded-lg text-sm text-green-700 hover:bg-green-100 transition-colors"
@@ -191,7 +172,7 @@ const activeTab = ref<'subjects' | 'questions' | 'info'>('subjects')
       <div class="border-b flex gap-0">
         <button
           v-for="tab in [
-            { key: 'subjects', label: 'Subjects', icon: 'mdi:book-open-variant' },
+            { key: 'classes', label: 'Kelas', icon: 'mdi:book-open-variant' },
             { key: 'questions', label: 'Pertanyaan Registrasi', icon: 'mdi:help-circle-outline' },
             { key: 'info', label: 'Deskripsi', icon: 'mdi:information-outline' },
           ]"
@@ -209,69 +190,8 @@ const activeTab = ref<'subjects' | 'questions' | 'info'>('subjects')
         </button>
       </div>
 
-      <!-- Tab: Subjects -->
-      <div v-if="activeTab === 'subjects'" class="space-y-3">
-        <div class="flex items-center justify-between">
-          <h2 class="font-semibold text-gray-800">
-            Subjects
-            <span class="ml-1.5 text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full">
-              {{ course.subjects?.length ?? 0 }}
-            </span>
-          </h2>
-          <button
-            @click="showAddSubject = true"
-            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
-          >
-            <Icon icon="mdi:plus" />
-            Tambah Subject
-          </button>
-        </div>
-
-        <div v-if="!course.subjects?.length" class="py-10 text-center text-gray-400">
-          <Icon icon="mdi:book-off-outline" class="text-4xl mb-2" />
-          <p>Belum ada subject</p>
-        </div>
-
-        <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <div
-            v-for="subject in course.subjects"
-            :key="subject.id"
-            class="border rounded-lg bg-white hover:shadow-sm transition-shadow"
-          >
-            <div class="flex items-center justify-between p-4">
-              <button
-                @click="activeSubjectId = activeSubjectId === subject.id ? null : subject.id"
-                class="flex items-center gap-2 text-left flex-1 min-w-0"
-              >
-                <div class="size-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                  <Icon icon="mdi:book-open-page-variant" class="text-primary text-sm" />
-                </div>
-                <div class="min-w-0">
-                  <p class="font-medium text-sm text-gray-800 truncate">{{ subject.name }}</p>
-                  <p class="text-xs text-gray-400">{{ subject.lessons?.length ?? 0 }} lessons</p>
-                </div>
-              </button>
-              <button
-                @click="deleteSubjectMutation.mutate(subject.id)"
-                :disabled="deleteSubjectMutation.isPending.value"
-                class="p-1.5 rounded-md text-red-400 hover:text-red-600 hover:bg-red-50 transition-colors ml-2 shrink-0"
-                title="Hapus subject"
-              >
-                <Icon icon="mdi:delete-outline" />
-              </button>
-            </div>
-
-            <!-- Subject description expand -->
-            <div
-              v-if="activeSubjectId === subject.id"
-              class="px-4 pb-4 border-t pt-3"
-            >
-              <div v-if="subject.description" class="text-sm text-gray-600 prose prose-sm max-w-none" v-html="subject.description" />
-              <p v-else class="text-sm text-gray-400 italic">Tidak ada deskripsi</p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- Tab: Classes -->
+      <ClassPanel v-if="activeTab === 'classes'" :course-id="courseId" :can-manage-classes="true" />
 
       <!-- Tab: Registration Questions -->
       <div v-if="activeTab === 'questions'">
@@ -285,6 +205,5 @@ const activeTab = ref<'subjects' | 'questions' | 'info'>('subjects')
       </div>
     </div>
 
-    <FormSubject v-model:visible="showAddSubject" :courseId="courseId" />
-  </DashboardLayout>
+    </DashboardLayout>
 </template>
