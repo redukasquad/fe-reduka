@@ -145,7 +145,7 @@ const recentUsers = computed(() => {
               Belum ada pengguna terdaftar.
             </div>
             <div v-else class="divide-y divide-gray-50">
-              <div v-for="user in recentUsers" :key="user.ID" class="p-4 flex items-center justify-between hover:bg-gray-50 rounded-xl transition-colors">
+              <div v-for="user in recentUsers" :key="user.id" class="p-4 flex items-center justify-between hover:bg-gray-50 rounded-xl transition-colors">
                 <div class="flex items-center gap-3">
                   <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 overflow-hidden">
                     <Icon icon="mdi:account" class="text-xl" />

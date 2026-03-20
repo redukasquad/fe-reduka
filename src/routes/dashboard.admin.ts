@@ -28,6 +28,12 @@ const AdminTryoutsUpdate = () => import("../pages/dashboard/admin/tryouts/Update
 const AdminTryoutsView = () => import("../pages/dashboard/admin/tryouts/View.vue");
 const AdminTryoutsRegistration = () => import("../pages/dashboard/admin/tryouts/Registration.vue");
 
+// Universities
+const AdminUniversitiesIndex = () => import("../pages/dashboard/admin/universities/index.vue");
+
+// Profile
+const AdminProfile = () => import("../pages/dashboard/admin/profile/index.vue");
+
 
 const adminMeta = {
   layout: "default",
@@ -173,5 +179,21 @@ export const dashboardAdminRoutes: RouteRecordRaw[] = [
     component: AdminTryoutsRegistration,
     props: true,
     meta: { ...adminMeta, title: "Edit Course" },
+  },
+
+  // ================= UNIVERSITIES =================
+  {
+    path: "/dashboard/admin/universities",
+    name: "admin-universities",
+    component: AdminUniversitiesIndex,
+    meta: { ...adminMeta, title: "Universities" },
+  },
+
+  // ================= PROFILE =================
+  {
+    path: "/dashboard/admin/profile",
+    name: "admin-profile",
+    component: AdminProfile,
+    meta: { ...adminMeta, title: "Profile" },
   },
 ];

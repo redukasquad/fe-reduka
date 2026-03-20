@@ -56,14 +56,14 @@ const handleView = (id: number) => {
     </div>
 
     <!-- Content -->
-    <div class="p-5 flex flex-col flex-grow">
+    <div class="p-5 flex flex-col grow">
       <h3 class="text-lg font-bold text-gray-800 line-clamp-2 leading-snug mb-2 group-hover:text-blue-600 transition-colors">
         {{ data.name }}
       </h3>
       
-      <p class="text-sm text-gray-500 line-clamp-2 mb-4 flex-grow leading-relaxed">
-        {{ data.description || "Tidak ada deskripsi tersedia." }}
-      </p>
+      <p class="text-sm text-gray-500 line-clamp-2 mb-4 flex-grow leading-relaxed"
+        v-html="data.description || 'Tidak ada deskripsi tersedia.'"
+      />
 
       <!-- Footer action -->
       <div class="pt-4 border-t border-gray-100 flex items-center justify-between mt-auto">

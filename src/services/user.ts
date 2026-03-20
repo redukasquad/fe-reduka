@@ -8,9 +8,27 @@ export interface CreateUserInput {
   password: string
 }
 
+export interface UpdateUserInput {
+  username?: string
+  no_telp?: string
+  jenis_kelamin?: boolean
+  kelas?: string
+  profile_image?: string
+}
+
 export class UserService {
   static async findAll(): Promise<ApiResponse<User[]>> {
     const res = await api.get('/users')
+    return res.data
+  }
+
+  static async findById(id: number): Promise<ApiResponse<User>> {
+    const res = await api.get(`/users/${id}`)
+    return res.data
+  }
+
+  static async update(id: number, data: UpdateUserInput): Promise<ApiResponse<User>> {
+    const res = await api.put(`/users/${id}`, data)
     return res.data
   }
 

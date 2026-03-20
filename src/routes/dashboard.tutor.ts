@@ -31,6 +31,10 @@ const TutorTryoutsIndex = () =>
 const TutorTryoutsView = () =>
   import("../pages/dashboard/tutor/tryouts/View.vue");
 
+// ===== PROFILE =====
+const TutorProfile = () =>
+  import("../pages/dashboard/tutor/profile/index.vue");
+
 const tutorMeta = {
   layout: "default" as const,
   requiresAuth: true,
@@ -107,5 +111,13 @@ export const dashboardTutorRoutes: RouteRecordRaw[] = [
     name: "tutor-tryouts-view",
     component: TutorTryoutsView,
     meta: { ...tutorMeta, title: "My Tryouts" },
+  },
+
+  // ===== PROFILE =====
+  {
+    path: "/dashboard/tutor/profile",
+    name: "tutor-profile",
+    component: TutorProfile,
+    meta: { ...tutorMeta, title: "Profile" },
   },
 ];

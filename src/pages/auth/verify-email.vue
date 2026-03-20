@@ -1,32 +1,32 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import OtpForm from '../../components/auth/OtpForm.vue';
-import ResendForm from '../../components/auth/ResendForm.vue';
+import { ref } from 'vue'
+import { Icon } from '@iconify/vue'
+import OtpForm from '../../components/auth/OtpForm.vue'
+import ResendForm from '../../components/auth/ResendForm.vue'
 
-
-const showResendForm=ref(false)
-
+const showResend = ref(false)
 </script>
 
-
 <template>
-  <div class="w-full h-screen flex flex-col items-center lg:items-end xl:items-center justify-center px-6 text-center z-50">
-    <div class="max-w-md w-full space-y-6">
-      <div class="space-y-3">
-        <h1 class="text-2xl font-semibold font-heading">
-          Verify Your Email
-        </h1>
-        <p class="text-gray-600 text-sm font-ubuntu">
-          Enter the 6-digit verification code sent to your email.
-        </p>
+  <div class="space-y-6">
+    <div class="text-center">
+      <div class="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
+        <Icon icon="mdi:email-check-outline" class="text-primary text-3xl" />
       </div>
-
-      <OtpForm v-if="!showResendForm" />
-      <ResendForm v-if="showResendForm" v-model="showResendForm" />
-
-      <button @click="showResendForm=!showResendForm" class="text-sm ml-auto text-primary/70 w-fit block px-4 py-2 rounded bg-primary/20 border border-primary/80 cursor-pointer hover:bg-primary/80 hover:text-white transition-all duration-100">
-        {{ showResendForm ? 'Back':'Resend' }}
-      </button>
+      <h1 class="text-2xl font-extrabold text-gray-900">Verifikasi Email</h1>
+      <p class="text-sm text-gray-500 mt-1.5 max-w-xs mx-auto">
+        Masukkan kode 6 digit yang telah dikirim ke email kamu
+      </p>
     </div>
+
+    <OtpForm v-if="!showResend" />
+    <ResendForm v-else v-model="showResend" />
+
+    <button
+      @click="showResend = !showResend"
+      class="w-full text-sm text-center text-gray-500 hover:text-primary transition-colors"
+    >
+      {{ showResend ? '← Kembali ke verifikasi' : 'Tidak menerima kode? Kirim ulang' }}
+    </button>
   </div>
 </template>

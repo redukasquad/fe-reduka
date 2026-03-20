@@ -29,7 +29,7 @@ const { data: usersData, isLoading: usersLoading } = useQuery({
 const tutorOptions = computed<User[]>(() => {
   const grantedIds = new Set(permissions.value.map(p => p.user?.id))
   return (usersData.value?.data ?? []).filter(
-    u => u.role === 'TUTOR' && !grantedIds.has(u.ID)
+    u => u.role === 'TUTOR' && !grantedIds.has(u.id)
   )
 })
 
@@ -123,9 +123,9 @@ function selectUser(id: number) {
             <div v-if="usersLoading" class="px-3 py-2 text-sm text-gray-500">Memuat...</div>
             <button
               v-for="user in filteredOptions"
-              :key="user.ID"
+              :key="user.id"
               type="button"
-              @click="selectUser(user.ID)"
+              @click="selectUser(user.id)"
               class="w-full text-left px-3 py-2 text-sm hover:bg-primary/5 flex items-center gap-2 transition-colors"
             >
               <Icon icon="mdi:account-circle-outline" class="text-gray-400 shrink-0" />

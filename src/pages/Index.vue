@@ -49,7 +49,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="bg-background flex flex-col pt-10">
+  <div class="bg-background flex flex-col pt-20">
       <div class="section"><HeroSection /></div>
       <div class="section"><AboutSection /></div>
       <div class="section"><StorySection /></div>

@@ -74,7 +74,16 @@ const { mutate: doRegister, isPending: registering } = useMutation({
     refetchMyRegs()
     qc.invalidateQueries({ queryKey: ['my-tryout-registrations'] })
   },
-  onError: (err: any) => toast.error(err?.response?.data?.message ?? 'Gagal mendaftar'),
+  onError: (err: any) => {
+    const status = err?.response?.status
+    const msg = err?.response?.data?.message ?? 'Gagal mendaftar'
+    if (status === 409) {
+      toast.info('Kamu sudah terdaftar di tryout ini.')
+      refetchMyRegs()
+    } else {
+      toast.error(msg)
+    }
+  },
 })
 
 // Paid: register then upload proof in one flow
@@ -97,7 +106,15 @@ async function submitPaidRegistration() {
     refetchMyRegs()
     qc.invalidateQueries({ queryKey: ['my-tryout-registrations'] })
   } catch (err: any) {
-    toast.error(err?.response?.data?.message ?? 'Gagal mendaftar')
+    const status = err?.response?.status
+    const msg = err?.response?.data?.message ?? 'Gagal mendaftar'
+    if (status === 409) {
+      toast.info('Kamu sudah terdaftar. Silakan upload bukti pembayaran.')
+      refetchMyRegs()
+      resetProofForm()
+    } else {
+      toast.error(msg)
+    }
   } finally {
     submitting.value = false
   }

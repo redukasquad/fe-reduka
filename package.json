@@ -20,6 +20,7 @@
     "@tresjs/core": "^5.7.0",
     "@unpic/vue": "^1.0.0",
     "@vee-validate/zod": "^4.15.1",
+    "@vueuse/core": "^14.2.1",
     "axios": "^1.13.2",
     "chart.js": "^4.5.1",
     "gsap": "^3.14.2",

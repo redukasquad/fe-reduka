@@ -5,62 +5,19 @@ export const headerMenu = [
 ]
 
 export const adminMenu = [
-  {
-    id: 1,
-    path: '/dashboard/admin',
-    name: 'Dashboard',
-    icon: 'mdi:view-dashboard-outline'
-  },
-  {
-    id: 2,
-    path: '/dashboard/admin/users',
-    name: 'Users',
-    icon: 'mdi:account-multiple-outline'
-  },
-  {
-    id: 3,
-    path: '/dashboard/admin/courses',
-    name: 'Courses',
-    icon: 'mdi:book-open-variant'
-  },
-  {
-    id: 4,
-    path: '/dashboard/admin/programs',
-    name: 'Programs',
-    icon: 'mdi:school-outline'
-  },
-  {
-    id: 5,
-    path: '/dashboard/admin/tryouts',
-    name: 'Tryouts',
-    icon: 'mdi:clipboard-text-outline'
-  }
+  { id: 1, path: '/dashboard/admin', name: 'Dashboard', icon: 'mdi:view-dashboard-outline' },
+  { id: 2, path: '/dashboard/admin/users', name: 'Users', icon: 'mdi:account-multiple-outline' },
+  { id: 3, path: '/dashboard/admin/courses', name: 'Courses', icon: 'mdi:book-open-variant' },
+  { id: 4, path: '/dashboard/admin/programs', name: 'Programs', icon: 'mdi:school-outline' },
+  { id: 5, path: '/dashboard/admin/tryouts', name: 'Tryouts', icon: 'mdi:clipboard-text-outline' },
+  { id: 6, path: '/dashboard/admin/universities', name: 'Universities', icon: 'mdi:domain' },
+  { id: 7, path: '/dashboard/admin/profile', name: 'Profile', icon: 'mdi:account-circle-outline' },
 ]
 
-
 export const tutorMenu = [
-  {
-    id: 1,
-    path: '/dashboard/tutor',
-    name: 'Dashboard',
-    icon: 'mdi:view-dashboard-outline'
-  },
-  {
-    id: 2,
-    path: '/dashboard/tutor/classes',
-    name: 'My Classes',
-    icon: 'mdi:book-edit-outline'
-  },
-  {
-    id: 3,
-    path: '/dashboard/tutor/courses',
-    name: 'Semua Courses',
-    icon: 'mdi:book-open-variant'
-  },
-  {
-    id: 4,
-    path: '/dashboard/tutor/tryouts',
-    name: 'Tryout',
-    icon: 'mdi:clipboard-edit-outline'
-  }
+  { id: 1, path: '/dashboard/tutor', name: 'Dashboard', icon: 'mdi:view-dashboard-outline' },
+  { id: 2, path: '/dashboard/tutor/classes', name: 'My Classes', icon: 'mdi:book-edit-outline' },
+  { id: 3, path: '/dashboard/tutor/courses', name: 'Semua Courses', icon: 'mdi:book-open-variant' },
+  { id: 4, path: '/dashboard/tutor/tryouts', name: 'Tryout', icon: 'mdi:clipboard-edit-outline' },
+  { id: 5, path: '/dashboard/tutor/profile', name: 'Profile', icon: 'mdi:account-circle-outline' },
 ]

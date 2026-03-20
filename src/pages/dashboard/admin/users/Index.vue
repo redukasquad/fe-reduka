@@ -29,7 +29,7 @@ const studentCount = computed(() => users.value.filter(u => u.role === 'STUDENT'
 // Change role
 const { mutate: changeRole } = useMutation({
   mutationFn: ({ user, role }: { user: User; role: UserRole }) =>
-    UserService.setRole(user.ID, role),
+    UserService.setRole(user.id, role),
   onSuccess: () => {
     queryClient.invalidateQueries({ queryKey: ['users'] })
     toast.success('Role berhasil diubah')
@@ -39,7 +39,7 @@ const { mutate: changeRole } = useMutation({
 
 // Delete user
 const { mutate: deleteUser } = useMutation({
-  mutationFn: (user: User) => UserService.delete(user.ID),
+  mutationFn: (user: User) => UserService.delete(user.id),
   onSuccess: () => {
     queryClient.invalidateQueries({ queryKey: ['users'] })
     toast.success('User berhasil dihapus')
