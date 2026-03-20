@@ -122,7 +122,7 @@ const socials = [
           © {{ new Date().getFullYear() }} REDUKA Community Academy. All rights reserved.
         </p>
         <div class="flex items-center gap-1.5 text-xs text-gray-600">
-          <span>Made with</span>
+          <span>Made with XninetzyLabs</span>
           <Icon icon="mdi:heart" class="text-red-500 text-xs" />
           <span>for education</span>
         </div>

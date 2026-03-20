@@ -57,11 +57,21 @@ const attemptStatusLabel = (s?: string) => ({ not_started: 'Belum Dimulai', in_p
               <span class="inline-flex items-center gap-1 text-xs text-gray-500 bg-gray-50 px-2.5 py-1 rounded-lg border border-gray-100">
                 <Icon icon="mdi:progress-check" class="text-primary" />{{ attemptStatusLabel(reg.attempt?.status) }}
               </span>
-              <span v-if="reg.attempt?.totalScore != null"
-                class="inline-flex items-center gap-1 text-xs font-bold text-primary bg-primary/10 px-2.5 py-1 rounded-lg">
-                <Icon icon="mdi:star-outline" /> Skor: {{ reg.attempt.totalScore }}
-              </span>
-              <RouterLink v-if="reg.attempt?.status !== 'completed'" :to="`/tryouts/${reg.tryOutId}`"
+
+              <!-- Completed: show score prominently + view result -->
+              <template v-if="reg.attempt?.status === 'completed'">
+                <span v-if="reg.attempt?.totalScore != null"
+                  class="inline-flex items-center gap-1 text-xs font-bold text-violet-700 bg-violet-100 px-2.5 py-1 rounded-lg">
+                  <Icon icon="mdi:trophy-outline" /> {{ reg.attempt.totalScore.toFixed(1) }}
+                </span>
+                <RouterLink :to="`/tryouts/exam/${reg.id}/result/${reg.attempt?.id}`"
+                  class="inline-flex items-center gap-1 text-xs font-bold text-primary bg-primary/10 hover:bg-primary/20 px-3 py-1 rounded-lg transition-colors">
+                  <Icon icon="mdi:chart-bar" /> Lihat Hasil
+                </RouterLink>
+              </template>
+
+              <!-- Not started / in progress -->
+              <RouterLink v-else :to="`/tryouts/exam/${reg.id}`"
                 class="inline-flex items-center gap-1 text-xs font-bold text-white bg-primary hover:bg-primary/90 px-3 py-1 rounded-lg transition-colors">
                 <Icon icon="mdi:play-outline" />{{ reg.attempt?.status === 'in_progress' ? 'Lanjutkan' : 'Mulai' }}
               </RouterLink>

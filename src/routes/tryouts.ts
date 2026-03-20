@@ -1,6 +1,10 @@
 import type { RouteRecordRaw } from "vue-router";
 import Index from "../pages/tryouts/Index.vue";
 const View = () => import("../pages/tryouts/View.vue");
+const ExamIntro = () => import("../pages/tryouts/exam/Intro.vue");
+const ExamPage = () => import("../pages/tryouts/exam/Exam.vue");
+const ExamResult = () => import("../pages/tryouts/exam/Result.vue");
+const SubtestReview = () => import("../pages/tryouts/exam/SubtestReview.vue");
 
 export const tryoutsRoutes:RouteRecordRaw[]=[
   {
@@ -27,5 +31,30 @@ export const tryoutsRoutes:RouteRecordRaw[]=[
         description: "Lihat detail tryout dan daftar sekarang.",
       },
     },
+  },
+  // Exam flow — no layout wrapper (full screen)
+  {
+    path: "/tryouts/exam/:registrationId",
+    name: "exam-intro",
+    component: ExamIntro,
+    meta: { layout:'plain',requiresAuth: true, roles: ['STUDENT'] },
+  },
+  {
+    path: "/tryouts/exam/:registrationId/attempt/:attemptId",
+    name: "exam-page",
+    component: ExamPage,
+    meta: { layout:'plain',requiresAuth: true, roles: ['STUDENT'] },
+  },
+  {
+    path: "/tryouts/exam/:registrationId/result/:attemptId",
+    name: "exam-result",
+    component: ExamResult,
+    meta: { layout:'plain', requiresAuth: true, roles: ['STUDENT'] },
+  },
+  {
+    path: "/tryouts/exam/:registrationId/result/:attemptId/review/:subtestId",
+    name: "exam-subtest-review",
+    component: SubtestReview,
+    meta: { layout:'plain', requiresAuth: true, roles: ['STUDENT'] },
   },
 ]

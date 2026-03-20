@@ -25,7 +25,7 @@ const freeCourses = computed(() => courses.value.filter(c => c.isFree).length)
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50 pt-18">
+  <div class="min-h-screen bg-gray-50">
     <!-- Loading skeleton -->
     <div v-if="isLoading" class="max-w-4xl mx-auto px-4 py-10 space-y-6 animate-pulse">
       <div class="h-64 bg-gray-200 rounded-2xl" />
@@ -43,7 +43,7 @@ const freeCourses = computed(() => courses.value.filter(c => c.isFree).length)
 
     <template v-else-if="program">
       <!-- Hero image -->
-      <div class="relative w-full h-64 md:h-80 max-w-[90%] mx-auto shadow-md bg-gray-200 overflow-hidden">
+      <div class="relative w-full h-64 md:h-80 max-w-[90%] mx-auto shadow-md bg-gray-200 overflow-hidden mt-32">
         <Image
           v-if="program.imageProgram"
           :src="program.imageProgram"

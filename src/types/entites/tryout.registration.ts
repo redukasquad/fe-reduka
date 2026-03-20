@@ -1,5 +1,4 @@
 import type { PaymentStatus, TryOut } from "./tryout"
-import type { TryOutAttempt } from "./tryout.attempt"
 import type { User } from "./user"
 
 export interface TryOutRegistration {
@@ -22,5 +21,10 @@ export interface TryOutRegistration {
   user?: User
   tryOut?: TryOut
   approvedBy?: User
-  attempt?: TryOutAttempt
+  hasAttempt?: boolean
+  attempt?: {
+    id: number
+    status: 'not_started' | 'in_progress' | 'completed'
+    totalScore?: number
+  }
 }
