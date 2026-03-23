@@ -6,6 +6,7 @@ const navLinks = [
   { label: 'Programs', to: '/programs', icon: 'mdi:school-outline' },
   { label: 'Courses',  to: '/courses',  icon: 'mdi:book-open-variant' },
   { label: 'Tryouts',  to: '/tryouts',  icon: 'mdi:clipboard-text-outline' },
+  { label: 'Kontak',   to: '/contact',  icon: 'mdi:headset' },
 ]
 
 const legalLinks = [

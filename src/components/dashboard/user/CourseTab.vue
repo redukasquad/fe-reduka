@@ -2,7 +2,10 @@
 import { computed } from 'vue'
 import { Icon } from '@iconify/vue'
 import { useQuery } from '@tanstack/vue-query'
+import { useRouter } from 'vue-router'
 import { CourseRegistrationService } from '../../../services/course.registration'
+
+const router = useRouter()
 
 const { data, isLoading } = useQuery({
   queryKey: ['my-course-registrations'],
@@ -56,10 +59,16 @@ const statusLabel = (s: string) => ({ approved: 'Disetujui', pending: 'Menunggu'
                 {{ statusLabel(reg.status) }}
               </span>
             </div>
-            <a v-if="reg.status === 'approved' && reg.whatsappGroupLink" :href="reg.whatsappGroupLink" target="_blank"
-              class="mt-3 inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-lg transition-colors">
-              <Icon icon="mdi:whatsapp" class="text-base" /> Bergabung ke Grup WhatsApp
-            </a>
+            <div v-if="reg.status === 'approved'" class="mt-3 flex flex-wrap items-center gap-2">
+              <button @click="router.push(`/courses/${reg.courseId}/learn`)"
+                class="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-primary hover:bg-primary/90 px-3 py-1.5 rounded-lg transition-colors">
+                <Icon icon="mdi:play-circle-outline" class="text-base" /> Mulai Belajar
+              </button>
+              <a v-if="reg.whatsappGroupLink" :href="reg.whatsappGroupLink" target="_blank"
+                class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-lg transition-colors">
+                <Icon icon="mdi:whatsapp" class="text-base" /> Grup WhatsApp
+              </a>
+            </div>
             <p v-else-if="reg.status === 'pending'" class="mt-2 text-xs text-amber-600 flex items-center gap-1">
               <Icon icon="mdi:clock-outline" /> Menunggu persetujuan admin
             </p>

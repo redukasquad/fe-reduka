@@ -1,5 +1,6 @@
 import type { RouteRecordRaw } from "vue-router";
 import Index from "../pages/Index.vue";
+import Contact from "../pages/Contact.vue";
 
 export const landingPageRoutes:RouteRecordRaw[]=[
   {
@@ -14,6 +15,19 @@ export const landingPageRoutes:RouteRecordRaw[]=[
           "Platform pembelajaran untuk membantu Mempersiapkan kamu dalam kebutuhan yang akan datang",
         keywords:
           "AI learning platform, LMS AI, belajar online, tracking belajar",
+      },
+    },
+  },
+  {
+    path: "/contact",
+    name: "contact",
+    component: Contact,
+    meta: {
+      layout: "default" as const,
+      seo: {
+        title: "Hubungi Kami",
+        description: "Hubungi tim REDUKA untuk pertanyaan, saran, atau bantuan.",
+        keywords: "kontak reduka, hubungi kami, customer support",
       },
     },
   },

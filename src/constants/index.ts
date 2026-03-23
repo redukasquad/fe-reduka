@@ -1,7 +1,7 @@
 export const headerMenu = [
   { id: 1, path: '/programs', name: 'Programs', icon: 'mdi:school-outline' },
   { id: 2, path: '/courses', name: 'Courses', icon: 'mdi:book-open-variant' },
-  { id: 3, path: '/tryouts', name: 'Tryouts', icon: 'mdi:clipboard-text-outline' }
+  { id: 3, path: '/tryouts', name: 'Tryouts', icon: 'mdi:clipboard-text-outline' },
 ]
 
 export const adminMenu = [
