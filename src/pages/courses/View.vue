@@ -103,7 +103,7 @@ const statusCfg: Record<string, { label: string; color: string; icon: string }> 
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50 pt-18">
+  <div class="min-h-screen bg-gray-50 pt-20">
     <!-- Loading -->
     <div v-if="isLoading" class="max-w-4xl mx-auto px-4 py-10 space-y-4 animate-pulse">
       <div class="h-64 bg-gray-200 rounded-2xl" />
@@ -196,7 +196,7 @@ const statusCfg: Record<string, { label: string; color: string; icon: string }> 
               </div>
               <div>
                 <p class="font-semibold text-gray-800 text-sm">{{ cls.name }}</p>
-                <p v-if="cls.description" class="text-xs text-gray-400 line-clamp-1">{{ cls.description }}</p>
+                <p v-if="cls.description" v-html="cls.description" class="text-xs text-gray-400 line-clamp-1"></p>
               </div>
             </div>
           </div>
@@ -229,7 +229,17 @@ const statusCfg: Record<string, { label: string; color: string; icon: string }> 
               Bergabung ke Grup WhatsApp
             </a>
 
-            <button disabled class="w-full py-3 rounded-xl bg-gray-100 text-gray-400 font-semibold cursor-not-allowed text-sm">
+            <!-- Start learning button for approved -->
+            <RouterLink
+              v-if="myRegistration.status === 'approved'"
+              :to="`/courses/${id}/learn`"
+              class="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-primary text-white font-semibold text-sm hover:bg-primary/90 transition-colors mb-2"
+            >
+              <Icon icon="mdi:play-circle-outline" class="text-lg" />
+              Mulai Belajar
+            </RouterLink>
+
+            <button v-else disabled class="w-full py-3 rounded-xl bg-gray-100 text-gray-400 font-semibold cursor-not-allowed text-sm">
               Sudah Terdaftar
             </button>
           </template>

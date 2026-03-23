@@ -1,12 +1,13 @@
 import type { RouteRecordRaw } from "vue-router";
 import IndeX from "../pages/courses/Index.vue";
 const View = () => import("../pages/courses/View.vue");
+const Learn = () => import("../pages/courses/Learn.vue");
 
-export const coursesRoutes:RouteRecordRaw[]=[
+export const coursesRoutes: RouteRecordRaw[] = [
   {
     path: "/courses",
     name: "Courses",
-    component:IndeX,
+    component: IndeX,
     meta: {
       layout: "default" as const,
       seo: {
@@ -26,6 +27,16 @@ export const coursesRoutes:RouteRecordRaw[]=[
         title: "Detail Course",
         description: "Lihat detail course dan daftar sekarang.",
       },
+    },
+  },
+  {
+    path: "/courses/:id/learn",
+    name: "courses-learn",
+    component: Learn,
+    props: true,
+    meta: {
+      layout: "plain" as const,
+      requiresAuth: true,
     },
   },
 ]

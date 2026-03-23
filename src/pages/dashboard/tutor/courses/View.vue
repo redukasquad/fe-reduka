@@ -176,7 +176,7 @@ const activeTab = ref<Tab>('classes')
               </div>
               <div class="min-w-0 flex-1">
                 <p class="font-medium text-sm text-gray-800">{{ cls.name }}</p>
-                <p v-if="cls.description" class="text-xs text-gray-400 mt-0.5 line-clamp-1">{{ cls.description }}</p>
+                <p v-if="cls.description" v-html="cls.description" class="text-xs text-gray-400 mt-0.5 line-clamp-1"></p>
                 <p class="text-xs text-gray-400">{{ cls.lessonCount ?? 0 }} lessons</p>
               </div>
             </div>
