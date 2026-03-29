@@ -81,7 +81,7 @@ function onCardEnter(e: MouseEvent, idx: number) {
     rotateY: dx * 12,
     rotateX: -dy * 12,
     scale: 1.06,
-    boxShadow: `${-dx * 8}px ${dy * 8}px 32px ${contacts[idx].shadow}, 0 0 40px ${contacts[idx].glow}`,
+    boxShadow: `${-dx * 8}px ${dy * 8}px 32px ${contacts[idx]?.shadow}, 0 0 40px ${contacts[idx]?.glow}`,
     duration: 0.3,
     ease: 'power2.out',
     transformPerspective: 600,
@@ -98,7 +98,7 @@ function onCardMove(e: MouseEvent, idx: number) {
   gsap.to(card, {
     rotateY: dx * 12,
     rotateX: -dy * 12,
-    boxShadow: `${-dx * 8}px ${dy * 8}px 32px ${contacts[idx].shadow}, 0 0 40px ${contacts[idx].glow}`,
+    boxShadow: `${-dx * 8}px ${dy * 8}px 32px ${contacts[idx]?.shadow}, 0 0 40px ${contacts[idx]?.glow}`,
     duration: 0.15,
     ease: 'power2.out',
   })

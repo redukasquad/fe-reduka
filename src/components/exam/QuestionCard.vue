@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { QuestionForExam } from '../../services/tryout.attempt'
 
-const props = defineProps<{
+defineProps<{
   question: QuestionForExam
   index: number
   total: number

@@ -1,5 +1,5 @@
 import { ref } from "vue"
-import type { ApiFunction, ApiMeta } from "../types/api"
+import type { ApiFunction } from "../types/api"
 
 export function useApi<TPayload = void, TData = any>(
   apiFn: ApiFunction<TPayload, TData>
@@ -8,7 +8,7 @@ export function useApi<TPayload = void, TData = any>(
   const data = ref<TData | null>(null)
   const error = ref<any>(null)
   const message = ref("")
-  const meta = ref<ApiMeta | null>(null)
+  const meta = ref<any | null>(null)
 
   const call = async (payload: TPayload) => {
     isLoading.value = true
@@ -20,7 +20,9 @@ export function useApi<TPayload = void, TData = any>(
       const response = await apiFn(payload)
 
       message.value = response.message
-      meta.value = response.meta ?? null
+      if(response?.meta) {
+        meta.value = response?.meta
+      } 
 
       if (response.status) {
         data.value = response.data ?? null

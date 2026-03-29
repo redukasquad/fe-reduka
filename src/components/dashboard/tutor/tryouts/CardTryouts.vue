@@ -4,7 +4,7 @@ import type { TryOut } from "../../../../types/entites/tryout"
 import { useRouter } from "vue-router"
 import { Icon } from '@iconify/vue'
 
-const props = defineProps<{
+defineProps<{
   data: TryOut
 }>()
 

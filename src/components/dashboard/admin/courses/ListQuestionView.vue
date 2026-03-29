@@ -4,8 +4,7 @@ import { computed, ref } from 'vue'
 import { CourseQuestionService } from '../../../../services/course.question'
 import FormQuestion from './FormQuestion.vue'
 import { Icon } from '@iconify/vue'
-import { toast } from 'vue3-toastify'
-import FormAnswer from './FormAnswer.vue'
+import { toast } from 'vue3-toastify' 
 
 export interface RegistrationAnswer {
   id: number

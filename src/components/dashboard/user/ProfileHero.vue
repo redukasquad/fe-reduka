@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { Icon } from '@iconify/vue'
 import * as THREE from 'three'
 import gsap from 'gsap'
 import type { User } from '../../../types/entites/user'
 
-const props = defineProps<{
+defineProps<{
   user: User | null
   courseCount: number
   tryoutCount: number

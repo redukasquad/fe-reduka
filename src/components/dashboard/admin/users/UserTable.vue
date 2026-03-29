@@ -132,7 +132,7 @@ const table = useVueTable({
 
               <!-- Actions -->
               <div v-else-if="cell.column.id === 'actions'" class="flex items-center gap-1">
-                <template v-if="confirmDeleteId === row.original.ID">
+                <template v-if="confirmDeleteId === row.original.id">
                   <span class="text-xs text-red-500 mr-1">Yakin?</span>
                   <button
                     @click="emit('delete', row.original); confirmDeleteId = null"
@@ -145,7 +145,7 @@ const table = useVueTable({
                 </template>
                 <button
                   v-else
-                  @click="confirmDeleteId = row.original.ID"
+                  @click="confirmDeleteId = row.original.id"
                   class="p-1.5 rounded-md text-red-400 hover:text-red-600 hover:bg-red-50 transition-colors"
                   title="Hapus user"
                 >

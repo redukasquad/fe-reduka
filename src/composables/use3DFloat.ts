@@ -1,5 +1,4 @@
 import { ref } from 'vue'
-import type { Ref } from 'vue'
 
 /**
  * Composable for 3D floating animation parameters.

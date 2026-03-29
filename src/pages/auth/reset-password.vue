@@ -2,12 +2,11 @@
 import { toTypedSchema } from '@vee-validate/zod'
 import { useField, useForm } from 'vee-validate'
 import { Icon } from '@iconify/vue'
-import { computed, ref } from 'vue'
+import { computed, } from 'vue'
 import { ForgotPassword } from '../../schemas/auth'
 
 const form = useForm({ validationSchema: toTypedSchema(ForgotPassword) })
 const { value: email, errorMessage: emailError } = useField("email")
-const showPassword = ref(false)
 
 const onSubmit = form.handleSubmit((values) => {
   console.log("reset password:", values)

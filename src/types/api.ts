@@ -3,6 +3,7 @@ export interface ApiResponse<T = any> {
   message: string
   data?: T
   error?: any
+  meta?: any
 }
 
 export type ApiFunction<TPayload, TData> = (

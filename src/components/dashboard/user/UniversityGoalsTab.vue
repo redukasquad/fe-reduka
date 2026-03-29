@@ -110,7 +110,7 @@ const onSearch = (val: string) => {
 
     <!-- Target list -->
     <div v-else class="space-y-3">
-      <div v-for="(target, i) in targets" :key="target.id"
+      <div v-for="(target) in targets" :key="target.id"
         class="bg-white rounded-2xl border border-gray-100 p-4 hover:border-primary/30 hover:shadow-sm transition-all group">
         <div class="flex items-center gap-4">
           <!-- Priority badge -->

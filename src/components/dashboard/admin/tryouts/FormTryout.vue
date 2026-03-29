@@ -51,10 +51,10 @@ const { value: isFree } =
 const { value: price, errorMessage: priceError } =
   useField<number>('price')
 
-const { value: qrisImageUrl, errorMessage: qrisImageUrlError } =
+const { value: qrisImageUrl} =
   useField<string>('qrisImageUrl')
 
-const { value: paymentLink, errorMessage: paymentLinkError } =
+const { value: paymentLink } =
   useField<string>('paymentLink')
 
 const { value: registrationStart, errorMessage: registrationStartError } =

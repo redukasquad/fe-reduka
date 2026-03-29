@@ -1,7 +1,5 @@
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import type { Ref } from 'vue'
-import { onMounted } from 'vue'
 
 gsap.registerPlugin(ScrollTrigger)
 

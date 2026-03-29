@@ -7,8 +7,6 @@ import { TryoutAttemptService, type QuestionReview } from '../../../services/try
 
 const route = useRoute()
 const router = useRouter()
-
-const regId = Number(route.params.registrationId)
 const attemptId = Number(route.params.attemptId)
 const subtestId = Number(route.params.subtestId)
 

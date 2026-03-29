@@ -12,7 +12,7 @@ const emit = defineEmits<{
   create: []
 }>()
 
-const props = defineProps<{ selectedId?: number }>()
+defineProps<{ selectedId?: number }>()
 
 const searchQ = ref('')
 

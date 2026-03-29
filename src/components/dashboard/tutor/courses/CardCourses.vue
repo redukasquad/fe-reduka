@@ -2,7 +2,7 @@
 import { useRouter } from "vue-router";
 import type { Course } from "../../../../types/entites/course"
 
-const props = defineProps<{
+defineProps<{
   data: Course
 }>()
 

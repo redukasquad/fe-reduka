@@ -96,11 +96,6 @@ const { data: questionsData, isLoading: isLoadingQuestions } = useQuery({
 
 const questions = computed(() => questionsData.value?.data ?? [])
 
-// Compute next order number from the current list of questions for the selected subtest
-const nextOrderNumber = computed(() => {
-  if (!selectedSubtestId.value) return undefined
-  return questions.value.length + 1
-})
 
 const handleEdit = (question: TryOutQuestion) => {
   questionToEdit.value = question
