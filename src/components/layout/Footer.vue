@@ -95,19 +95,19 @@ const socials = [
         <div class="md:col-span-2 space-y-4">
           <p class="text-[10px] font-bold text-gray-500 tracking-widest uppercase">Kontak</p>
           <div class="space-y-2.5">
-            <a href="#" class="flex items-center gap-2.5 text-sm text-gray-400 hover:text-white transition-colors group">
+            <a href="https://www.instagram.com/redukasquad?igsh=Z3M4b2k2cXc2Y3ls" target="_blank" class="flex items-center gap-2.5 text-sm text-gray-400 hover:text-white transition-colors group">
               <span class="w-6 h-6 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                 <Icon icon="mdi:instagram" class="text-sm" />
               </span>
               Instagram
             </a>
-            <a href="#" class="flex items-center gap-2.5 text-sm text-gray-400 hover:text-white transition-colors group">
+            <a href="https://wa.me/62895414327741" target="_blank" class="flex items-center gap-2.5 text-sm text-gray-400 hover:text-white transition-colors group">
               <span class="w-6 h-6 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                 <Icon icon="mdi:whatsapp" class="text-sm" />
               </span>
               WhatsApp
             </a>
-            <a href="mailto:info@reduka.id" class="flex items-center gap-2.5 text-sm text-gray-400 hover:text-white transition-colors group">
+            <a href="mailto:redukasquad@gmail.com"  target="_blank" class="flex items-center gap-2.5 text-sm text-gray-400 hover:text-white transition-colors group">
               <span class="w-6 h-6 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                 <Icon icon="mdi:email-outline" class="text-sm" />
               </span>
