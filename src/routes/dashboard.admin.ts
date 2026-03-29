@@ -4,9 +4,6 @@ import type { RouteMeta } from "vue-router";
 
 // Users
 const AdminUsersIndex = () => import("../pages/dashboard/admin/users/Index.vue");
-const AdminUsersCreate = () => import("../pages/dashboard/admin/users/Create.vue");
-const AdminUsersUpdate = () => import("../pages/dashboard/admin/users/Update.vue");
-const AdminUsersView = () => import("../pages/dashboard/admin/users/View.vue");
 
 // Courses
 const AdminCoursesIndex = () => import("../pages/dashboard/admin/courses/Index.vue");
@@ -61,26 +58,6 @@ export const dashboardAdminRoutes: RouteRecordRaw[] = [
     name: "admin-users",
     component: AdminUsersIndex,
     meta: { ...adminMeta, title: "Users" },
-  },
-  {
-    path: "/dashboard/admin/users/create",
-    name: "admin-users-create",
-    component: AdminUsersCreate,
-    meta: { ...adminMeta, title: "Create User" },
-  },
-  {
-    path: "/dashboard/admin/users/:id",
-    name: "admin-users-view",
-    component: AdminUsersView,
-    props: true,
-    meta: { ...adminMeta, title: "Detail User" },
-  },
-  {
-    path: "/dashboard/admin/users/:id/update",
-    name: "admin-users-update",
-    component: AdminUsersUpdate,
-    props: true,
-    meta: { ...adminMeta, title: "Edit User" },
   },
 
   // ================= COURSES =================

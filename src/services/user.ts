@@ -39,6 +39,7 @@ export class UserService {
   }
 
   static async setRole(userId: number, role: string): Promise<ApiResponse<User>> {
+    console.log(userId)
     const res = await api.patch(`/users/${userId}/role`, { role })
     return res.data
   }
