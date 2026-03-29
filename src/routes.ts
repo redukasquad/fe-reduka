@@ -10,8 +10,6 @@ import { coursesRoutes } from "./routes/courses"
 import { notfoundRoutes } from "./routes/not-found"
 
 
-
-
 const routes: RouteRecordRaw[] = [
 ...landingPageRoutes,
 ...authRoutes,

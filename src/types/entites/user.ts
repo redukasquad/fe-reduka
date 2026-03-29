@@ -1,7 +1,8 @@
 export type UserRole = "ADMIN" | "TUTOR" | "STUDENT"
 
 export interface User {
-  ID: number
+  ID?: number;
+  id?:number;
   username: string
   email: string
   noTelp?: string

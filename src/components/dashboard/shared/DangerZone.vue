@@ -14,7 +14,7 @@ const router = useRouter()
 const showConfirm = ref(false)
 
 const { mutate: deleteAccount, isPending: deleting } = useMutation({
-  mutationFn: () => UserService.delete(auth.user!.ID),
+  mutationFn: () => UserService.delete(auth.user?.id!),
   onSuccess: () => {
     auth.logout()
     router.push('/auth/login')

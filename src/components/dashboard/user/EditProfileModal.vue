@@ -15,7 +15,7 @@ const qc = useQueryClient()
 const toast = useToast()
 const router = useRouter()
 
-const kelasOptions = ['Kelas 10', 'Kelas 11', 'Kelas 12', 'Gapyer (Alumni)']
+const kelasOptions = ['Kelas 10', 'Kelas 11', 'Kelas 12', 'Gapyear (Alumni)']
 const showDeleteConfirm = ref(false)
 
 const form = ref({
@@ -38,7 +38,7 @@ watch(() => props.open, (val) => {
 })
 
 const { mutate: save, isPending: saving } = useMutation({
-  mutationFn: () => UserService.update(auth.user!.ID, {
+  mutationFn: () => UserService.update(auth.user?.id!, {
     username: form.value.username || undefined,
     no_telp: form.value.no_telp || undefined,
     kelas: form.value.kelas || undefined,
@@ -54,7 +54,7 @@ const { mutate: save, isPending: saving } = useMutation({
 })
 
 const { mutate: deleteAccount, isPending: deleting } = useMutation({
-  mutationFn: () => UserService.delete(auth.user!.ID),
+  mutationFn: () => UserService.delete(auth.user?.id!),
   onSuccess: () => {
     auth.logout()
     router.push('/auth/login')
