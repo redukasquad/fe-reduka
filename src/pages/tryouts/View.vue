@@ -180,7 +180,7 @@ const statusCfg: Record<string, { label: string; color: string; icon: string }> 
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50 pt-20">
+  <div class="min-h-screen bg-gray-50 pt-28">
     <div v-if="isLoading" class="max-w-4xl mx-auto px-4 py-10 space-y-6 animate-pulse">
       <div class="h-72 bg-gray-200 rounded-2xl" />
       <div class="h-6 bg-gray-200 rounded w-1/2" />

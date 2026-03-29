@@ -103,7 +103,7 @@ const statusCfg: Record<string, { label: string; color: string; icon: string }> 
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50 pt-20">
+  <div class="min-h-screen bg-gray-50 pt-28">
     <!-- Loading -->
     <div v-if="isLoading" class="max-w-4xl mx-auto px-4 py-10 space-y-4 animate-pulse">
       <div class="h-64 bg-gray-200 rounded-2xl" />

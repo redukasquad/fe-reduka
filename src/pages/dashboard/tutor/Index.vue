@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/vue-query'
 import { Icon } from '@iconify/vue'
 import DashboardLayout from '../../../components/layout/DashboardLayout.vue'
 import { useAuth } from '../../../stores/auth'
-import { CourseTutorService } from '../../../services/course.tutor.service'
+import { CourseTutorService } from '../../../services/course.tutor'
 import { TryoutService } from '../../../services/tryout'
 
 const auth = useAuth()

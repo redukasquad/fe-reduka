@@ -7,7 +7,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { Icon } from '@iconify/vue'
 import { Image } from '@unpic/vue'
 import DashboardLayout from '../../../../components/layout/DashboardLayout.vue'
-import { CourseTutorService } from '../../../../services/course.tutor.service'
+import { CourseTutorService } from '../../../../services/course.tutor'
 
 const route = useRoute()
 const router = useRouter()

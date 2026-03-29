@@ -3,7 +3,7 @@
 import { computed } from 'vue'
 import { useQuery } from '@tanstack/vue-query'
 import { Icon } from '@iconify/vue'
-import { ResourceService } from '../../../services/resource.service'
+import { ResourceService } from '../../../services/resource'
 import type { ResourceType } from '../../../types/entites/lessonResource'
 
 const props = defineProps<{ lessonId: number }>()

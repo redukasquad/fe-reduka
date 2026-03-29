@@ -46,7 +46,7 @@ defineProps<{ program: Program }>()
         <span class="text-xs text-gray-400">
           {{ new Date(program.CreatedAt).toLocaleDateString('id-ID', { month: 'long', year: 'numeric' }) }}
         </span>
-        <span class="text-xs font-semibold text-primary flex items-center gap-1">
+        <span class="text-xs font-semibold text-blue-500 flex items-center gap-1">
           Lihat Detail <Icon icon="mdi:arrow-right" />
         </span>
       </div>

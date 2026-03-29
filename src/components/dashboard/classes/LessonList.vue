@@ -4,8 +4,8 @@ import { computed, ref } from 'vue'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query'
 import { Icon } from '@iconify/vue'
 import { toast } from 'vue3-toastify'
-import { LessonService } from '../../../services/lesson.service'
-import { ResourceService, type ResourceType } from '../../../services/resource.service'
+import { LessonService } from '../../../services/lesson'
+import { ResourceService, type ResourceType } from '../../../services/resource'
 import ResourceList from './ResourceList.vue'
 
 const props = defineProps<{ classId: number }>()
