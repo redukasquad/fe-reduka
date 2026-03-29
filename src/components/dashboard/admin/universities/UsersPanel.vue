@@ -40,7 +40,7 @@ const users = computed(() => data.value?.data ?? [])
 
     <div v-else class="space-y-2">
       <p class="text-xs text-gray-400 mb-3">{{ users.length }} siswa menargetkan universitas ini</p>
-      <div v-for="user in users" :key="user.id"
+      <div v-for="user in users" :key="user.ID"
         class="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:bg-gray-50 transition-all">
         <div class="w-9 h-9 rounded-full overflow-hidden shrink-0 bg-gray-100 ring-2 ring-white shadow-sm">
           <img :src="user.profileImage || '/profile.jpg'" :alt="user.username" class="w-full h-full object-cover" />
