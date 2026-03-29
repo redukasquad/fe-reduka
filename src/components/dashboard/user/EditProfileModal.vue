@@ -38,7 +38,7 @@ watch(() => props.open, (val) => {
 })
 
 const { mutate: save, isPending: saving } = useMutation({
-  mutationFn: () => UserService.update(auth.user!.id, {
+  mutationFn: () => UserService.update(auth.user!.ID, {
     username: form.value.username || undefined,
     no_telp: form.value.no_telp || undefined,
     kelas: form.value.kelas || undefined,
@@ -54,7 +54,7 @@ const { mutate: save, isPending: saving } = useMutation({
 })
 
 const { mutate: deleteAccount, isPending: deleting } = useMutation({
-  mutationFn: () => UserService.delete(auth.user!.id),
+  mutationFn: () => UserService.delete(auth.user!.ID),
   onSuccess: () => {
     auth.logout()
     router.push('/auth/login')
