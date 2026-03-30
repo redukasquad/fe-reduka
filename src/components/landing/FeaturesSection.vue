@@ -248,7 +248,7 @@ onMounted(() => {
                   <!-- Siswa bar -->
                   <div
                     :id="`bar-s-${i}`"
-                    class="w-7 md:w-9 lg:w-12 rounded-t-xl bg-primary shrink-0
+                    class="w-3 md:w-8 lg:w-12 rounded-t-xl bg-primary shrink-0
                            transition-[filter] duration-150 hover:brightness-110 cursor-pointer"
                     style="height: 0; opacity: 0"
                     :title="`Siswa ${d.year}: ${fmt(d.siswa)}`"
@@ -257,7 +257,7 @@ onMounted(() => {
                   <!-- Alumni bar -->
                   <div
                     :id="`bar-a-${i}`"
-                    class="w-7 md:w-9 lg:w-12 rounded-t-xl bg-ring/60 shrink-0
+                    class="w-2 md:w-8 lg:w-12 rounded-t-xl bg-ring/60 shrink-0
                            transition-[filter] duration-150 hover:brightness-110 cursor-pointer"
                     style="height: 0; opacity: 0"
                     :title="`Alumni ${d.year}: ${fmt(d.alumni)}`"
