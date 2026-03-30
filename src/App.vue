@@ -2,7 +2,6 @@
 import { useRoute } from "vue-router"
 import Footer from "./components/layout/Footer.vue"
 import Header from "./components/layout/Header.vue"
-import BgBlock from "./components/ui/bgBlock.vue"
 import Sidebar from "./components/layout/Sidebar.vue"
 const route = useRoute()
 
@@ -10,8 +9,7 @@ const route = useRoute()
 </script>
 
 <template>
-  <div class="w-full min-h-screen relative overflow-hidden">
-    <BgBlock v-if="route.meta.layout !== 'plain'" />
+  <div class="w-full overflow-x-hidden">
     <Header v-if="route.meta.layout !== 'plain'" />
     <Sidebar v-if="route.meta.layout !== 'plain'" />
     <RouterView v-slot="{ Component }">

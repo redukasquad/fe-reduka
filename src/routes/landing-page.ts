@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from "vue-router";
-import Index from "../pages/Index.vue";
+import Index from "../pages/Landingpage.vue";
 import Contact from "../pages/Contact.vue";
 
 export const landingPageRoutes:RouteRecordRaw[]=[
