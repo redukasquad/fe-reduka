@@ -145,7 +145,7 @@ const table = useVueTable({
                 </template>
                 <button
                   v-else
-                  @click="confirmDeleteId = row.original.ID"
+                  @click="confirmDeleteId = row.original?.ID!"
                   class="p-1.5 rounded-md text-red-400 hover:text-red-600 hover:bg-red-50 transition-colors"
                   title="Hapus user"
                 >
