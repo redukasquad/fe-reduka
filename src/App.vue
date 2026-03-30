@@ -19,7 +19,7 @@ window.addEventListener("scroll", () => {
 
     <RouterView v-slot="{ Component, route }">
       <transition name="page" mode="out-in" appear>
-        <div :key="route.fullPath">
+        <div :key="route.fullPath" class="max-w-[100vw] overflow-hidden">
           <component :is="Component" />
         </div>
       </transition>

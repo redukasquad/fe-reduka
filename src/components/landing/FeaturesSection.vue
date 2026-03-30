@@ -229,7 +229,7 @@ onMounted(() => {
           </div>
 
           <!-- Main chart area -->
-          <div class="flex-1 min-w-0">
+          <div class="flex-1 min-w-0 overflow-x-auto max-w-full">
 
             <!-- Grid lines behind bars -->
             <div class="relative" :style="{ height: `${CHART_PX}px` }">
