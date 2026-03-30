@@ -21,7 +21,7 @@ const images = [
 </script>
 
 <template>
-  <div class="w-full max-w-7xl mx-auto relative pt-14 min-h-screen">
+  <div class="w-full max-w-7xl mx-auto relative pt-14 ">
     <div class="relative">
       <Image src="/images/landingPage/curve_text_heading.png" alt="heading-hero" class="w-full max-w-md mx-auto" />
       <Image src="/images/landingPage/curve_text_sub_heading.png" alt="sub-heading-hero" class="w-full max-w-lg mx-auto" />

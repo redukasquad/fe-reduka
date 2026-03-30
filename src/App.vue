@@ -3,22 +3,35 @@ import { useRoute } from "vue-router"
 import Footer from "./components/layout/Footer.vue"
 import Header from "./components/layout/Header.vue"
 import Sidebar from "./components/layout/Sidebar.vue"
-const route = useRoute()
 
+const route = useRoute()
+window.addEventListener("scroll", () => {
+  console.log("window scroll:", window.scrollY)
+})
 
 </script>
 
 <template>
-  <div class="w-full overflow-x-hidden">
+  <div class="w-full min-h-screen">
+
     <Header v-if="route.meta.layout !== 'plain'" />
     <Sidebar v-if="route.meta.layout !== 'plain'" />
-    <RouterView v-slot="{ Component }">
+
+    <RouterView v-slot="{ Component, route }">
       <transition name="page" mode="out-in" appear>
-        <component :is="Component" />
+        <div :key="route.fullPath">
+          <component :is="Component" />
+        </div>
       </transition>
     </RouterView>
 
-    <Footer v-if="route.meta.layout !== 'plain' && !route.path.startsWith('/dashboard')" />
+    <Footer
+      v-if="
+        route.meta.layout !== 'plain' &&
+        !route.path.startsWith('/dashboard')
+      "
+    />
+
   </div>
 </template>
 

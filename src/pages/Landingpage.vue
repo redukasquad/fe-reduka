@@ -17,83 +17,57 @@ let ctx: gsap.Context
 onMounted(async () => {
   await nextTick()
 
-  window.scrollTo(0, 0)
-
   ctx = gsap.context(() => {
-
     const sections = gsap.utils.toArray<HTMLElement>(".section")
 
     sections.forEach((section) => {
 
-      const elements = section.children
-
-      gsap.from(elements, {
+      // ✨ Animate section only (Fix conflict)
+      gsap.from(section, {
         opacity: 0,
         y: 60,
-        filter: "blur(10px)",
         duration: 1,
-        stagger: 0.15,
         ease: "power3.out",
         scrollTrigger: {
           trigger: section,
-          start: "top 80%",
+          start: "top 85%",
           toggleActions: "play none none none",
         }
       })
 
+      // 🌊 Parallax
       const parallax = section.querySelectorAll(".parallax")
 
-      gsap.to(parallax, {
-        y: -40,
-        ease: "none",
-        scrollTrigger: {
-          trigger: section,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1.5,
-        }
-      })
-
+      if (parallax.length) {
+        gsap.to(parallax, {
+          y: -40,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1.5,
+          }
+        })
+      }
     })
 
     ScrollTrigger.refresh()
-
   })
-
 })
 
 onUnmounted(() => {
   ctx?.revert()
-  ScrollTrigger.killAll()
 })
 </script>
 
 <template>
-  <div class="bg-background flex flex-col pt-16">
-
-    <div class="section">
-      <HeroSection />
-    </div>
-
-    <div class="section">
-      <AboutSection />
-    </div>
-
-    <div class="section">
-      <StorySection />
-    </div>
-
-    <div class="section">
-      <FeaturesSection />
-    </div>
-
-    <div class="section">
-      <TestimonialsSection />
-    </div>
-
-    <div class="section">
-      <CtaSection />
-    </div>
-
+  <div class="bg-background flex flex-col pt-20">
+      <div class="section"><HeroSection /></div>
+      <div class="section"><AboutSection /></div>
+      <div class="section"><StorySection /></div>
+      <div class="section"><FeaturesSection /></div>
+      <div class="section"><TestimonialsSection /></div>
+      <div class="section"><CtaSection /></div>
   </div>
 </template>
