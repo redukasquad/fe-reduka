@@ -73,11 +73,11 @@ const isActiveMenu = (menuPath: string): boolean => {
 
       <button
         @click="toggleSidebar"
-        :class="['m-4 p-1 cursor-pointer active:scale-95 w-fit ml-auto rounded-md bg-secondary text-primary absolute top-8 transition-all duration-200 flex items-center justify-center', tool.isSidebarOpen?'left-[90%]':'left-[80%]']"
+        :class="['m-4 p-0.5 text-xs cursor-pointer active:scale-95 w-fit ml-auto rounded-md bg-secondary text-primary absolute top-8 transition-all duration-200 flex items-center justify-center', tool.isSidebarOpen?'left-[90%]':'left-[80%]']"
       >
         <Icon 
           :icon="tool.isSidebarOpen ? 'mdi:chevron-left' : 'mdi:chevron-right'" 
-          class="text-2xl"
+          class="text-xl"
         />
       </button>
 
@@ -87,13 +87,13 @@ const isActiveMenu = (menuPath: string): boolean => {
           :key="menu.id"
           :to="menu.path"
           :class="[
-            'flex items-center gap-3 px-4 py-3 rounded-md transition-all duration-200 mb-2',
+            'flex items-center gap-2 px-4 py-2 rounded-md transition-all duration-200 mb-2',
             isActiveMenu(menu.path)
               ? 'bg-primary-foreground text-primary font-semibold'
               : 'hover:bg-primary-foreground/10'
           ]"
         >
-          <Icon :icon="menu.icon" class="text-xl shrink-0" />
+          <Icon :icon="menu.icon" class="text-md shrink-0" />
           <span 
             v-if="tool.isSidebarOpen" 
             class="text-sm whitespace-nowrap"

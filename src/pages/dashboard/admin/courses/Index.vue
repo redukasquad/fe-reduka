@@ -94,7 +94,10 @@ const handleSearch = (q: string) => {
   query.q = q
   query.page = 1
   refetch()
+}
 
+const handleUpdate = (id: number) => {
+  router.push({ name: 'admin-courses-update', params: { id: id } })
 }
 </script>
 
@@ -122,6 +125,7 @@ const handleSearch = (q: string) => {
             @page-change="handlePageChange"
             @per-page-change="handlePerPageChange"
             @search="handleSearch"
+            @update="handleUpdate"
           />
         </div>
       </div>

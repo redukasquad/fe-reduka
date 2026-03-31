@@ -39,7 +39,7 @@ const { mutate: changeRole } = useMutation({
 
 // Delete user
 const { mutate: deleteUser } = useMutation({
-  mutationFn: (user: User) => UserService.delete(user?.id!),
+  mutationFn: (user: User) => UserService.delete(user?.ID!),
   onSuccess: () => {
     queryClient.invalidateQueries({ queryKey: ['users'] })
     toast.success('User berhasil dihapus')

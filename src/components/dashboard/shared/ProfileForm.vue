@@ -10,7 +10,7 @@ const auth = useAuth()
 const qc = useQueryClient()
 const toast = useToast()
 
-const kelasOptions = ['Kelas 10', 'Kelas 11', 'Kelas 12', 'Gapyer (Alumni)']
+const kelasOptions = ['Kelas 10', 'Kelas 11', 'Kelas 12', 'Gapyear (Alumni)']
 
 const form = ref({
   username: '',

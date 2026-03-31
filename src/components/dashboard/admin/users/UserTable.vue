@@ -62,6 +62,8 @@ const table = useVueTable({
   getSortedRowModel: getSortedRowModel(),
   getFilteredRowModel: getFilteredRowModel(),
 })
+
+console.log(confirmDeleteId.value)
 </script>
 
 <template>
