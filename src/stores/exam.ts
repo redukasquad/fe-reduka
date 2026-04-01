@@ -124,6 +124,19 @@ export const useExamStore = defineStore('exam', () => {
     subtestProgress.value = progress
   }
 
+  function markSubtestCompleted(subtestId: number) {
+    const idx = subtestProgress.value.findIndex(s => s.subtestId === subtestId)
+
+    if (idx !== -1) {
+      const current = subtestProgress.value[idx]!
+
+      subtestProgress.value[idx] = {
+        ...current,
+        status: 'completed'
+      }
+    }
+  }
+
   function reset() {
     stopTimer()
     attemptId.value = null
@@ -146,6 +159,6 @@ export const useExamStore = defineStore('exam', () => {
     totalQuestions, answeredCount,
     answers, timeRemaining, totalSeconds, subtestProgress,
     init, loadSubtest, setAnswer, goToQuestion,
-    stopTimer, clearSubtestTimer, setSubtestProgress, reset,
+    stopTimer, clearSubtestTimer, setSubtestProgress, markSubtestCompleted, reset,
   }
 })

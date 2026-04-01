@@ -5,10 +5,6 @@ import Header from "./components/layout/Header.vue"
 import Sidebar from "./components/layout/Sidebar.vue"
 
 const route = useRoute()
-window.addEventListener("scroll", () => {
-  console.log("window scroll:", window.scrollY)
-})
-
 </script>
 
 <template>

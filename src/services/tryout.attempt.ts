@@ -29,6 +29,7 @@ export interface SubtestProgress {
   status: 'not_started' | 'in_progress' | 'completed'
   answeredCount: number
   totalCount: number
+  timeLimitSeconds: number
 }
 
 export interface AttemptCurrentState {

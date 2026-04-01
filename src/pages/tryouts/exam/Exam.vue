@@ -27,12 +27,13 @@ const currentSubtestInfo = computed(() =>
 )
 const questionIds = computed(() => exam.questions.map(q => q.id))
 
-// ── Init ──────────────────────────────────────────────────────────────────────
 onMounted(async () => {
   window.addEventListener('beforeunload', onBeforeUnload)
+
   try {
     const stateRes = await TryoutAttemptService.getCurrentState(attemptId)
     const state = stateRes.data
+
     if (!state) throw new Error('Gagal memuat state')
 
     if (state.status === 'completed') {
@@ -43,11 +44,18 @@ onMounted(async () => {
     exam.init(attemptId, regId, '')
     exam.setSubtestProgress(state.subtestProgress ?? [])
 
-    const nextSubtest = state.subtestProgress?.find(s => s.status !== 'completed')
-    if (!nextSubtest) {
+    const firstUnfinishedIndex = exam.subtestProgress.findIndex(
+      s => s.status !== 'completed'
+    )
+
+    if (firstUnfinishedIndex === -1) {
       await finishAttempt()
       return
     }
+
+    const nextSubtest = exam.subtestProgress[firstUnfinishedIndex]
+
+    if(!nextSubtest) throw new Error('Tidak ada subtes yang bisa dikerjakan')
 
     await loadSubtest(nextSubtest.subtestId)
   } catch (e: any) {
@@ -67,22 +75,19 @@ function onBeforeUnload(e: BeforeUnloadEvent) {
   e.preventDefault()
 }
 
-// ── Load subtest ──────────────────────────────────────────────────────────────
 async function loadSubtest(subtestId: number) {
-  // Mark subtest as in_progress on backend + get questions
+  exam.currentSubtestId = subtestId
+
   const qRes = await TryoutAttemptService.startSubtest(attemptId, subtestId)
   const questions = qRes.data ?? []
 
-  // Fetch fresh state to get currentSubtest.timeLimitSeconds and updated progress
-  const stateRes = await TryoutAttemptService.getCurrentState(attemptId)
-  const state = stateRes.data
-
-  if (state?.subtestProgress) exam.setSubtestProgress(state.subtestProgress)
-
-  // timeLimitSeconds from backend is the source of truth
-  const timeLimitSeconds = state?.currentSubtest?.timeLimitSeconds ?? 0
+  // Fix: get timeLimitSeconds from subtestProgress (already populated) instead of
+  // calling getCurrentState() again — avoids stale state race condition
+  const timeLimitSeconds =
+    exam.subtestProgress.find(s => s.subtestId === subtestId)?.timeLimitSeconds ?? 0
 
   const idx = exam.subtestProgress.findIndex(s => s.subtestId === subtestId)
+
   exam.loadSubtest(subtestId, idx, questions, timeLimitSeconds)
 }
 
@@ -113,8 +118,11 @@ function goPrev() {
 // ── Submit subtest ────────────────────────────────────────────────────────────
 async function doSubmitSubtest() {
   if (submitting.value || !exam.currentSubtestId) return
+
   submitting.value = true
   exam.stopTimer()
+
+  const submittedSubtestId = exam.currentSubtestId
 
   try {
     const answers = exam.questions.map(q => ({
@@ -122,17 +130,14 @@ async function doSubmitSubtest() {
       selectedOption: exam.answers[q.id] ?? '',
     }))
 
-    await TryoutAttemptService.submitSubtest(attemptId, exam.currentSubtestId, answers)
+    await TryoutAttemptService.submitSubtest(attemptId, submittedSubtestId, answers)
 
-    // Clear localStorage timer for this subtest
     exam.clearSubtestTimer()
+    // Mark submitted subtest as completed locally — no need for extra getCurrentState call
+    exam.markSubtestCompleted(submittedSubtestId)
 
-    // Refresh state
-    const stateRes = await TryoutAttemptService.getCurrentState(attemptId)
-    const state = stateRes.data
-    exam.setSubtestProgress(state?.subtestProgress ?? [])
+    const nextSubtest = exam.subtestProgress.find(s => s.status !== 'completed')
 
-    const nextSubtest = state?.subtestProgress?.find(s => s.status === 'not_started')
     if (nextSubtest) {
       toast.success('Subtes selesai! Lanjut ke subtes berikutnya.')
       await loadSubtest(nextSubtest.subtestId)
@@ -141,7 +146,6 @@ async function doSubmitSubtest() {
     }
   } catch (e: any) {
     toast.error(e?.response?.data?.message ?? 'Gagal submit subtes')
-    // Restart timer if submit failed
     exam.stopTimer()
   } finally {
     submitting.value = false

@@ -17,13 +17,6 @@ const options = ['A', 'B', 'C', 'D', 'E'] as const
 const optionKey = (o: typeof options[number]) =>
   `option${o}` as 'optionA' | 'optionB' | 'optionC' | 'optionD' | 'optionE'
 
-/**
- * Parse semua kemungkinan format:
- * - IMG::https://...
- * - https://...png
- * - <img src="..." />
- * - rich text biasa
- */
 const parseContent = (val?: string) => {
   if (!val) return { type: 'empty', value: '' }
 
@@ -69,7 +62,6 @@ const parseContent = (val?: string) => {
         Soal {{ index + 1 }} dari {{ total }}
       </p>
 
-      <!-- Question Image -->
       <div v-if="question.imageUrl" class="mb-4">
         <img
           :src="question.imageUrl"
