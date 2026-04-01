@@ -201,6 +201,7 @@ const mutation = useMutation({
     queryClient.invalidateQueries({ queryKey: ['tryout-questions'] })
     queryClient.invalidateQueries({ queryKey: ['subtest-count-question'] })
     visible.value = false
+    form.resetForm()
   },
   onError: () => {
     toast("Terjadi kesalahan", { type: "error" })

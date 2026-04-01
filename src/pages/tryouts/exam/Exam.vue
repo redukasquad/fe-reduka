@@ -173,14 +173,14 @@ async function finishAttempt() {
   <div v-else class="min-h-screen bg-gray-50 flex flex-col">
     <!-- Top bar -->
     <div class="bg-white border-b border-gray-100 px-4 py-3 sticky top-0 z-20 shadow-sm">
-      <div class="max-w-2xl mx-auto space-y-2">
+      <div class="max-w-4xl mx-auto space-y-2">
         <SubtestHeader :subtests="exam.subtestProgress" :current-subtest-id="exam.currentSubtestId ?? 0" />
         <TimerBar :seconds="exam.timeRemaining" :total-seconds="exam.totalSeconds" />
       </div>
     </div>
 
     <!-- Main content -->
-    <div class="flex-1 max-w-2xl mx-auto w-full px-4 py-6">
+    <div class="flex-1 max-w-4xl mx-auto w-full px-4 py-6">
       <div class="flex items-center justify-between mb-5">
         <div>
           <p class="text-xs text-gray-400 font-medium">
@@ -196,7 +196,7 @@ async function finishAttempt() {
       </div>
 
       <!-- Question card -->
-      <div v-if="exam.currentQuestion" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 mb-5">
+      <div v-if="exam.currentQuestion" class="bg-white rounded-2xl w-full max-w-4xl border border-gray-100 shadow-sm p-6 mb-5">
         <QuestionCard
           :question="exam.currentQuestion"
           :index="exam.currentQuestionIndex"

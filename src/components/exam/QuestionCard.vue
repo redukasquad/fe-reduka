@@ -62,7 +62,7 @@ const parseContent = (val?: string) => {
 </script>
 
 <template>
-  <div class="space-y-5">
+  <div class="space-y-5 w-full prose prose-sm text-sm">
     <!-- Question Header -->
     <div>
       <p class="text-xs font-semibold text-gray-400 mb-2">
@@ -78,11 +78,12 @@ const parseContent = (val?: string) => {
         />
       </div>
 
-      <!-- Question Text -->
-      <div
-        class="text-gray-900 text-base leading-relaxed font-medium prose prose-sm max-w-none"
-        v-html="question.questionText"
-      />
+      <div class="ql-snow">
+        <div
+          class="ql-editor text-gray-900 text-base leading-relaxed"
+          v-html="question.questionText"
+        />
+      </div>
     </div>
 
     <!-- Options -->
@@ -121,7 +122,7 @@ const parseContent = (val?: string) => {
 
           <template v-else-if="parseContent(question[optionKey(opt)]).type === 'html'">
             <div
-              class="prose prose-sm max-w-none"
+              class="max-w-full"
               v-html="parseContent(question[optionKey(opt)]).value"
             />
           </template>

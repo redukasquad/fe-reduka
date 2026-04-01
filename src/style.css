@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "tailwindcss-primeui";
-
 /* ======= FONT SETUP ======= */
 @font-face {
   font-family: "Plus Jakarta Sans";
@@ -42,6 +41,14 @@
   font-style: italic;
   font-weight: 400;
   font-display: swap;
+}
+
+.ql-editor {
+  all: revert;
+}
+
+.ql-editor p {
+  margin: 0;
 }
 
 /* ======= DARK MODE SUPPORT ======= */

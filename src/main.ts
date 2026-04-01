@@ -10,6 +10,8 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import PrimeVue from 'primevue/config';
 import 'primeicons/primeicons.css'
 import Aura from '@primeuix/themes/aura';
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
 
 const pinia = createPinia()
 const app = createApp(App)
