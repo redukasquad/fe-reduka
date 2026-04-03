@@ -102,7 +102,7 @@ watch(() => exam.timeRemaining, (val) => {
 // ── Answer ────────────────────────────────────────────────────────────────────
 function selectAnswer(option: string) {
   if (!exam.currentQuestion) return
-  exam.setAnswer(exam.currentQuestion.id, option)
+  exam.setAnswer(exam.currentQuestion.id, option      <!-- Stats + Bar Chart Block -->)
 }
 
 function goNext() {
