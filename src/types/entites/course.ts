@@ -6,6 +6,7 @@ import type { User } from "./user"
 
 export interface Course {
   id: number
+  ID?:number;
   createdAt: string
   programId?: number
   createdByUserId?: number

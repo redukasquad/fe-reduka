@@ -129,8 +129,6 @@ onMounted(() => {
 <template>
   <section class="features-section w-full bg-secondary py-20 md:py-28">
     <div class="max-w-7xl mx-auto px-6 space-y-14">
-
-      <!-- Header -->
       <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-3">
         <div class="space-y-2">
           <span class="text-xs font-semibold tracking-widest uppercase text-primary">Fitur Unggulan</span>
@@ -141,7 +139,6 @@ onMounted(() => {
         </p>
       </div>
 
-      <!-- Feature cards -->
       <div class="feats-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         <div
           v-for="(f, i) in features" :key="i"
@@ -167,7 +164,6 @@ onMounted(() => {
         </div>
       </div>
 
-      <!-- Stats + Bar Chart Block -->
       <div class="chart-block bg-background border border-border rounded-2xl p-6 md:p-8">
 
         <!-- Block header -->

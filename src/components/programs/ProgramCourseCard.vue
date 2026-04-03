@@ -3,14 +3,14 @@ import { Image } from '@unpic/vue'
 import { Icon } from '@iconify/vue'
 import type { Course } from '../../types/entites/course'
 
-defineProps<{ course: Course }>()
+const props = defineProps<{ course: Course }>()
 
 const dateFormatter = new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
 </script>
 
 <template>
   <RouterLink
-    :to="`/courses/${course.id}`"
+    :to="`/courses/${course.ID}`"
     class="group flex items-center gap-4 p-4 bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md hover:border-primary/20 transition-all"
   >
     <div class="w-16 h-16 rounded-lg overflow-hidden shrink-0 bg-gray-100">
