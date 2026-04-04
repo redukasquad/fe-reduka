@@ -6,6 +6,7 @@ import { Icon } from '@iconify/vue'
 import { TryoutService } from '../../services/tryout'
 import { TryoutAttemptService } from '../../services/tryout.attempt'
 import { useAuth } from '../../stores/auth'
+import LeaderboardPanel from '../../components/exam/LeaderboardPanel.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -33,13 +34,6 @@ const entries = computed(() => data.value?.data ?? [])
 const currentUserEntry = computed(() =>
   currentUserId.value ? entries.value.find(e => e.userId === currentUserId.value) : null
 )
-
-const rankMedal = (rank: number) => {
-  if (rank === 1) return { icon: 'mdi:trophy', color: 'text-yellow-500', bg: 'bg-yellow-50' }
-  if (rank === 2) return { icon: 'mdi:medal', color: 'text-gray-400', bg: 'bg-gray-50' }
-  if (rank === 3) return { icon: 'mdi:medal', color: 'text-amber-600', bg: 'bg-amber-50' }
-  return null
-}
 
 function formatDate(d?: string) {
   if (!d) return '-'
@@ -74,7 +68,7 @@ function formatDate(d?: string) {
         </button>
       </div>
 
-      <!-- Current user position card (if logged in & participated) -->
+      <!-- Current user position card -->
       <div
         v-if="currentUserEntry"
         class="bg-primary/5 border border-primary/20 rounded-2xl p-4 flex items-center gap-4"
@@ -93,74 +87,14 @@ function formatDate(d?: string) {
         </div>
       </div>
 
-      <!-- Leaderboard card -->
-      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-        <div class="px-5 py-4 border-b border-gray-100 flex items-center gap-3">
-          <Icon icon="mdi:podium-gold" class="text-yellow-500 text-2xl" />
-          <div>
-            <h2 class="font-bold text-gray-900">Peringkat Peserta</h2>
-            <p class="text-xs text-gray-400">{{ entries.length }} peserta menyelesaikan ujian</p>
-          </div>
-        </div>
-
-        <!-- Loading -->
-        <div v-if="isLoading" class="p-5 space-y-2 animate-pulse">
-          <div v-for="n in 6" :key="n" class="h-14 bg-gray-100 rounded-xl" />
-        </div>
-
-        <!-- Error -->
-        <div v-else-if="isError" class="p-10 text-center space-y-2">
-          <Icon icon="mdi:alert-circle-outline" class="text-4xl text-red-400 mx-auto" />
-          <p class="text-sm text-gray-500">Gagal memuat leaderboard</p>
-          <button @click="refetch()" class="text-xs text-primary hover:underline">Coba lagi</button>
-        </div>
-
-        <!-- Empty -->
-        <div v-else-if="entries.length === 0" class="p-12 text-center space-y-3">
-          <Icon icon="mdi:trophy-outline" class="text-5xl text-gray-300 mx-auto" />
-          <p class="text-sm text-gray-400">Belum ada peserta yang menyelesaikan ujian</p>
-        </div>
-
-        <!-- List -->
-        <div v-else class="divide-y divide-gray-50">
-          <div
-            v-for="entry in entries"
-            :key="entry.rank"
-            :class="[
-              'flex items-center gap-4 px-5 py-3.5 transition-colors',
-              entry.userId === currentUserId ? 'bg-primary/5' : 'hover:bg-gray-50',
-            ]"
-          >
-            <!-- Rank indicator -->
-            <div class="w-8 flex items-center justify-center shrink-0">
-              <div
-                v-if="rankMedal(entry.rank)"
-                :class="['w-8 h-8 rounded-full flex items-center justify-center', rankMedal(entry.rank)!.bg]"
-              >
-                <Icon :icon="rankMedal(entry.rank)!.icon" :class="['text-lg', rankMedal(entry.rank)!.color]" />
-              </div>
-              <span v-else class="text-sm font-bold text-gray-400">{{ entry.rank }}</span>
-            </div>
-
-            <!-- Name -->
-            <div class="flex-1 min-w-0">
-              <p :class="['text-sm font-semibold truncate', entry.userId === currentUserId ? 'text-primary' : 'text-gray-900']">
-                {{ entry.username }}
-                <span v-if="entry.userId === currentUserId" class="text-xs font-normal text-primary/60 ml-1">(Kamu)</span>
-              </p>
-              <p class="text-[10px] text-gray-400">{{ formatDate(entry.finishedAt) }}</p>
-            </div>
-
-            <!-- Score -->
-            <div class="text-right shrink-0">
-              <p :class="['text-base font-extrabold', entry.userId === currentUserId ? 'text-primary' : 'text-gray-800']">
-                {{ entry.totalScore.toFixed(1) }}
-              </p>
-              <p class="text-[10px] text-gray-400">poin</p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- Leaderboard panel (with search built-in) -->
+      <LeaderboardPanel
+        :entries="entries"
+        :is-loading="isLoading"
+        :is-error="isError"
+        :current-user-id="currentUserId"
+        @retry="refetch()"
+      />
 
     </div>
   </div>

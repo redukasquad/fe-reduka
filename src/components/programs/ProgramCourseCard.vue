@@ -3,7 +3,7 @@ import { Image } from '@unpic/vue'
 import { Icon } from '@iconify/vue'
 import type { Course } from '../../types/entites/course'
 
-const props = defineProps<{ course: Course }>()
+defineProps<{ course: Course }>()
 
 const dateFormatter = new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
 </script>

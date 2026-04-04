@@ -2,6 +2,7 @@ import type {
   ForgotPasswordSchemaType,
   LoginSchemaType,
   RegisterSchemaType,
+  ResetPasswordSchemaType,
   VerifyOtpSchemaType,
 } from "../schemas/auth"
 import api from "../services/api"
@@ -26,7 +27,18 @@ export class AuthService {
   static async forgotPassword(
     value: ForgotPasswordSchemaType
   ): Promise<ApiResponse<any>> {
-    const res = await api.post("/auth/reset-password", value)
+    const res = await api.post("/auth/forgot-password", value)
+    return res.data
+  }
+
+  static async resetPassword(
+    value: ResetPasswordSchemaType
+  ): Promise<ApiResponse<any>> {
+    const res = await api.post("/auth/reset-password", {
+      token: value.token,
+      new_password: value.newPassword,
+      confirm_password: value.confirmPassword,
+    })
     return res.data
   }
 
@@ -38,20 +50,15 @@ export class AuthService {
   static async verifyOtp(
     value: VerifyOtpSchemaType
   ): Promise<ApiResponse<any>> {
-    const res = await api.post("/auth/verify-email",{
+    const res = await api.post("/auth/verify-email", {
       code: value.otp,
       email: value.email,
-    })  
-
+    })
     return res.data
   }
 
   static async resendOtp(email: string) {
-    const res= await api.post(
-      "/auth/resend-verification",
-      {email},
-    )
-
+    const res = await api.post("/auth/resend-verification", { email })
     return res.data
   }
 
@@ -59,5 +66,4 @@ export class AuthService {
     const res = await api.get("/auth/me")
     return res.data
   }
-
 }

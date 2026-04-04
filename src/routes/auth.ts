@@ -5,7 +5,8 @@ import Register from "../pages/auth/register.vue";
 import VerifyEmail from "../pages/auth/verify-email.vue";
 import ForgotPassword from "../pages/auth/forgot-password.vue";
 import ResetPassword from "../pages/auth/reset-password.vue";
-import Succes from "../pages/auth/google/Succes.vue";
+import GoogleSuccess from "../pages/auth/google/Succes.vue";
+import GoogleError from "../pages/auth/google/Error.vue";
 
 export const authRoutes:RouteRecordRaw[]=[
   {
@@ -82,13 +83,13 @@ export const authRoutes:RouteRecordRaw[]=[
         children:[
           {
             path:'success',
-            name:'success',
-            component:Succes
+            name:'google-success',
+            component: GoogleSuccess,
           },
           {
             path:'error',
-            name:'error',
-            component:Succes
+            name:'google-error',
+            component: GoogleError,
           },
         ]
       }

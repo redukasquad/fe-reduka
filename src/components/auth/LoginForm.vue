@@ -103,6 +103,16 @@ const isDisabled = computed(() => !form.meta.value.valid || isLoading.value)
       <div class="flex-1 h-px bg-gray-200" />
     </div>
 
+    <!-- Google login -->
+    <button
+      type="button"
+      @click="AuthService.loginGoogle()"
+      class="w-full py-2.5 rounded-xl border border-gray-200 bg-white text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-all duration-200 flex items-center justify-center gap-2.5 shadow-sm"
+    >
+      <Icon icon="flat-color-icons:google" class="text-xl" />
+      Masuk dengan Google
+    </button>
+
     <!-- Register link -->
     <p class="text-sm text-center text-gray-600">
       Belum punya akun?

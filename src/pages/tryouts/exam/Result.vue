@@ -28,6 +28,15 @@ const totalScore = computed(() => attempt.value?.totalScore ?? 0)
 const maxTotalScore = computed(() => results.value.reduce((sum, r) => sum + (r.subtest?.maxScore ?? 0), 0))
 const tryOutId = computed(() => attempt.value?.tryOut?.id ?? 0)
 
+const { data: lbData, isLoading: lbLoading, isError: lbError, refetch: lbRefetch } = useQuery({
+  queryKey: computed(() => ['leaderboard', tryOutId.value]),
+  queryFn: () => TryoutAttemptService.getLeaderboard(tryOutId.value),
+  enabled: computed(() => !!tryOutId.value),
+  staleTime: 1000 * 60,
+})
+
+const leaderboardEntries = computed(() => lbData.value?.data ?? [])
+
 function scoreColor(score?: number) {
   if (!score) return 'text-gray-400'
   if (score >= 80) return 'text-emerald-600'
@@ -143,8 +152,11 @@ function formatDate(d?: string) {
         <!-- Leaderboard -->
         <LeaderboardPanel
           v-if="tryOutId"
-          :try-out-id="tryOutId"
+          :entries="leaderboardEntries"
+          :is-loading="lbLoading"
+          :is-error="lbError"
           :current-user-id="currentUserId"
+          @retry="lbRefetch()"
         />
 
         <!-- Actions -->

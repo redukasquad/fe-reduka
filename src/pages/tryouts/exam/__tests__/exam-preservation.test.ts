@@ -126,8 +126,8 @@ describe('Test 3: subtestProgress correctly updated after submit flow', () => {
     ]
     exam.setSubtestProgress(updatedProgress)
 
-    expect(exam.subtestProgress[0].status).toBe('completed')
-    expect(exam.subtestProgress[1].status).toBe('not_started')
+    expect(exam.subtestProgress[0]?.status).toBe('completed')
+    expect(exam.subtestProgress[1]?.status).toBe('not_started')
   })
 })
 

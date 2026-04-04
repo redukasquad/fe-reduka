@@ -7,5 +7,5 @@ const tryoutId = Number(route.params.id)
 </script>
 
 <template>
-  <LeaderboardPage :tryout-id="tryoutId" back-route-name="admin-tryouts-view" />
+  <LeaderboardPage :tryout-id="tryoutId" back-route-name="tutor-tryouts-view" />
 </template>

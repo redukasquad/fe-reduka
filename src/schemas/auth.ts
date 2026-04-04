@@ -46,6 +46,21 @@ export const ForgotPassword = z.object({
 
 export type ForgotPasswordSchemaType = z.infer<typeof ForgotPassword>;
 
+export const ResetPasswordSchema = z.object({
+  token: z.string().min(1, "Token tidak boleh kosong"),
+  newPassword: z
+    .string()
+    .min(6, "Password minimal 6 karakter"),
+  confirmPassword: z
+    .string()
+    .min(6, "Konfirmasi password minimal 6 karakter"),
+}).refine(data => data.newPassword === data.confirmPassword, {
+  message: "Konfirmasi password tidak cocok",
+  path: ["confirmPassword"],
+})
+
+export type ResetPasswordSchemaType = z.infer<typeof ResetPasswordSchema>;
+
 
 
 export const VerifyOtpSchema = z.object({

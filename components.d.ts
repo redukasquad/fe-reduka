@@ -45,6 +45,7 @@ declare module 'vue' {
     Header: typeof import('./src/components/layout/Header.vue')['default']
     HeroSection: typeof import('./src/components/landing/HeroSection.vue')['default']
     Image: typeof import('primevue/image')['default']
+    LeaderboardPage: typeof import('./src/components/dashboard/shared/LeaderboardPage.vue')['default']
     LeaderboardPanel: typeof import('./src/components/exam/LeaderboardPanel.vue')['default']
     LessonList: typeof import('./src/components/dashboard/classes/LessonList.vue')['default']
     ListQuestionView: typeof import('./src/components/dashboard/admin/courses/ListQuestionView.vue')['default']

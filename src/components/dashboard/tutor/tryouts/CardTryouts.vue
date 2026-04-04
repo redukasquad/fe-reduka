@@ -73,7 +73,7 @@ const handleView = (id: number) => {
         </div>
         <div class="flex items-center gap-2">
           <RouterLink
-            :to="{ name: 'admin-tryouts-leaderboard', params: { id: data.id } }"
+            :to="{ name: 'tutor-tryouts-leaderboard', params: { id: data.id } }"
             @click.stop
             class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-yellow-50 text-yellow-700 hover:bg-yellow-100 text-xs font-semibold transition-colors"
             title="Leaderboard"

@@ -31,6 +31,9 @@ const TutorTryoutsIndex = () =>
 const TutorTryoutsView = () =>
   import("../pages/dashboard/tutor/tryouts/View.vue");
 
+const TutorTryoutsLeaderboard = () =>
+  import("../pages/dashboard/tutor/tryouts/Leaderboard.vue");
+
 // ===== PROFILE =====
 const TutorProfile = () =>
   import("../pages/dashboard/tutor/profile/index.vue");
@@ -111,6 +114,13 @@ export const dashboardTutorRoutes: RouteRecordRaw[] = [
     name: "tutor-tryouts-view",
     component: TutorTryoutsView,
     meta: { ...tutorMeta, title: "My Tryouts" },
+  },
+  {
+    path: "/dashboard/tutor/tryouts/:id/leaderboard",
+    name: "tutor-tryouts-leaderboard",
+    component: TutorTryoutsLeaderboard,
+    props: true,
+    meta: { ...tutorMeta, title: "Leaderboard Tryout" },
   },
 
   // ===== PROFILE =====
