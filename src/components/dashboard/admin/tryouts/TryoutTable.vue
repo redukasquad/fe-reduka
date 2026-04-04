@@ -114,6 +114,11 @@ const columns = [
   }),
 
   columnHelper.display({
+    id: 'leaderboard',
+    header: 'Leaderboard',
+  }),
+
+  columnHelper.display({
     id: 'actions',
     header: 'Aksi',
   }),
@@ -261,6 +266,17 @@ const table = useVueTable({
                     v-else-if="cell.column.id === 'registration'"
                     :id="row.original.id"
                 />
+
+                <div v-else-if="cell.column.id === 'leaderboard'">
+                    <RouterLink
+                        :to="{ name: 'admin-tryouts-leaderboard', params: { id: row.original.id } }"
+                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-yellow-50 text-yellow-700 hover:bg-yellow-100 text-xs font-semibold transition-colors"
+                        title="Lihat Leaderboard"
+                    >
+                        <Icon icon="mdi:podium-gold" width="14" />
+                        Leaderboard
+                    </RouterLink>
+                </div>
     
                 <template v-else>
                     <FlexRender

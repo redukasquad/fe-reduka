@@ -68,6 +68,13 @@ const attemptStatusLabel = (s?: string) => ({ not_started: 'Belum Dimulai', in_p
                   class="inline-flex items-center gap-1 text-xs font-bold text-primary bg-primary/10 hover:bg-primary/20 px-3 py-1 rounded-lg transition-colors">
                   <Icon icon="mdi:chart-bar" /> Lihat Hasil
                 </RouterLink>
+                <RouterLink
+                  v-if="reg.tryOutId"
+                  :to="`/tryouts/${reg.tryOutId}/leaderboard`"
+                  class="inline-flex items-center gap-1 text-xs font-bold text-yellow-700 bg-yellow-100 hover:bg-yellow-200 px-3 py-1 rounded-lg transition-colors"
+                >
+                  <Icon icon="mdi:podium-gold" /> Leaderboard
+                </RouterLink>
               </template>
 
               <!-- Not started / in progress -->

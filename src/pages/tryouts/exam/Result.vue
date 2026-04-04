@@ -4,12 +4,17 @@ import { useRoute, useRouter } from 'vue-router'
 import { useQuery } from '@tanstack/vue-query'
 import { Icon } from '@iconify/vue'
 import { TryoutAttemptService } from '../../../services/tryout.attempt'
+import { useAuth } from '../../../stores/auth'
+import LeaderboardPanel from '../../../components/exam/LeaderboardPanel.vue'
 
 const route = useRoute()
 const router = useRouter()
+const auth = useAuth()
 
 const regId = Number(route.params.registrationId)
 const attemptId = Number(route.params.attemptId)
+
+const currentUserId = computed(() => auth.user?.ID ?? auth.user?.id)
 
 const { data, isLoading, isError } = useQuery({
   queryKey: ['attempt-results', attemptId],
@@ -21,6 +26,7 @@ const attempt = computed(() => data.value?.data ?? null)
 const results = computed(() => attempt.value?.subtestResults ?? [])
 const totalScore = computed(() => attempt.value?.totalScore ?? 0)
 const maxTotalScore = computed(() => results.value.reduce((sum, r) => sum + (r.subtest?.maxScore ?? 0), 0))
+const tryOutId = computed(() => attempt.value?.tryOut?.id ?? 0)
 
 function scoreColor(score?: number) {
   if (!score) return 'text-gray-400'
@@ -133,6 +139,13 @@ function formatDate(d?: string) {
             </div>
           </div>
         </div>
+
+        <!-- Leaderboard -->
+        <LeaderboardPanel
+          v-if="tryOutId"
+          :try-out-id="tryOutId"
+          :current-user-id="currentUserId"
+        />
 
         <!-- Actions -->
         <div class="flex gap-3">

@@ -96,6 +96,14 @@ export interface SubmitAnswer {
   selectedOption: string
 }
 
+export interface LeaderboardEntry {
+  rank: number
+  userId: number
+  username: string
+  totalScore: number
+  finishedAt?: string
+}
+
 export class TryoutAttemptService {
   static async startAttempt(registrationId: number): Promise<ApiResponse<AttemptResponse>> {
     const res = await api.post(`/tryouts/registrations/${registrationId}/start`)
@@ -129,6 +137,11 @@ export class TryoutAttemptService {
 
   static async getSubtestReview(attemptId: number, subtestId: number): Promise<ApiResponse<SubtestReview>> {
     const res = await api.get(`/tryouts/attempts/${attemptId}/subtests/${subtestId}/review`)
+    return res.data
+  }
+
+  static async getLeaderboard(tryOutId: number): Promise<ApiResponse<LeaderboardEntry[]>> {
+    const res = await api.get(`/tryouts/${tryOutId}/leaderboard`)
     return res.data
   }
 }

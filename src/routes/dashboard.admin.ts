@@ -24,6 +24,7 @@ const AdminTryoutsCreate = () => import("../pages/dashboard/admin/tryouts/Create
 const AdminTryoutsUpdate = () => import("../pages/dashboard/admin/tryouts/Update.vue");
 const AdminTryoutsView = () => import("../pages/dashboard/admin/tryouts/View.vue");
 const AdminTryoutsRegistration = () => import("../pages/dashboard/admin/tryouts/Registration.vue");
+const AdminTryoutsLeaderboard = () => import("../pages/dashboard/admin/tryouts/Leaderboard.vue");
 
 // Universities
 const AdminUniversitiesIndex = () => import("../pages/dashboard/admin/universities/index.vue");
@@ -156,6 +157,13 @@ export const dashboardAdminRoutes: RouteRecordRaw[] = [
     component: AdminTryoutsRegistration,
     props: true,
     meta: { ...adminMeta, title: "Edit Course" },
+  },
+  {
+    path: "/dashboard/admin/tryouts/:id/leaderboard",
+    name: "admin-tryouts-leaderboard",
+    component: AdminTryoutsLeaderboard,
+    props: true,
+    meta: { ...adminMeta, title: "Leaderboard Tryout" },
   },
 
   // ================= UNIVERSITIES =================

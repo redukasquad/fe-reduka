@@ -71,8 +71,19 @@ const handleView = (id: number) => {
            <span class="text-[10px] text-gray-400 uppercase tracking-widest font-bold mb-0.5">Harga</span>
            <span class="font-bold text-gray-800">{{ formatPrice(data.price) }}</span>
         </div>
-        <div class="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors">
-          <Icon icon="mdi:arrow-right" class="text-lg" />
+        <div class="flex items-center gap-2">
+          <RouterLink
+            :to="{ name: 'admin-tryouts-leaderboard', params: { id: data.id } }"
+            @click.stop
+            class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-yellow-50 text-yellow-700 hover:bg-yellow-100 text-xs font-semibold transition-colors"
+            title="Leaderboard"
+          >
+            <Icon icon="mdi:podium-gold" class="text-sm" />
+            Leaderboard
+          </RouterLink>
+          <div class="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors">
+            <Icon icon="mdi:arrow-right" class="text-lg" />
+          </div>
         </div>
       </div>
     </div>

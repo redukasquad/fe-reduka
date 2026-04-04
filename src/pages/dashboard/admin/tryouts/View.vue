@@ -149,6 +149,14 @@ const confirmDelete = ref(false)
           Lihat Registrasi
         </RouterLink>
 
+        <RouterLink
+          :to="{ name: 'admin-tryouts-leaderboard', params: { id: tryout.id } }"
+          class="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-yellow-500 text-white text-sm font-medium hover:bg-yellow-600 transition-colors"
+        >
+          <Icon icon="mdi:podium-gold" />
+          Leaderboard
+        </RouterLink>
+
         <a
           v-if="tryout.driveLink"
           :href="tryout.driveLink"

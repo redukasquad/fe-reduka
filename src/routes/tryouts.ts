@@ -1,6 +1,7 @@
 import type { RouteRecordRaw } from "vue-router";
 import Index from "../pages/tryouts/Index.vue";
 const View = () => import("../pages/tryouts/View.vue");
+const Leaderboard = () => import("../pages/tryouts/Leaderboard.vue");
 const ExamIntro = () => import("../pages/tryouts/exam/Intro.vue");
 const ExamPage = () => import("../pages/tryouts/exam/Exam.vue");
 const ExamResult = () => import("../pages/tryouts/exam/Result.vue");
@@ -29,6 +30,20 @@ export const tryoutsRoutes:RouteRecordRaw[]=[
       seo: {
         title: "Detail Tryout",
         description: "Lihat detail tryout dan daftar sekarang.",
+      },
+    },
+  },
+  {
+    path: "/tryouts/:id/leaderboard",
+    name: "tryouts-leaderboard",
+    component: Leaderboard,
+    props: true,
+    meta: {
+      layout: "default" as const,
+      requiresAuth: true,
+      seo: {
+        title: "Leaderboard Tryout",
+        description: "Lihat peringkat peserta tryout.",
       },
     },
   },
