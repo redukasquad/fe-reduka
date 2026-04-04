@@ -12,9 +12,9 @@ onMounted(async () => {
 
   if (typeof token === 'string') {
     auth.setToken(token)
-    await router.replace('/dashboard/user')
+    await router.push('/dashboard/user')
   } else {
-    router.replace('/auth/login')
+    router.push('/auth/login')
   }
 })
 </script>
