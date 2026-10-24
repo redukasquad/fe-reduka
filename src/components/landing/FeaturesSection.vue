@@ -17,13 +17,13 @@ const features = [
   {
     icon: '/images/landingPage/about/pen.png',
     title: 'Mentor Berpengalaman',
-    desc: 'Didampingi 500+ mentor profesional yang berdedikasi membantu masa depanmu.',
+    desc: 'Didampingi 500+ mentor yang berpengalaman dalam UTBK membantu masa depanmu.',
     blobBg: 'bg-accent/30', iconBg: 'bg-accent/20', statColor: 'text-accent-foreground', stat: '500+',
   },
   {
     icon: '/images/landingPage/envi_img/1.png',
     title: 'Kurikulum Terstruktur',
-    desc: 'Dari SD hingga SMA, materi disusun sistematis sesuai standar pendidikan nasional.',
+    desc: 'Setiap materi dalam subtes disusun sistematis sesuai standar pendidikan nasional.',
     blobBg: 'bg-ring/20', iconBg: 'bg-ring/15', statColor: 'text-ring', stat: '12+',
   },
   {
@@ -35,20 +35,39 @@ const features = [
 ]
 
 // ── Chart ─────────────────────────────────────────────────────
+// TODO: ganti RAW dengan data dari API saat endpoint analytics tersedia,
+// lalu set IS_DUMMY_DATA = false.
+const IS_DUMMY_DATA = true
+
 const RAW = [
-  { year: '2020', siswa: 50,    alumni: 0   },
-  { year: '2021', siswa: 1000,  alumni: 80  },
-  { year: '2022', siswa: 5000,  alumni: 320 },
-  { year: '2023', siswa: 8000,  alumni: 500 },
-  { year: '2024', siswa: 10000, alumni: 820 },
+  { year: '2020', siswa: 50,    alumni: 48   },
+  { year: '2021', siswa: 100,  alumni: 97  },
+  { year: '2022', siswa: 146,  alumni: 139 },
+  { year: '2023', siswa: 263,  alumni: 254 },
+  { year: '2024', siswa: 496, alumni: 491 },
+  { year: '2025', siswa: 790, alumni: 782 },
 ]
 
-// Fixed pixel height of the chart area — referenced in both template & JS
-const CHART_PX = 320
-const MAX_VAL  = Math.max(...RAW.map(d => d.siswa))
-const Y_TICKS  = [0, 2500, 5000, 7500, 10000]
+// Tinggi area data (px) + ruang ekstra di atas untuk label nilai bar.
+const CHART_PX    = 320
+const LABEL_SPACE = 20
+const PLOT_PX     = CHART_PX + LABEL_SPACE
 
-const toPx = (v: number) => Math.max(v > 0 ? 3 : 0, Math.round((v / MAX_VAL) * CHART_PX))
+// Skala Y dihitung otomatis dari data (4 interval dengan step "bulat"),
+// sehingga tick dan tinggi bar selalu sinkron saat data berubah.
+const niceStep = (rawStep: number) => {
+  const mag = 10 ** Math.floor(Math.log10(rawStep))
+  const f = rawStep / mag
+  const nice = [1, 2, 2.5, 5, 10].find(n => f <= n) ?? 10
+  return nice * mag
+}
+const DATA_MAX = Math.max(...RAW.map(d => Math.max(d.siswa, d.alumni)))
+const STEP     = niceStep(DATA_MAX / 4)
+const AXIS_MAX = STEP * 4
+const Y_TICKS  = [0, 1, 2, 3, 4].map(i => i * STEP)
+
+const toPx = (v: number) => Math.max(v > 0 ? 3 : 0, Math.round((v / AXIS_MAX) * CHART_PX))
+const yPos = (v: number) => (v / AXIS_MAX) * CHART_PX
 
 const bars = RAW.map(d => ({
   ...d,
@@ -56,25 +75,48 @@ const bars = RAW.map(d => ({
   alumniH: toPx(d.alumni),
 }))
 
-const fmt = (v: number) =>
-  v >= 1000 ? `${(v / 1000).toFixed(v % 1000 === 0 ? 0 : 1)}rb` : `${v}`
+// Format Indonesia: titik = ribuan, koma = desimal (mis. 2,5rb).
+const nf = new Intl.NumberFormat('id-ID', { maximumFractionDigits: 1 })
+const fmt = (v: number) => (v >= 1000 ? `${nf.format(v / 1000)}rb` : nf.format(v))
+const fmtFull = (v: number) => new Intl.NumberFormat('id-ID').format(v)
 
 const latestStats = computed(() => {
-  const last  = RAW[RAW.length - 1] as typeof RAW[0]
-  const first = RAW[0] as typeof RAW[0]
+  const last = RAW[RAW.length - 1] as typeof RAW[0]
+  const prev = RAW[RAW.length - 2] as typeof RAW[0]
   return {
-    siswa:  fmt(last.siswa)  + '+',
-    alumni: fmt(last.alumni) + '+',
-    growth: `+${Math.round((last.siswa / first.siswa - 1) * 100).toLocaleString('id-ID')}%`,
+    siswa:  fmt(RAW.reduce((sum, d) => sum + d.alumni, 0)) + '+',
+    alumni: fmt(RAW.reduce((sum, d) => sum + d.alumni, 0)) + '+',
+    // YoY (tahun terakhir vs sebelumnya) — lebih representatif daripada
+    // membandingkan dengan basis 2020 yang hanya 50 siswa (+19.900%).
+    growth: `+${Math.round((last.siswa / prev.siswa - 1) * 100)}%`,
   }
 })
+
+const chartLabel = computed(() =>
+  'Grafik batang pertumbuhan siswa aktif dan alumni. ' +
+  RAW.map(d => `${d.year}: ${fmtFull(d.siswa)} siswa, ${fmtFull(d.alumni)} alumni`).join('; ') + '.'
+)
 
 // ── GSAP ──────────────────────────────────────────────────────
 let animated = false
 
+const showFinalState = () => {
+  bars.forEach((d, i) => {
+    gsap.set(`#bar-s-${i}`, { height: d.siswaH, opacity: 1 })
+    if (d.alumniH > 0) gsap.set(`#bar-a-${i}`, { height: d.alumniH, opacity: 1 })
+  })
+  gsap.set('.val-lbl, .x-lbl, .y-lbl', { opacity: 1 })
+}
+
 const runBars = () => {
   if (animated) return
   animated = true
+
+  // Hormati pengguna dengan reduced-motion: langsung tampilkan hasil akhir.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    showFinalState()
+    return
+  }
 
   bars.forEach((d, i) => {
     const delay = i * 0.13
@@ -90,6 +132,11 @@ const runBars = () => {
         { height: d.alumniH, opacity: 1, duration: 0.55, delay: delay + 0.1, ease: 'power2.out' }
       )
     }
+
+    gsap.fromTo(`#val-s-${i}, #val-a-${i}`,
+      { opacity: 0, y: 4 },
+      { opacity: 1, y: 0, duration: 0.3, delay: delay + 0.6, ease: 'power2.out' }
+    )
 
     gsap.fromTo(`#lbl-${i}`,
       { opacity: 0, y: 5 },
@@ -172,9 +219,11 @@ onMounted(() => {
             <span class="text-xs font-semibold tracking-widest uppercase text-primary flex items-center gap-1.5">
               <Icon icon="lucide:bar-chart-3" class="size-3.5" /> Analytics
             </span>
-            <h3 class="text-xl font-bold text-foreground font-heading">Pertumbuhan Pengguna 2020–2024</h3>
+            <h3 class="text-xl font-bold text-foreground font-heading">
+              Pertumbuhan Pengguna {{ RAW[0]?.year }}–{{ RAW[RAW.length - 1]?.year }}
+            </h3>
             <p class="text-sm text-muted-foreground">
-              Perkembangan siswa aktif dan alumni dari tahun ke tahun.
+              Perkembangan siswa aktif dan alumni yang diterima di PTN/PTS dari tahun ke tahun.
             </p>
           </div>
 
@@ -185,15 +234,15 @@ onMounted(() => {
               <span class="text-sm font-semibold text-primary">{{ latestStats.siswa }}</span>
               <span class="text-xs text-muted-foreground hidden sm:inline">Siswa</span>
             </div>
-            <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-ring/10 border border-ring/20">
-              <Icon icon="lucide:trophy" class="size-4 text-ring" />
-              <span class="text-sm font-semibold text-ring">{{ latestStats.alumni }}</span>
+            <div class="alumni-badge flex items-center gap-1.5 px-3 py-1.5 rounded-lg">
+              <Icon icon="lucide:trophy" class="size-4 alumni-text" />
+              <span class="text-sm font-semibold alumni-text">{{ latestStats.alumni }}</span>
               <span class="text-xs text-muted-foreground hidden sm:inline">Alumni</span>
             </div>
-            <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent/20 border border-accent/30">
-              <Icon icon="lucide:trending-up" class="size-4 text-accent-foreground" />
-              <span class="text-sm font-semibold text-accent-foreground">{{ latestStats.growth }}</span>
-              <span class="text-xs text-muted-foreground hidden sm:inline">Growth</span>
+            <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-secondary border border-border">
+              <Icon icon="lucide:trending-up" class="size-4 text-primary" />
+              <span class="text-sm font-semibold text-primary">{{ latestStats.growth }}</span>
+              <span class="text-xs text-muted-foreground hidden sm:inline">Growth YoY</span>
             </div>
           </div>
         </div>
@@ -205,59 +254,68 @@ onMounted(() => {
             <span class="text-xs text-muted-foreground">Siswa Aktif</span>
           </div>
           <div class="flex items-center gap-2">
-            <span class="block w-4 h-3 rounded-sm bg-ring/60" />
-            <span class="text-xs text-muted-foreground">Alumni Lulus</span>
+            <span class="alumni-bar block w-4 h-3 rounded-sm" />
+            <span class="text-xs text-muted-foreground">Alumni yang Diterima di PTN/PTS</span>
           </div>
         </div>
 
-        <!-- Bar chart -->
-        <div class="flex gap-2">
+        <!-- Bar chart (role="img": ringkasan data dibacakan lewat aria-label) -->
+        <div class="flex gap-2" role="img" :aria-label="chartLabel">
 
-          <!-- Y-axis labels — height harus sama persis dengan CHART_PX -->
-          <div
-            class="flex flex-col-reverse justify-between text-right pr-2 shrink-0 w-8"
-            :style="{ height: `${CHART_PX}px` }"
-          >
+          <!-- Y-axis labels: diposisikan absolut agar tepat sejajar dengan gridline -->
+          <div class="relative shrink-0 w-10" aria-hidden="true" :style="{ height: `${PLOT_PX}px` }">
             <span v-for="t in Y_TICKS" :key="t"
-              class="y-lbl text-[10px] text-muted-foreground leading-none opacity-0">
+              class="y-lbl absolute right-1 translate-y-1/2 text-[10px] text-muted-foreground leading-none opacity-0 whitespace-nowrap"
+              :style="{ bottom: `${yPos(t)}px` }">
               {{ fmt(t) }}
             </span>
           </div>
 
           <!-- Main chart area -->
-          <div class="flex-1 min-w-0 overflow-x-auto max-w-full">
+          <div class="flex-1 min-w-0 overflow-x-auto max-w-full" aria-hidden="true">
 
-            <!-- Grid lines behind bars -->
-            <div class="relative" :style="{ height: `${CHART_PX}px` }">
-              <!-- Grid lines (absolute, positioned from bottom) -->
+            <div class="relative" :style="{ height: `${PLOT_PX}px` }">
+              <!-- Grid lines (absolut dari bawah, skala sama dengan bar) -->
               <div class="absolute inset-0 pointer-events-none">
                 <div v-for="t in Y_TICKS.slice(1)" :key="t"
-                  class="absolute inset-x-0 border-t border-dashed border-border/40"
-                  :style="{ bottom: `${(t / MAX_VAL) * CHART_PX}px` }" />
+                  class="absolute inset-x-0 border-t border-dashed border-border"
+                  :style="{ bottom: `${yPos(t)}px` }" />
               </div>
 
-              <!-- Bars — flex row, items-end so bars grow upward -->
+              <!-- Bars — items-end agar bar tumbuh ke atas -->
               <div class="relative z-10 flex items-end justify-around h-full gap-2 px-2">
                 <div v-for="(d, i) in bars" :key="d.year"
                   class="flex items-end justify-center gap-1 flex-1">
 
-                  <!-- Siswa bar -->
-                  <div
-                    :id="`bar-s-${i}`"
-                    class="w-3 md:w-8 lg:w-12 rounded-t-xl bg-primary shrink-0
-                           transition-[filter] duration-150 hover:brightness-110 cursor-pointer"
-                    style="height: 0; opacity: 0"
-                    :title="`Siswa ${d.year}: ${fmt(d.siswa)}`"
-                  />
+                  <!-- Siswa -->
+                  <div class="flex flex-col items-center justify-end">
+                    <span :id="`val-s-${i}`"
+                      class="val-lbl hidden md:block mb-1 text-[10px] font-semibold leading-none text-primary opacity-0">
+                      {{ fmt(d.siswa) }}
+                    </span>
+                    <div
+                      :id="`bar-s-${i}`"
+                      class="w-3 md:w-8 lg:w-12 rounded-t-[4px] bg-primary shrink-0
+                             transition-[filter] duration-150 hover:brightness-110"
+                      style="height: 0; opacity: 0"
+                      :title="`Siswa ${d.year}: ${fmtFull(d.siswa)}`"
+                    />
+                  </div>
 
-                  <!-- Alumni bar -->
-                  <div
-                    :id="`bar-a-${i}`"
-                    class="w-2 md:w-8 lg:w-12 rounded-t-xl bg-ring/60 shrink-0
-                           transition-[filter] duration-150 hover:brightness-110 cursor-pointer"
-                    style="height: 0; opacity: 0"
-                    :title="`Alumni ${d.year}: ${fmt(d.alumni)}`"
-                  />
+                  <!-- Alumni -->
+                  <div class="flex flex-col items-center justify-end">
+                    <span :id="`val-a-${i}`"
+                      class="val-lbl alumni-text hidden md:block mb-1 text-[10px] font-semibold leading-none opacity-0">
+                      {{ fmt(d.alumni) }}
+                    </span>
+                    <div
+                      :id="`bar-a-${i}`"
+                      class="alumni-bar w-3 md:w-8 lg:w-12 rounded-t-[4px] shrink-0
+                             transition-[filter] duration-150 hover:brightness-110"
+                      style="height: 0; opacity: 0"
+                      :title="`Alumni ${d.year}: ${fmtFull(d.alumni)}`"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -265,21 +323,43 @@ onMounted(() => {
             <!-- X-axis -->
             <div class="border-t border-border" />
 
-            <!-- X labels -->
-            <div class="flex justify-around mt-2 px-2">
+            <!-- X labels (gap & padding sama dengan baris bar agar sejajar) -->
+            <div class="flex justify-around mt-2 gap-2 px-2">
               <div v-for="(d, i) in bars" :key="d.year"
                 :id="`lbl-${i}`"
-                class="flex-1 text-center text-xs text-muted-foreground opacity-0">
+                class="x-lbl flex-1 text-center text-xs text-muted-foreground opacity-0">
                 {{ d.year }}
               </div>
             </div>
           </div>
         </div>
 
+        <!-- Tabel ringkas untuk layar kecil (nilai bar tidak bisa dibaca via tooltip di layar sentuh) -->
+        <div class="md:hidden mt-5 pt-4 border-t border-border overflow-x-auto">
+          <table class="w-full text-xs">
+            <caption class="sr-only">Data siswa aktif dan alumni per tahun</caption>
+            <thead>
+              <tr class="text-muted-foreground">
+                <th scope="col" class="text-left font-medium pb-2">Tahun</th>
+                <th scope="col" class="text-right font-medium pb-2">Siswa</th>
+                <th scope="col" class="text-right font-medium pb-2">Alumni</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="d in RAW" :key="d.year" class="border-t border-border/60">
+                <th scope="row" class="text-left font-medium text-foreground py-1.5">{{ d.year }}</th>
+                <td class="text-right font-semibold text-primary py-1.5">{{ fmtFull(d.siswa) }}</td>
+                <td class="text-right font-semibold alumni-text py-1.5">{{ fmtFull(d.alumni) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
         <!-- Footer -->
         <p class="text-xs text-muted-foreground mt-5 text-right flex items-center justify-end gap-1">
           <Icon icon="lucide:file-text" class="size-3" />
-          Data internal REDUKA Community Academy · Diperbarui 2024
+          <template v-if="IS_DUMMY_DATA">Data ilustrasi (dummy) · belum terhubung ke data asli</template>
+          <template v-else>Data internal REDUKA · Diperbarui {{ RAW[RAW.length - 1]?.year }}</template>
         </p>
       </div>
 
@@ -291,5 +371,22 @@ onMounted(() => {
 .feat-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 16px 32px -12px rgb(0 0 0 / 0.1);
+}
+
+/* Warna seri Alumni: amber dari token --ring terlalu terang di latar putih
+   (kontras rendah), jadi dipakai varian lebih gelap untuk bar & teks. */
+.chart-block {
+  --alumni: oklch(0.7 0.16 70);
+  --alumni-text: oklch(0.5 0.12 70);
+}
+.dark .chart-block {
+  --alumni: oklch(0.8 0.15 80);
+  --alumni-text: oklch(0.82 0.14 80);
+}
+.alumni-bar  { background: var(--alumni); }
+.alumni-text { color: var(--alumni-text); }
+.alumni-badge {
+  background: color-mix(in oklch, var(--alumni) 14%, transparent);
+  border: 1px solid color-mix(in oklch, var(--alumni) 35%, transparent);
 }
 </style>
