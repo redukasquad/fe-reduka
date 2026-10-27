@@ -1,3 +1,4 @@
+
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
 import gsap from 'gsap'
@@ -5,6 +6,16 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import * as THREE from 'three'
 
 gsap.registerPlugin(ScrollTrigger)
+
+const placeholderImage = `data:image/svg+xml,${encodeURIComponent(`
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="400" viewBox="0 0 560 400">
+  <rect width="560" height="400" fill="#e8f3ee"/>
+  <rect x="20" y="20" width="520" height="360" rx="16" fill="#f5faf7" stroke="#bbd8ca" stroke-width="2"/>
+  <circle cx="375" cy="125" r="32" fill="#a8cdbb"/>
+  <path d="M90 285 L205 165 L285 245 L350 195 L470 285 Z" fill="#a8cdbb"/>
+  <text x="280" y="340" text-anchor="middle" font-family="Arial" font-size="22" font-weight="bold" fill="#176b4c">FOTO SEGERA HADIR</text>
+</svg>
+`)}`
 
 const stories = [
   {
@@ -47,12 +58,27 @@ const stories = [
     stat: 'Target: 50.000 Siswa',
     accent: '#f59e0b',
   },
+  {
+    year: '2025',
+    image: placeholderImage,
+    title: 'lorem ipsum',
+    description: 'soon.',
+    stat: 'otw',
+    accent: '#0d9488',
+  },
+  {
+    year: '2026',
+    image: placeholderImage,
+    title: 'lorem ipsum',
+    description: 'soon.',
+    stat: 'otw',
+    accent: '#2563eb',
+  },
 ]
 
 const sectionRef = ref<HTMLElement>()
 const canvasRef = ref<HTMLCanvasElement>()
 
-// ── Three.js floating particles ──────────────────────────────────────────────
 let renderer: THREE.WebGLRenderer | null = null
 let animFrameId = 0
 
@@ -65,7 +91,6 @@ function initThree(canvas: HTMLCanvasElement) {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
   renderer.setSize(canvas.clientWidth, canvas.clientHeight)
 
-  // Particles
   const count = 120
   const positions = new Float32Array(count * 3)
   const sizes = new Float32Array(count)
@@ -75,6 +100,7 @@ function initThree(canvas: HTMLCanvasElement) {
     positions[i * 3 + 2] = (Math.random() - 0.5) * 6
     sizes[i] = Math.random() * 3 + 1
   }
+
   const geo = new THREE.BufferGeometry()
   geo.setAttribute('position', new THREE.BufferAttribute(positions, 3))
   geo.setAttribute('size', new THREE.BufferAttribute(sizes, 1))
@@ -109,15 +135,12 @@ function initThree(canvas: HTMLCanvasElement) {
   return () => window.removeEventListener('resize', onResize)
 }
 
-// ── GSAP timeline animations ─────────────────────────────────────────────────
 function initGsap() {
-  // Section fade in
   gsap.fromTo(sectionRef.value!, { opacity: 0 }, {
     opacity: 1, duration: 0.6,
     scrollTrigger: { trigger: sectionRef.value, start: 'top 90%' }
   })
 
-  // Progress line draw
   gsap.fromTo('.story-progress-line', { scaleY: 0 }, {
     scaleY: 1,
     transformOrigin: 'top center',
@@ -130,14 +153,12 @@ function initGsap() {
     }
   })
 
-  // Each story item
   document.querySelectorAll<HTMLElement>('.story-card').forEach((card, i) => {
     const imgEl = card.querySelector<HTMLElement>('.story-img-wrap')
     const textEl = card.querySelector<HTMLElement>('.story-text-wrap')
     const dotEl = card.querySelector<HTMLElement>('.story-dot')
     const isEven = i % 2 === 0
 
-    // Image: comes from left (even) or right (odd) with 3D tilt
     gsap.fromTo(imgEl, {
       opacity: 0,
       x: isEven ? -60 : 60,
@@ -150,7 +171,6 @@ function initGsap() {
       scrollTrigger: { trigger: card, start: 'top 82%' }
     })
 
-    // Text: comes from opposite side
     gsap.fromTo(textEl, {
       opacity: 0,
       x: isEven ? 50 : -50,
@@ -162,14 +182,12 @@ function initGsap() {
       scrollTrigger: { trigger: card, start: 'top 82%' }
     })
 
-    // Dot pop
     gsap.fromTo(dotEl, { scale: 0, opacity: 0 }, {
       scale: 1, opacity: 1,
       duration: 0.4, ease: 'back.out(2)',
       scrollTrigger: { trigger: card, start: 'top 80%' }
     })
 
-    // Subtle parallax on image while scrolling
     gsap.to(imgEl, {
       y: -30,
       ease: 'none',
@@ -189,7 +207,6 @@ onMounted(() => {
   if (canvasRef.value) {
     cleanupThree = initThree(canvasRef.value) ?? undefined
   }
-  // slight delay so DOM is fully painted
   setTimeout(initGsap, 80)
 })
 
@@ -206,20 +223,16 @@ onUnmounted(() => {
     ref="sectionRef"
     class="w-full bg-background py-20 md:py-32 relative overflow-hidden"
   >
-    <!-- Three.js canvas background -->
     <canvas
       ref="canvasRef"
       class="absolute inset-0 w-full h-full pointer-events-none opacity-40"
     />
 
-    <!-- Subtle radial glow -->
     <div class="absolute inset-0 pointer-events-none">
       <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-primary/5 rounded-full blur-3xl" />
     </div>
 
     <div class="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
-
-      <!-- Section header -->
       <div class="text-center mb-16 md:mb-24 space-y-3">
         <span class="inline-flex items-center gap-1.5 text-xs font-bold tracking-widest uppercase text-primary bg-primary/10 rounded-full px-4 py-1.5">
           <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
@@ -234,37 +247,25 @@ onUnmounted(() => {
         </p>
       </div>
 
-      <!-- Timeline track -->
       <div class="story-track relative">
-
-        <!-- Center vertical line (desktop) / left line (mobile) -->
         <div class="
           absolute top-0 bottom-0 w-px bg-border/60
           left-4 sm:left-6
           md:left-1/2 md:-translate-x-px
         ">
-          <!-- Animated progress fill -->
           <div class="story-progress-line absolute inset-0 bg-linear-to-b from-primary via-violet-500 to-primary/30 origin-top" />
         </div>
 
-        <!-- Story items -->
         <div class="space-y-20 md:space-y-28">
           <div
             v-for="(story, i) in stories"
             :key="story.year"
             class="story-card relative"
           >
-            <!--
-              Layout:
-              - Mobile: single column, content to the right of the left line
-              - Desktop: alternating left/right
-            -->
             <div
               class="flex items-center gap-4 md:gap-0"
               :class="i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'"
             >
-
-              <!-- ── Image side (desktop only) ──────────────────── -->
               <div
                 class="story-img-wrap hidden md:flex flex-1 items-center"
                 :class="i % 2 === 0 ? 'md:justify-end md:pr-12' : 'md:justify-start md:pl-12'"
@@ -290,7 +291,6 @@ onUnmounted(() => {
                 </div>
               </div>
 
-              <!-- ── Center dot ─────────────────────────────────── -->
               <div class="
                 story-dot relative z-20 shrink-0
                 ml-0 mr-4
@@ -300,14 +300,12 @@ onUnmounted(() => {
                   class="w-5 h-5 rounded-full border-4 border-background shadow-lg"
                   :style="{ background: story.accent, outline: `3px solid ${story.accent}44`, outlineOffset: '2px' }"
                 />
-                <!-- Pulse ring -->
                 <div
                   class="absolute inset-0 rounded-full animate-ping opacity-30"
                   :style="{ background: story.accent }"
                 />
               </div>
 
-              <!-- ── Text side ──────────────────────────────────── -->
               <div
                 class="story-text-wrap flex-1 md:flex-none"
                 :class="[
@@ -317,7 +315,6 @@ onUnmounted(() => {
                   'pl-2 md:pl-0'
                 ]"
               >
-                <!-- Mobile: show year here -->
                 <span
                   class="md:hidden inline-block text-[10px] font-extrabold text-white px-2.5 py-0.5 rounded-full mb-2"
                   :style="{ background: story.accent }"
@@ -325,7 +322,6 @@ onUnmounted(() => {
                   {{ story.year }}
                 </span>
 
-                <!-- Card -->
                 <div class="bg-card border border-border/60 rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md hover:border-border transition-all duration-300 group">
                   <h3 class="text-base sm:text-lg font-bold text-foreground font-heading mb-2 group-hover:text-primary transition-colors">
                     {{ story.title }}
@@ -334,7 +330,6 @@ onUnmounted(() => {
                     {{ story.description }}
                   </p>
 
-                  <!-- Mobile image — shown below description, hidden on desktop -->
                   <div class="md:hidden mt-4 relative rounded-xl overflow-hidden border border-border/50" style="height: 140px;">
                     <img
                       :src="story.image"
@@ -353,12 +348,10 @@ onUnmounted(() => {
                   </div>
                 </div>
               </div>
-
             </div>
           </div>
         </div>
 
-        <!-- End cap -->
         <div class="
           relative z-20 flex justify-center mt-16
           pl-4 sm:pl-6 md:pl-0
@@ -368,7 +361,6 @@ onUnmounted(() => {
             <span class="text-xs text-muted-foreground font-medium tracking-wide">Perjalanan berlanjut…</span>
           </div>
         </div>
-
       </div>
     </div>
   </section>
